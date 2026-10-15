@@ -1,0 +1,70 @@
+{
+  "id": "nepa-match-night",
+  "title": "NEPA Match Night",
+  "tagline": "85th minute. Super Eagles level. Then the light goes.",
+  "modes": ["rival", "coop", "team"],
+  "start": "blackout",
+  "scenes": {
+    "blackout": {
+      "title": "Light Don Go",
+      "text": "The Super Eagles are level in the 85th minute and NEPA chooses this exact moment to strike. The whole compound screams.",
+      "choices": [
+        { "approach": "charm", "label": "Sweet-talk the neighbour with the generator", "dc": 11 },
+        { "approach": "hustle", "label": "Run to the junction for fuel", "dc": 12 },
+        { "approach": "gragra", "label": "Shout until someone fixes it", "dc": 13 },
+        { "approach": "wisdom", "label": "Check if it is just your fuse", "dc": 10 }
+      ],
+      "next": { "disaster": "fuel_queue", "struggle": "neighbour_tv", "win": "generator_on", "legendary": "viewing_centre" }
+    },
+    "fuel_queue": {
+      "title": "The Fuel Queue",
+      "text": "The petrol station has a queue that bends around two streets. Someone is already selling fuel in plastic bottles at triple price.",
+      "choices": [
+        { "approach": "charm", "label": "Beg the attendant", "dc": 14 },
+        { "approach": "hustle", "label": "Buy from the bottle guy", "dc": 11 },
+        { "approach": "wisdom", "label": "Give up and listen on radio", "dc": 9 }
+      ],
+      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+    },
+    "neighbour_tv": {
+      "title": "Oga Next Door",
+      "text": "Your neighbour has a generator and a big TV, but half the street is already in his sitting room.",
+      "choices": [
+        { "approach": "charm", "label": "Carry drinks as your entry fee", "dc": 10 },
+        { "approach": "gragra", "label": "Squeeze in by force", "dc": 14 },
+        { "approach": "hustle", "label": "Offer to fetch fuel for him", "dc": 12 }
+      ],
+      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+    },
+    "generator_on": {
+      "title": "Gen Don Start",
+      "text": "The generator roars to life and everyone cheers, but the sound is so loud nobody can hear the commentary.",
+      "choices": [
+        { "approach": "wisdom", "label": "Move the generator outside", "dc": 11 },
+        { "approach": "hustle", "label": "Run an extension to the TV", "dc": 12 },
+        { "approach": "charm", "label": "Convince everyone to just vibe", "dc": 10 }
+      ],
+      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+    },
+    "viewing_centre": {
+      "title": "The Viewing Centre",
+      "text": "You find a packed viewing centre with a giant screen, one seat left, and two people eyeing it.",
+      "choices": [
+        { "approach": "gragra", "label": "Claim the seat loudly", "dc": 13 },
+        { "approach": "charm", "label": "Offer to buy the next round", "dc": 11 },
+        { "approach": "wisdom", "label": "Stand where the view is best", "dc": 10 }
+      ],
+      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+    },
+    "final_whistle": {
+      "title": "Final Whistle",
+      "text": "The match ends. Time to celebrate, or argue about the referee.",
+      "choices": [
+        { "approach": "charm", "label": "Celebrate with everyone", "dc": 10 },
+        { "approach": "gragra", "label": "Argue about the referee", "dc": 12 },
+        { "approach": "wisdom", "label": "Go home quietly", "dc": 9 }
+      ],
+      "next": { "disaster": null, "struggle": null, "win": null, "legendary": null }
+    }
+  }
+}
