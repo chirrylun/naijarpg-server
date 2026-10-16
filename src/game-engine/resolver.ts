@@ -15,10 +15,10 @@ export function resolveRoll(input: { modifier: number; dc: number; star?: StarPl
   const rng = input.rng ?? d20;
   let die = rng();
   if (input.star === 'reroll') die = Math.max(die, rng());
-  const modifier = Math.min(input.modifier, BALANCE.maxModifier);
+  const modifier = Math.max(BALANCE.minTotalModifier, Math.min(input.modifier, BALANCE.maxTotalModifier));
   const starBonus = input.star === 'nudge' ? BALANCE.nudgeBonus : 0;
   const total = die + modifier + starBonus;
   let tier = tierFor(die, total, input.dc);
   if (input.star === 'shield' && tier === 'disaster') tier = 'struggle';
-  return { die, modifier, starBonus, total, tier };
+  return { die, modifier, starBonus, total, tier, margin: total - input.dc };
 }

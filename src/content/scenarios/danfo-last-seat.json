@@ -1,0 +1,189 @@
+{
+  "id": "danfo-last-seat",
+  "title": "Last Seat to Yaba",
+  "tagline": "Rain is coming, the danfo is filling up, and everybody is going the same way.",
+  "modes": ["rival", "team", "coop"],
+  "formats": ["1v1", "2v2"],
+  "start": "stop",
+  "scenes": {
+    "stop": {
+      "title": "One Seat Remaining",
+      "text": {
+        "default": "Ojuelegba, 6:40 pm, rain loading in the sky. A danfo screams 'Yaba! Yaba! One seat remaining!' and you hit the door at the same moment as {rival}.",
+        "team_2v2": "Ojuelegba, 6:40 pm, rain loading in the sky. A danfo screams 'Yaba! Yaba! Two seats remaining!' You and {partner} are racing {rival} for the back bench.",
+        "coop": "Ojuelegba, 6:40 pm, rain loading in the sky. A danfo screams 'Yaba! Yaba! Last seats!' You and {partner} must get on together, or you all walk."
+      },
+      "stakes": {
+        "default": "The last seat on the bus.",
+        "team_2v2": "The back bench for your pair.",
+        "coop": "Getting everyone on before it leaves."
+      },
+      "choices": [
+        { "approach": "charm", "label": "Smile at the conductor: 'Oga, abeg, I dey rush'", "dc": 12 },
+        { "approach": "hustle", "label": "Slide past the crowd and jump in", "dc": 13 },
+        { "approach": "gragra", "label": "Shout 'I was here first!' for the whole stop to hear", "dc": 12 },
+        { "approach": "wisdom", "label": "Skip the shoving and pay the conductor first", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "inside", "recap": "The conductor slaps the roof and points at {winner}: that is your seat. {loser} is left hanging on the door frame.", "winner": { "mod": 1, "label": "Got the seat" }, "loser": { "mod": -1, "label": "Hanging on the door" } },
+        "both_succeed": { "to": "inside", "recap": "You both got a foot in at once, so the conductor declares it a 'two-person seat' and charges extra." },
+        "both_fail": { "to": "keke", "recap": "You were both still posturing when the danfo pulled off, spraying muddy water on your shoes.", "all": { "mod": -1, "label": "Missed the bus" } },
+        "tie": { "to": "inside", "recap": "Nobody blinked, so the conductor shoved you all in to stop the shouting." },
+        "same": { "to": "inside", "recap": "You all charged the same doorway at once and the whole bus laughed." },
+        "all_pass": { "to": "inside", "recap": "The conductor waves you all in together.", "all": { "mod": 1, "label": "On the bus" } },
+        "mixed": { "to": "inside", "recap": "Some of you are in, and the others grab the door handle as the bus rolls." },
+        "all_fail": { "to": "keke", "recap": "The danfo roars off without you.", "all": { "mod": -1, "label": "Missed the bus" } }
+      }
+    },
+    "inside": {
+      "title": "Wedged In",
+      "text": {
+        "default": "The danfo pulls out and the rain starts drumming on the roof. Everyone is wedged somewhere, and {rival} is close enough to hear you breathing.",
+        "team_2v2": "The danfo pulls out and the rain starts drumming on the roof. Both pairs are wedged into the same two rows, close enough to hear each other breathing. {partner} gives you a look: this is going to be a long ride.",
+        "coop": "The danfo pulls out and the rain starts drumming on the roof. You and {partner} are in. Now to survive the ride together."
+      },
+      "stakes": { "default": "Your spot, and who gets pushed around.", "coop": "Staying together all the way to Yaba." },
+      "choices": [
+        { "approach": "charm", "label": "Smile and be extra polite", "dc": 12 },
+        { "approach": "hustle", "label": "Claim your space with your elbows", "dc": 13 },
+        { "approach": "gragra", "label": "Warn everyone loudly to mind their bags", "dc": 12 },
+        { "approach": "wisdom", "label": "Shift your weight to the safest spot", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "fare", "recap": "{winner} holds their ground. {loser} ends up pressed against the window with a market basket on their lap.", "winner": { "mod": 1, "label": "Elbow room" }, "loser": { "mod": -1, "label": "Squashed" } },
+        "both_succeed": { "to": "fare", "recap": "You both make it work and nobody loses a bag, though it is tight." },
+        "both_fail": { "to": "fare", "recap": "A bag falls, a sandal goes missing, and a loud aunty blames you both.", "all": { "mod": -1, "label": "Embarrassed" } },
+        "tie": { "to": "fare", "recap": "Nobody gives an inch, and the conductor tells you all to pay 'now now'." },
+        "all_pass": { "to": "fare", "recap": "You all settle in and the ride is almost pleasant.", "all": { "mod": 1, "label": "Settled" } },
+        "mixed": { "to": "fare", "recap": "Some of you settle in while the others get sandwiched." },
+        "all_fail": { "to": "fare", "recap": "The bus lurches and you all end up in someone else's lap.", "all": { "mod": -1, "label": "Squashed" } }
+      }
+    },
+    "keke": {
+      "title": "Keke Napep",
+      "text": {
+        "default": "The danfo is gone. A keke driver pulls up shouting 'Yaba! Yaba!' with one seat left, and {rival} has spotted it too.",
+        "team_2v2": "The danfo is gone. A keke driver pulls up shouting 'Yaba! Yaba!' with room for two, and you, {partner} and {rival} all want it.",
+        "coop": "The danfo is gone. A keke driver pulls up shouting 'Yaba! Yaba!'. He will take you all, if the price is right."
+      },
+      "stakes": { "default": "The last seat in the keke.", "team_2v2": "The only keke in sight.", "coop": "A ride before the rain gets worse." },
+      "choices": [
+        { "approach": "charm", "label": "Negotiate the price with a smile", "dc": 12 },
+        { "approach": "hustle", "label": "Jump in before he changes his mind", "dc": 13 },
+        { "approach": "gragra", "label": "Tell him he is overcharging in the rain", "dc": 13 },
+        { "approach": "wisdom", "label": "Check the keke is roadworthy before you board", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "fare", "recap": "{winner} gets the keke seat. {loser} shelters under a shop awning, soaked.", "winner": { "mod": 1, "label": "Dry seat" }, "loser": { "mod": -1, "label": "Soaked" } },
+        "both_succeed": { "to": "fare", "recap": "The driver squeezes you all in and the keke leans to one side." },
+        "both_fail": { "to": "fare", "recap": "The keke fills up with other people and leaves, so you flag an okada and pay triple.", "all": { "mod": -1, "label": "Overcharged" } },
+        "tie": { "to": "fare", "recap": "The driver doubles the price for everyone and drives off." },
+        "all_pass": { "to": "fare", "recap": "He agrees a fair price and you are all on your way.", "all": { "mod": 1, "label": "Fair deal" } },
+        "mixed": { "to": "fare", "recap": "He takes some of you first and comes back for the rest." },
+        "all_fail": { "to": "fare", "recap": "The rain gets heavier and the price gets higher.", "all": { "mod": -1, "label": "Overcharged" } }
+      }
+    },
+    "fare": {
+      "title": "Rain is a Price Increase",
+      "text": {
+        "default": "The man collecting your fare has just discovered that rain is a price increase. {rival} hears the same speech, and you both suddenly remember how much money you really have.",
+        "team_2v2": "The man collecting your fare has just discovered that rain is a price increase. Both pairs get the same speech, and the whole ride watches to see who pays and who argues.",
+        "coop": "The man collecting your fare has just discovered that rain is a price increase. You and {partner} pool what you have, and it is not enough unless you act together."
+      },
+      "stakes": { "default": "Your money and your pride.", "coop": "Reaching Yaba with money left." },
+      "choices": [
+        { "approach": "charm", "label": "Haggle with humour", "dc": 12 },
+        { "approach": "hustle", "label": "Pay fast and demand your change", "dc": 13 },
+        { "approach": "gragra", "label": "Raise your voice so the whole ride joins in", "dc": 13 },
+        { "approach": "wisdom", "label": "Count out the exact amount quietly", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "go_slow", "recap": "{winner} pays the old price and walks away smug. {loser} pays the full rain price.", "winner": { "mod": 1, "label": "Saved money" }, "loser": { "mod": -1, "label": "Out of pocket" } },
+        "both_succeed": { "to": "go_slow", "recap": "You both haggled the price down, though {winner} got the better rate." },
+        "both_fail": { "to": "go_slow", "recap": "You both end up paying the full rain price and then some.", "all": { "mod": -1, "label": "Broke" } },
+        "tie": { "to": "go_slow", "recap": "The man gives up and charges everyone the same." },
+        "same": { "to": "go_slow", "recap": "The whole ride watched you do the exact same thing and started laughing." },
+        "all_pass": { "to": "go_slow", "recap": "You split the cost and still have change.", "all": { "mod": 1, "label": "Money left" } },
+        "mixed": { "to": "go_slow", "recap": "Some of you get the price down while others pay more, so you split the difference." },
+        "all_fail": { "to": "go_slow", "recap": "Between you, the money runs out and you owe him the rest.", "all": { "mod": -1, "label": "Broke" } }
+      }
+    },
+    "go_slow": {
+      "title": "Go-Slow at the Flyover",
+      "text": {
+        "default": "Traffic locks up on the flyover. Horns scream and ten minutes becomes forty. Your phone is at 4%, so is {rival}'s, and a passenger is selling power-bank charging with one charge left.",
+        "team_2v2": "Traffic locks up on the flyover. Horns scream and ten minutes becomes forty. Four phones are dying and one power bank has one charge left.",
+        "coop": "Traffic locks up on the flyover. Horns scream and ten minutes becomes forty. Every phone in your group is dying and one power bank has one charge left."
+      },
+      "stakes": { "default": "The last charge on the power bank.", "coop": "Keeping a phone alive for the group." },
+      "choices": [
+        { "approach": "charm", "label": "Compliment the power-bank seller", "dc": 12 },
+        { "approach": "hustle", "label": "Grab the cable and plug in first", "dc": 13 },
+        { "approach": "gragra", "label": "Announce a family emergency to the whole bus", "dc": 13 },
+        { "approach": "wisdom", "label": "Switch to low-power mode and ration your battery", "dc": 10 }
+      ],
+      "next": {
+        "decisive": { "to": "lastma", "recap": "{winner} gets the last charge. {loser}'s phone dies mid-sentence.", "winner": { "mod": 1, "label": "Phone alive" }, "loser": { "mod": -1, "label": "Phone dead" } },
+        "both_succeed": { "to": "lastma", "recap": "You both get some charge, but {winner} gets the bigger share." },
+        "both_fail": { "to": "lastma", "recap": "The power bank dies and every phone sits at 1%.", "all": { "mod": -1, "label": "Low battery" } },
+        "tie": { "to": "lastma", "recap": "You share the last few percent." },
+        "all_pass": { "to": "lastma", "recap": "Every phone survives the go-slow.", "all": { "mod": 1, "label": "Charged" } },
+        "mixed": { "to": "lastma", "recap": "Some phones live and some go dark." },
+        "all_fail": { "to": "lastma", "recap": "The power bank dies and every phone goes dark.", "all": { "mod": -1, "label": "Phone dead" } }
+      }
+    },
+    "lastma": {
+      "title": "LASTMA!",
+      "text": {
+        "default": "A LASTMA officer in a reflective vest raps on the window. The bus will not move until someone deals with him, and whoever does it earns the respect of the whole ride. {rival} is already leaning toward the door.",
+        "team_2v2": "A LASTMA officer in a reflective vest raps on the window. The bus will not move until someone deals with him, and both pairs know whoever solves it earns the respect of the whole ride.",
+        "coop": "A LASTMA officer in a reflective vest raps on the window. Your group has to deal with him before the whole bus turns on you."
+      },
+      "stakes": { "default": "The respect of the whole bus.", "coop": "Getting the bus moving again." },
+      "choices": [
+        { "approach": "charm", "label": "Greet the officer like an old friend", "dc": 12 },
+        { "approach": "hustle", "label": "Offer a small something, quickly", "dc": 13 },
+        { "approach": "gragra", "label": "Threaten to film him with your phone", "dc": 14 },
+        { "approach": "wisdom", "label": "Politely point out the driver's papers are complete", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "yaba", "recap": "{winner} sorts it out and the whole bus applauds. {loser} gets an eye-roll from the aunty in front.", "winner": { "mod": 1, "label": "Bus hero" }, "loser": { "mod": -1, "label": "Eye-rolled" } },
+        "both_succeed": { "to": "yaba", "recap": "You both help and the officer lets the bus go, though {winner} gets the thanks." },
+        "both_fail": { "to": "yaba", "recap": "The officer gets annoyed and the driver pays anyway, grumbling at you all.", "all": { "mod": -1, "label": "Blamed" } },
+        "tie": { "to": "yaba", "recap": "The officer waves the bus on out of boredom, so nobody gets the credit." },
+        "all_pass": { "to": "yaba", "recap": "You settle it together and the bus cheers.", "all": { "mod": 1, "label": "Bus heroes" } },
+        "mixed": { "to": "yaba", "recap": "Some of you do the talking while the others hold the bus's patience together." },
+        "all_fail": { "to": "yaba", "recap": "The officer takes what he can and the bus moves again, grumbling at you.", "all": { "mod": -1, "label": "Blamed" } }
+      }
+    },
+    "yaba": {
+      "title": "Yaba Junction",
+      "text": {
+        "default": "Yaba at last. The rain has stopped and your friend's surprise party is ten minutes away. There is one okada left at the stop, and it is the only way to arrive before the doors close. {rival} is already running.",
+        "team_2v2": "Yaba at last. The rain has stopped and your friend's surprise party is ten minutes away. There is one okada left at the stop, and both pairs spot it at the same time.",
+        "coop": "Yaba at last. The rain has stopped and the doors close in ten minutes. One okada, one keke and a shortcut through the market: you must get everyone there on time."
+      },
+      "stakes": { "default": "Arriving first and getting the best story.", "coop": "Everyone through the door before it closes." },
+      "choices": [
+        { "approach": "charm", "label": "Sweet-talk the okada rider", "dc": 12 },
+        { "approach": "hustle", "label": "Sprint for the bike", "dc": 13 },
+        { "approach": "gragra", "label": "Block his path and shout 'I called him first!'", "dc": 13 },
+        { "approach": "wisdom", "label": "Forget the bike and take the shortcut through the market", "dc": 12 }
+      ],
+      "next": { "default": null }
+    }
+  },
+  "endings": {
+    "win": {
+      "default": "You rolled up to the party first, soaked and glorious, and by the time {loser} arrived your version of the story had been told twice.",
+      "team_2v2": "Your pair strolled in first and took the best table before {loser} even found the street."
+    },
+    "loss": {
+      "default": "You arrived last, soaked and holding somebody else's tomato. {winner} had already told the story.",
+      "team_2v2": "Your pair arrived last to find {winner} already at the best table, telling the story."
+    },
+    "draw": { "default": "You arrived at exactly the same moment and nobody could say who won, so everyone argued about it all night." },
+    "success": { "default": "Against all odds, you all made it before the doors closed, wet but victorious." },
+    "fail": { "default": "The doors had already closed by the time you arrived. The party went on without you." }
+  }
+}

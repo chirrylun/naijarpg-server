@@ -2,69 +2,184 @@
   "id": "nepa-match-night",
   "title": "NEPA Match Night",
   "tagline": "85th minute. Super Eagles level. Then the light goes.",
-  "modes": ["rival", "coop", "team"],
+  "modes": ["rival", "team", "coop"],
+  "formats": ["1v1", "2v2"],
   "start": "blackout",
   "scenes": {
     "blackout": {
       "title": "Light Don Go",
-      "text": "The Super Eagles are level in the 85th minute and NEPA chooses this exact moment to strike. The whole compound screams.",
+      "text": {
+        "default": "The Super Eagles are level in the 85th minute and NEPA chooses this exact moment to strike. The whole compound screams. You and {rival} both know that whoever brings the match back will be hosting the viewing for the rest of the night.",
+        "team_2v2": "The Super Eagles are level in the 85th minute and NEPA chooses this exact moment to strike. Two households, one dead street. You and {partner} want to be the ones who bring the match back, and {rival} are thinking the same.",
+        "coop": "The Super Eagles are level in the 85th minute and NEPA chooses this exact moment to strike. The whole compound is screaming. You and {partner} have about a minute to get something running before the match is over."
+      },
+      "stakes": { "default": "Hosting the viewing for the rest of the night.", "coop": "Saving the match for the whole compound." },
       "choices": [
-        { "approach": "charm", "label": "Sweet-talk the neighbour with the generator", "dc": 11 },
-        { "approach": "hustle", "label": "Run to the junction for fuel", "dc": 12 },
-        { "approach": "gragra", "label": "Shout until someone fixes it", "dc": 13 },
+        { "approach": "charm", "label": "Sweet-talk the neighbour with the generator", "dc": 12 },
+        { "approach": "hustle", "label": "Run to the junction for fuel", "dc": 13 },
+        { "approach": "gragra", "label": "Shout until the whole compound mobilises", "dc": 12 },
         { "approach": "wisdom", "label": "Check if it is just your fuse", "dc": 10 }
       ],
-      "next": { "disaster": "fuel_queue", "struggle": "neighbour_tv", "win": "generator_on", "legendary": "viewing_centre" }
+      "next": {
+        "decisive": { "to": "viewing", "recap": "{winner} gets a power source working. {loser} is now politely asking if there is space on the sofa.", "winner": { "mod": 1, "label": "Host" }, "loser": { "mod": -1, "label": "Guest" } },
+        "both_succeed": { "to": "viewing", "recap": "You both find power, so the compound splits into two rival viewing parties." },
+        "both_fail": { "to": "radio", "recap": "Nobody could get anything running, so the street is down to radio commentary.", "all": { "mod": -1, "label": "In the dark" } },
+        "tie": { "to": "viewing", "recap": "The compound refuses to pick a side and votes for whoever has the bigger TV." },
+        "same": { "to": "viewing", "recap": "You all went for the same idea at once and ended up fighting over one extension cord." },
+        "all_pass": { "to": "viewing", "recap": "The lights flicker back and the whole compound roars.", "all": { "mod": 1, "label": "Compound hero" } },
+        "mixed": { "to": "viewing", "recap": "Power comes back on one side of the compound and the rest crowd round." },
+        "all_fail": { "to": "radio", "recap": "Nothing works and the compound is left with commentary on a phone.", "all": { "mod": -1, "label": "In the dark" } }
+      }
     },
-    "fuel_queue": {
-      "title": "The Fuel Queue",
-      "text": "The petrol station has a queue that bends around two streets. Someone is already selling fuel in plastic bottles at triple price.",
+    "viewing": {
+      "title": "Full House",
+      "text": {
+        "default": "Twenty people are crammed into a sitting room built for six, all staring at one screen. The best chair is empty for exactly one more second, and {rival} is already eyeing it.",
+        "team_2v2": "Two households squeeze into one sitting room built for six. The best sofa is empty for exactly one more second, and {rival} are eyeing it too.",
+        "coop": "Twenty people are crammed into a sitting room built for six, and everyone wants a good view. You and {partner} have to keep the peace and keep the picture."
+      },
+      "stakes": { "default": "The best chair and the remote.", "coop": "Keeping the room calm during the match." },
       "choices": [
-        { "approach": "charm", "label": "Beg the attendant", "dc": 14 },
-        { "approach": "hustle", "label": "Buy from the bottle guy", "dc": 11 },
-        { "approach": "wisdom", "label": "Give up and listen on radio", "dc": 9 }
+        { "approach": "charm", "label": "Offer drinks to win the best chair", "dc": 11 },
+        { "approach": "hustle", "label": "Dive for the chair", "dc": 13 },
+        { "approach": "gragra", "label": "Declare the chair reserved", "dc": 13 },
+        { "approach": "wisdom", "label": "Take the spot with the best view of the screen", "dc": 11 }
       ],
-      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+      "next": {
+        "decisive": { "to": "shootout", "recap": "{winner} sinks into the best chair while {loser} ends up on the floor behind a pillar.", "winner": { "mod": 1, "label": "Best seat" }, "loser": { "mod": -1, "label": "Behind the pillar" } },
+        "both_succeed": { "to": "shootout", "recap": "You both find good seats, though {winner} gets the one with the cushion." },
+        "both_fail": { "to": "shootout", "recap": "You all end up standing at the back with a view of someone's head.", "all": { "mod": -1, "label": "Standing at the back" } },
+        "tie": { "to": "shootout", "recap": "Nobody gets the chair, so an aunty claims it and the room moves on." },
+        "all_pass": { "to": "shootout", "recap": "Everyone finds a decent spot and the room settles.", "all": { "mod": 1, "label": "Good view" } },
+        "mixed": { "to": "shootout", "recap": "Some of you find a spot and the others stand at the back." },
+        "all_fail": { "to": "shootout", "recap": "Nobody can see anything and the room is cranky.", "all": { "mod": -1, "label": "Bad view" } }
+      }
     },
-    "neighbour_tv": {
-      "title": "Oga Next Door",
-      "text": "Your neighbour has a generator and a big TV, but half the street is already in his sitting room.",
+    "radio": {
+      "title": "Commentary by Phone",
+      "text": {
+        "default": "Someone's phone is the only thing connecting the compound to the match. The commentator says Nigeria are going to penalties, and everyone leans in. {rival} is holding the phone and not sharing.",
+        "team_2v2": "Someone's phone is the only thing connecting the compound to the match. The commentator says Nigeria are going to penalties, and {rival} are holding the phone and not sharing.",
+        "coop": "Someone's phone is the only thing connecting the compound to the match. You and {partner} have to keep it alive and loud enough for everyone."
+      },
+      "stakes": { "default": "The phone and the commentary.", "coop": "Keeping the commentary alive." },
       "choices": [
-        { "approach": "charm", "label": "Carry drinks as your entry fee", "dc": 10 },
-        { "approach": "gragra", "label": "Squeeze in by force", "dc": 14 },
-        { "approach": "hustle", "label": "Offer to fetch fuel for him", "dc": 12 }
+        { "approach": "charm", "label": "Beg for the phone with a smile", "dc": 11 },
+        { "approach": "hustle", "label": "Grab it and hold it up for everyone", "dc": 13 },
+        { "approach": "gragra", "label": "Demand that the volume goes up", "dc": 13 },
+        { "approach": "wisdom", "label": "Switch to a station with a better signal", "dc": 11 }
       ],
-      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+      "next": {
+        "decisive": { "to": "shootout", "recap": "{winner} ends up holding the phone and acting as the commentator. {loser} is told to keep quiet.", "winner": { "mod": 1, "label": "Has the phone" }, "loser": { "mod": -1, "label": "Shushed" } },
+        "both_succeed": { "to": "shootout", "recap": "You both get a share of the phone and the commentary, though {winner} gets the louder side." },
+        "both_fail": { "to": "shootout", "recap": "The signal drops and all you hear is static, until the crowd outside starts shouting.", "all": { "mod": -1, "label": "Static" } },
+        "tie": { "to": "shootout", "recap": "The phone is passed round and the room agrees to share." },
+        "all_pass": { "to": "shootout", "recap": "The commentary comes through loud and clear.", "all": { "mod": 1, "label": "Loud and clear" } },
+        "mixed": { "to": "shootout", "recap": "Some of the room can hear and the rest rely on gossip." },
+        "all_fail": { "to": "shootout", "recap": "The phone dies and the street goes quiet.", "all": { "mod": -1, "label": "Static" } }
+      }
     },
-    "generator_on": {
-      "title": "Gen Don Start",
-      "text": "The generator roars to life and everyone cheers, but the sound is so loud nobody can hear the commentary.",
+    "shootout": {
+      "title": "Penalties!",
+      "text": {
+        "default": "It is penalties. The compound goes silent, then explodes, then goes silent again. You and {rival} each put a ₦500 bet on the result and the whole room knows it.",
+        "team_2v2": "It is penalties. The compound goes silent, then explodes, then goes silent again. Both households put a ₦500 bet on the result and the whole room knows it.",
+        "coop": "It is penalties. The compound goes silent, then explodes, then goes silent again. You and {partner} have to keep everyone calm while the kicks are taken."
+      },
+      "stakes": { "default": "₦500 each, and a month of bragging rights.", "coop": "The compound's nerves." },
       "choices": [
-        { "approach": "wisdom", "label": "Move the generator outside", "dc": 11 },
-        { "approach": "hustle", "label": "Run an extension to the TV", "dc": 12 },
-        { "approach": "charm", "label": "Convince everyone to just vibe", "dc": 10 }
+        { "approach": "charm", "label": "Predict the other team will win (reverse psychology)", "dc": 12 },
+        { "approach": "hustle", "label": "Raise the bet to ₦1,000", "dc": 14 },
+        { "approach": "gragra", "label": "Insult the referee loudly", "dc": 13 },
+        { "approach": "wisdom", "label": "Stay completely silent so you do not jinx it", "dc": 11 }
       ],
-      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+      "next": {
+        "decisive": { "to": "fuel_out", "recap": "{winner}'s call is right and {loser} owes ₦500. The room claps.", "winner": { "mod": 1, "label": "Won the bet" }, "loser": { "mod": -1, "label": "Owes ₦500" } },
+        "both_succeed": { "to": "fuel_out", "recap": "Both predictions land and the room cannot decide who is right, so the bet is doubled." },
+        "both_fail": { "to": "fuel_out", "recap": "Both predictions are wrong and the bet is cancelled in shame.", "all": { "mod": -1, "label": "Jinxed" } },
+        "tie": { "to": "fuel_out", "recap": "The kick hits the post and bounces out. The bet is void." },
+        "same": { "to": "fuel_out", "recap": "You all said exactly the same thing, so the bet is void and the room boos you for lack of originality." },
+        "all_pass": { "to": "fuel_out", "recap": "The room's prayers work and the kick goes in.", "all": { "mod": 1, "label": "Blessed" } },
+        "mixed": { "to": "fuel_out", "recap": "Some of the room are praying and some are covering their eyes, and the kick is saved by the keeper." },
+        "all_fail": { "to": "fuel_out", "recap": "The room's nerves crack and the kick misses.", "all": { "mod": -1, "label": "Jinxed" } }
+      }
     },
-    "viewing_centre": {
-      "title": "The Viewing Centre",
-      "text": "You find a packed viewing centre with a giant screen, one seat left, and two people eyeing it.",
+    "fuel_out": {
+      "title": "The Generator Coughs",
+      "text": {
+        "default": "At penalty number four, the generator coughs, sputters and dies. Everyone turns to look at you, and {rival} looks very innocent.",
+        "team_2v2": "At penalty number four, the generator coughs, sputters and dies. Everyone turns to look at both households, and {rival} look very innocent.",
+        "coop": "At penalty number four, the generator coughs, sputters and dies. Everyone turns to look at you and {partner}."
+      },
+      "stakes": { "default": "Whose fault it is, and who fixes it.", "coop": "Getting power back before the last kick." },
       "choices": [
-        { "approach": "gragra", "label": "Claim the seat loudly", "dc": 13 },
-        { "approach": "charm", "label": "Offer to buy the next round", "dc": 11 },
-        { "approach": "wisdom", "label": "Stand where the view is best", "dc": 10 }
+        { "approach": "charm", "label": "Calm the room while somebody finds fuel", "dc": 12 },
+        { "approach": "hustle", "label": "Sprint to the junction with a jerrycan", "dc": 14 },
+        { "approach": "gragra", "label": "Blame somebody loudly", "dc": 13 },
+        { "approach": "wisdom", "label": "Check whether it is fuel or just the plug", "dc": 11 }
       ],
-      "next": { "disaster": "final_whistle", "struggle": "final_whistle", "win": "final_whistle", "legendary": "final_whistle" }
+      "next": {
+        "decisive": { "to": "noise", "recap": "{winner} fixes it in seconds while {loser} is still pointing fingers.", "winner": { "mod": 1, "label": "Fixer" }, "loser": { "mod": -1, "label": "Blamed" } },
+        "both_succeed": { "to": "noise", "recap": "You both help and the lights come back, though {winner} gets the credit." },
+        "both_fail": { "to": "noise", "recap": "The fuel spills, the plug blows, and the room turns on you all.", "all": { "mod": -1, "label": "Blamed" } },
+        "tie": { "to": "noise", "recap": "The generator restarts on its own and nobody can take credit." },
+        "all_pass": { "to": "noise", "recap": "You get the generator going just in time for the last kick.", "all": { "mod": 1, "label": "Fixers" } },
+        "mixed": { "to": "noise", "recap": "Some of you fix the plug while the others find the fuel." },
+        "all_fail": { "to": "noise", "recap": "The generator stays dead and you watch the last kick on someone's phone.", "all": { "mod": -1, "label": "Defeated" } }
+      }
+    },
+    "noise": {
+      "title": "Mama Chidi Is Not Happy",
+      "text": {
+        "default": "It is 11 pm and the noise can be heard in the next street. Mama Chidi from downstairs is marching up with a wooden spoon, and {rival} has started pretending to be asleep.",
+        "team_2v2": "It is 11 pm and the noise can be heard in the next street. Mama Chidi from downstairs is marching up with a wooden spoon, and {rival} have started pretending to be asleep.",
+        "coop": "It is 11 pm and the noise can be heard in the next street. Mama Chidi from downstairs is marching up with a wooden spoon, and you and {partner} must handle her."
+      },
+      "stakes": { "default": "Who takes the blame for the noise.", "coop": "Surviving Mama Chidi." },
+      "choices": [
+        { "approach": "charm", "label": "Offer her a seat and a bottle of Fanta", "dc": 12 },
+        { "approach": "hustle", "label": "Slip out of the back door", "dc": 13 },
+        { "approach": "gragra", "label": "Argue that this is a national event", "dc": 13 },
+        { "approach": "wisdom", "label": "Apologise first and promise to lower the volume", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "final_whistle", "recap": "{winner} talks Mama Chidi down. {loser} gets handed the wooden spoon and a lecture.", "winner": { "mod": 1, "label": "Forgiven" }, "loser": { "mod": -1, "label": "Lectured" } },
+        "both_succeed": { "to": "final_whistle", "recap": "You both make peace with her, though {winner} gets the extra Fanta." },
+        "both_fail": { "to": "final_whistle", "recap": "She gets louder than the match did.", "all": { "mod": -1, "label": "Lectured" } },
+        "tie": { "to": "final_whistle", "recap": "She looks at you all, sighs, and goes back downstairs." },
+        "all_pass": { "to": "final_whistle", "recap": "She leaves with a plate of jollof and a smile.", "all": { "mod": 1, "label": "Forgiven" } },
+        "mixed": { "to": "final_whistle", "recap": "Some of you charm her and the others get the lecture." },
+        "all_fail": { "to": "final_whistle", "recap": "She promises to tell your mothers.", "all": { "mod": -1, "label": "Reported" } }
+      }
     },
     "final_whistle": {
       "title": "Final Whistle",
-      "text": "The match ends. Time to celebrate, or argue about the referee.",
+      "text": {
+        "default": "The match is over. Whatever happened on the pitch, the compound is about to decide who really won the night. You and {rival} each have one last move.",
+        "team_2v2": "The match is over. Whatever happened on the pitch, the compound is about to decide who really won the night. Each pair has one last move.",
+        "coop": "The match is over. You and {partner} have one last move to make the night end well for the compound."
+      },
+      "stakes": { "default": "The last word on the night.", "coop": "A happy ending for the compound." },
       "choices": [
-        { "approach": "charm", "label": "Celebrate with everyone", "dc": 10 },
-        { "approach": "gragra", "label": "Argue about the referee", "dc": 12 },
-        { "approach": "wisdom", "label": "Go home quietly", "dc": 9 }
+        { "approach": "charm", "label": "Celebrate with everyone", "dc": 11 },
+        { "approach": "hustle", "label": "Collect on your bet", "dc": 13 },
+        { "approach": "gragra", "label": "Argue about the referee until midnight", "dc": 13 },
+        { "approach": "wisdom", "label": "Go home quietly and sleep", "dc": 10 }
       ],
-      "next": { "disaster": null, "struggle": null, "win": null, "legendary": null }
+      "next": { "default": null }
     }
+  },
+  "endings": {
+    "win": {
+      "default": "The compound will talk about tonight for weeks, and your name is in every version. {loser} is still paying off the bet.",
+      "team_2v2": "Your household owned the night. {loser} are still trying to explain the generator."
+    },
+    "loss": {
+      "default": "You went home with no bet, no chair and a lecture from Mama Chidi. {winner} will bring it up at every gathering.",
+      "team_2v2": "Your household went home quiet. {winner} will bring it up at every gathering."
+    },
+    "draw": { "default": "The night ends level and the argument goes on until sunrise." },
+    "success": { "default": "The compound survived the match, the generator and Mama Chidi, together." },
+    "fail": { "default": "The lights, the match and the compound's patience all ran out. Next time, buy fuel earlier." }
   }
 }

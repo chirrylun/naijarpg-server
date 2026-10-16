@@ -85,11 +85,27 @@ export async function respond(userId: string, requestId: string, accept: boolean
 }
 
 export async function listConversations(userId: string) {
-  const { data } = await supabase.from('conversations').select('id, user_a, user_b, created_at')
-    .or(`user_a.eq.${userId},user_b.eq.${userId}`).order('created_at', { ascending: false });
-  const others = (data ?? []).map((c) => (c.user_a === userId ? c.user_b : c.user_a));
+  const { data } = await supabase
+    .from('conversations')
+    .select('id, user_a, user_b, created_at')
+    .or(`user_a.eq.${userId},user_b.eq.${userId}`);
+  const rows = data ?? [];
+  const others = rows.map((c) => (c.user_a === userId ? c.user_b : c.user_a));
   const profs = await profilesById(others);
-  return (data ?? []).map((c, i) => ({ id: c.id, with: profs.get(others[i]) }));
+  const lasts = await Promise.all(
+    rows.map(async (c) => {
+      const { data: m } = await supabase
+        .from('messages')
+        .select('id, sender_id, body, created_at')
+        .eq('conversation_id', c.id)
+        .order('id', { ascending: false })
+        .limit(1);
+      return m?.[0] ?? null;
+    }),
+  );
+  return rows
+    .map((c, i) => ({ id: c.id, with: profs.get(others[i]), last: lasts[i] }))
+    .sort((a, b) => (b.last?.id ?? 0) - (a.last?.id ?? 0));
 }
 
 async function membership(userId: string, conversationId: string) {

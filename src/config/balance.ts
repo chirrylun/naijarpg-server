@@ -1,8 +1,10 @@
 export const BALANCE = {
-  roundSeconds: 30,
-  resultDelayMs: 4500,
-  maxRounds: 5,
+  roundSeconds: 40,
+  resultDelayMs: 6500,
+  maxRounds: 6,
   maxModifier: 3,
+  maxTotalModifier: 4,
+ minTotalModifier: -2,
   nudgeBonus: 2,
   starCost: { reroll: 1, nudge: 2, shield: 2 },
   points: { win: 25, draw: 12, loss: 5, coopSuccess: 20, coopFail: 8 },
