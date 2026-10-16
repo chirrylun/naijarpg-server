@@ -31,6 +31,8 @@ type RollRow = {
   approach: Approach;
   starPlay: StarPlay | null;
   die: number;
+  dice: number[];
+  shielded: boolean;
   modifier: number;
   starBonus: number;
   total: number;
@@ -309,16 +311,22 @@ async function settle(room: Room) {
   const recap = flavor ? `${headline} ${flavor}` : headline;
 
   // consequences for the next round: scene-defined if present, otherwise sensible defaults
-  const authored = edge.winner || edge.loser || edge.all;
+    const authored = edge.winner || edge.loser || edge.all;
   const fx: FX = authored ? { winner: edge.winner, loser: edge.loser, all: edge.all } : defaultEffects(outcome.kind);
+  const shieldedIds = new Set(rows.filter((r) => r.shielded).map((r) => r.userId));
   const effects: { userId: string; mod: number; label: string }[] = [];
+  const blocked: { userId: string; label: string }[] = [];
   for (const p of room.players) {
     const specific = outcome.winnerTeam === null ? undefined : p.team === outcome.winnerTeam ? fx.winner : fx.loser;
     const e = specific ?? fx.all;
-    if (e) {
-      p.carry = { mod: e.mod, label: e.label };
-      effects.push({ userId: p.userId, mod: e.mod, label: e.label });
+    if (!e) continue;
+    // a Shield stops a penalty from following you into the next scene
+    if (e.mod < 0 && shieldedIds.has(p.userId)) {
+      blocked.push({ userId: p.userId, label: e.label });
+      continue;
     }
+    p.carry = { mod: e.mod, label: e.label };
+    effects.push({ userId: p.userId, mod: e.mod, label: e.label });
   }
 
   if (room.mode === 'coop') room.coopPoints += COOP_POINTS[outcome.kind] ?? 0;
@@ -337,6 +345,8 @@ async function settle(room: Room) {
       approach: r.approach,
       starPlay: r.starPlay,
       die: r.die,
+      dice: r.dice,
+      shielded: r.shielded,
       modifier: r.modifier,
       starBonus: r.starBonus,
       total: r.total,
