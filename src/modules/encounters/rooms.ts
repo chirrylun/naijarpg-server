@@ -6,8 +6,8 @@ import { makeCode } from '../../lib/codes';
 import { weekKey } from '../../lib/time';
 import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver';
 import { resolveRound } from '../../game-engine/round';
-import { fillTokens, resultLine } from '../../game-engine/narrative';
-import { pickEdge, pickVariant, type Scenario } from '../../game-engine/scenario';
+import { fillTokens, resultLine, APPROACH_LABEL, joinNames } from '../../game-engine/narrative';
+import { pickEdge, pickVariant, type Scenario, type Scene } from '../../game-engine/scenario';
 import type { Approach, Format, Kind, Mode, StarPlay, Tier } from '../../game-engine/types';
 import { pickScenario, dailyScenario, supports } from '../../content';
 import { afterEncounter } from '../progress/progress.service';
@@ -58,6 +58,10 @@ export type Room = {
   players: Player[];
   sceneKey: string;
   round: number;
+    held: Map<string, Map<string, number>>; // userId -> mark -> last round it is active
+  world: Map<string, number>; // shared marks
+  history: Map<string, Set<string>>; // every mark earned this game -> who earned it
+  log: string[]; // one story line per round
   teamWins: Record<number, number>;
   coopPoints: number;
   recap: string | null;
@@ -72,7 +76,39 @@ const COOP_POINTS: Partial<Record<Kind, number>> = { all_pass: 3, mixed: 2, all_
 const EDGES: StarPlay[] = ['reroll', 'nudge']; // the bonuses currently offered
 const MIN_EDGE = Math.min(...EDGES.map((id) => BALANCE.starCost[id]));
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+type SceneChoice = Scene['choices'][number];
+const alive = (m: Map<string, number> | undefined, round: number, mark: string) => (m?.get(mark) ?? 0) >= round;
+const activeIds = (room: Room, m: Map<string, number> | undefined) =>
+  [...(m ?? [])].filter(([, until]) => until >= room.round).map(([id]) => id);
+const markInfo = (room: Room, id: string) => ({
+  id,
+  label: room.scenario.marks[id]?.label ?? id,
+  tip: room.scenario.marks[id]?.tip ?? '',
+});
 
+function holds(room: Room, who: 'self' | 'rival' | 'world', p: Player, mark: string) {
+  if (who === 'world') return alive(room.world, room.round, mark);
+  if (who === 'self') return alive(room.held.get(p.userId), room.round, mark);
+  return room.players.some((o) => o.team !== p.team && alive(room.held.get(o.userId), room.round, mark));
+}
+const choiceDc = (room: Room, p: Player, c: SceneChoice) =>
+  Math.max(5, Math.min(24, c.dc + (c.mods ?? []).reduce((s, m) => s + (holds(room, m.who, p, m.mark) ? m.dc : 0), 0)));
+const lockReason = (room: Room, p: Player, c: SceneChoice) =>
+  c.lock && holds(room, c.lock.who, p, c.lock.mark) ? c.lock.reason : null;
+/** Moves a player may pick. If every move is locked we ignore the locks so nobody is stuck. */
+const openChoices = (room: Room, p: Player, scene: Scene) => {
+  const open = scene.choices.filter((c) => !lockReason(room, p, c));
+  return open.length ? open : scene.choices;
+};
+function twistsFor(room: Room, scene: Scene): string[] {
+  const out: string[] = [];
+  for (const t of scene.twists ?? []) {
+    const names = room.players.filter((p) => alive(room.held.get(p.userId), room.round, t.if)).map((p) => p.username);
+    if (!names.length && !alive(room.world, room.round, t.if)) continue;
+    out.push(pickVariant(t.text, room.mode, room.format).replaceAll('{holder}', joinNames(names)));
+  }
+  return out;
+}
 // Active games live in memory (fast). Results are saved to Supabase when a game ends.
 export const rooms = new Map<string, Room>();
 export const roomByCode = new Map<string, string>();
@@ -105,6 +141,10 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
     status: 'waiting',
     phase: 'choose',
     hostId: o.hostId,
+        held: new Map(),
+    world: new Map(),
+    history: new Map(),
+    log: [],
     isDaily: !!o.daily,
     players: [],
     sceneKey: scenario.start,
@@ -139,29 +179,41 @@ export function publicState(room: Room) {
     maxRounds: BALANCE.maxRounds,
     roundSeconds: BALANCE.roundSeconds,
     edgeSeconds: BALANCE.edgeSeconds,
-    // time left rather than a clock time, so a phone with a wrong clock still counts down correctly
     remainingMs: room.deadline ? Math.max(0, room.deadline - Date.now()) : null,
     recap: room.status === 'active' ? room.recap : null,
     scenario: { id: room.scenario.id, title: room.scenario.title, tagline: room.scenario.tagline },
+    world: activeIds(room, room.world).map((id) => markInfo(room, id)),
     scene:
       scene && {
         key: room.sceneKey,
         title: pickVariant(scene.title, m, f),
         text: pickVariant(scene.text, m, f),
         stakes: scene.stakes ? pickVariant(scene.stakes, m, f) : null,
-        choices: scene.choices.map((c) => ({ approach: c.approach, label: pickVariant(c.label, m, f) })), // DC stays hidden
+        twists: twistsFor(room, scene),
+        choices: scene.choices.map((c) => ({
+          approach: c.approach,
+          label: pickVariant(c.label, m, f),
+          // the base difficulty stays hidden; only the shifts from marks are shown
+          mods: (c.mods ?? []).map((x) => ({
+            mark: x.mark,
+            who: x.who,
+            delta: x.dc,
+            label: room.scenario.marks[x.mark]?.label ?? x.mark,
+          })),
+          lock: c.lock ? { mark: c.lock.mark, who: c.lock.who, reason: c.lock.reason } : null,
+        })),
       },
     players: room.players.map((p) => ({
       userId: p.userId,
       username: p.username,
       avatar: p.avatar,
       team: p.team,
-      // "ready" means: chose a move (choose phase) or decided on a bonus (edge phase)
       acted: room.phase === 'edge' ? p.edgeDone : !!p.action,
-      status: null, // next-scene effects are switched off for now
+      marks: activeIds(room, room.held.get(p.userId)).map((id) => markInfo(room, id)),
     })),
   };
 }
+
 export const emitState = (room: Room) => getIo().to(`room:${room.id}`).emit('room:state', publicState(room));
 
 /** Builds a player's private roll payload, or null if they have nothing to show right now. */
@@ -289,7 +341,10 @@ export function submitAction(userId: string, approach: Approach) {
   if (!room || room.status !== 'active' || room.phase !== 'choose' || room.resolving) throw new AppError(409, 'not_accepting_actions');
   const p = room.players.find((x) => x.userId === userId)!;
   if (p.action) throw new AppError(409, 'already_chose');
-  if (!room.scenario.scenes[room.sceneKey].choices.some((c) => c.approach === approach)) throw new AppError(400, 'invalid_approach');
+    const scene = room.scenario.scenes[room.sceneKey];
+  const picked = scene.choices.find((c) => c.approach === approach);
+  if (!picked) throw new AppError(400, 'invalid_approach');
+  if (!openChoices(room, p, scene).includes(picked)) throw new AppError(409, 'move_locked');
   p.action = { approach };
   if (room.players.every((x) => x.action)) startRolls(room);
   else emitState(room);
@@ -303,10 +358,11 @@ function startRolls(room: Room) {
 
   for (const p of room.players) {
     p.afk = !p.action; // AFK players get a random approach and never see a bonus prompt
-    const approach = p.action?.approach ?? scene.choices[Math.floor(Math.random() * scene.choices.length)].approach;
+        const open = openChoices(room, p, scene);
+    const approach = p.action?.approach ?? open[Math.floor(Math.random() * open.length)].approach;
     const choice = scene.choices.find((c) => c.approach === approach)!;
     const base = Math.min(p.stats[approach] ?? 0, BALANCE.maxModifier);
-    p.roll = { approach, ...rollBase({ modifier: base, dc: choice.dc }) };
+    p.roll = { approach, ...rollBase({ modifier: base, dc: choiceDc(room, p, choice) }) };
     // nothing to decide if you're AFK or can't afford the cheapest bonus
     p.edgeDone = p.afk || p.stars < MIN_EDGE;
   }
@@ -397,11 +453,13 @@ async function settle(room: Room) {
     room.mode,
     rows.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin })),
   );
-  const route = pickEdge(scene, outcome.kind, outcome.same);
+    const lead = outcome.lead;
+  const route = pickEdge(scene, outcome.kind, outcome.same, lead?.approach ?? null);
 
   const namesOf = (ids: string[]) => ids.map((id) => room.players.find((p) => p.userId === id)?.username ?? 'Player');
-  const winnerNames = outcome.winnerTeam === null ? [] : room.players.filter((p) => p.team === outcome.winnerTeam).map((p) => p.username);
-  const loserNames = outcome.winnerTeam === null ? [] : room.players.filter((p) => p.team !== outcome.winnerTeam).map((p) => p.username);
+  const winnerNames = namesOf(outcome.winnerIds);
+  const loserNames = namesOf(outcome.loserIds);
+  const move = lead ? APPROACH_LABEL[lead.approach] : undefined;
 
   const headline = resultLine({
     mode: room.mode,
@@ -412,15 +470,46 @@ async function settle(room: Room) {
     loser: loserNames,
     passers: namesOf(outcome.passers),
     failers: namesOf(outcome.failers),
+    move,
   });
   const flavor = route.recap
     ? fillTokens(pickVariant(route.recap, room.mode, room.format), {
         winner: winnerNames,
         loser: loserNames,
         crew: room.players.map((p) => p.username),
+        move,
       })
     : '';
   const recap = flavor ? `${headline} ${flavor}` : headline;
+  room.log.push(recap);
+
+  // marks earned this round: they apply from the next round on
+  const gained: { userId: string | null; mark: string; label: string; tip: string }[] = [];
+  for (const g of route.set ?? []) {
+    const def = room.scenario.marks[g.mark];
+    if (!def) continue;
+    const until = room.round + def.rounds;
+    const targets: (string | null)[] =
+      g.to === 'world'
+        ? [null]
+        : g.to === 'all'
+          ? room.players.map((p) => p.userId)
+          : g.to === 'winner'
+            ? outcome.winnerIds
+            : g.to === 'loser'
+              ? outcome.loserIds
+              : lead
+                ? [lead.userId]
+                : [];
+    for (const t of targets) {
+      const holder = t === null ? room.world : (room.held.get(t) ?? room.held.set(t, new Map()).get(t)!);
+      holder.set(g.mark, until);
+      const names = room.history.get(g.mark) ?? new Set<string>();
+      if (t) names.add(room.players.find((p) => p.userId === t)?.username ?? 'Player');
+      room.history.set(g.mark, names);
+      gained.push({ userId: t, mark: g.mark, label: def.label, tip: def.tip });
+    }
+  }
 
   if (room.mode === 'coop') room.coopPoints += COOP_POINTS[outcome.kind] ?? 0;
   else if (outcome.winnerTeam !== null) room.teamWins[outcome.winnerTeam] = (room.teamWins[outcome.winnerTeam] ?? 0) + 1;
@@ -451,8 +540,8 @@ async function settle(room: Room) {
     same: outcome.same,
     winnerTeam: outcome.winnerTeam,
     headline,
-    effects: [], // next-scene effects are switched off for now
-    blocked: [],
+        gained,
+    lead: lead ?? null,
     ends,
     revealMs: BALANCE.resultDelayMs,
   });
@@ -512,8 +601,11 @@ async function finish(room: Room) {
       if (v) endings[k] = fillTokens(pickVariant(v, room.mode, room.format), names);
     }
   }
+  const epilogue = (room.scenario.epilogues ?? [])
+    .filter((x) => room.history.has(x.if))
+    .map((x) => fillTokens(pickVariant(x.text, room.mode, room.format), { ...names, holder: [...(room.history.get(x.if) ?? [])] }));
 
-  getIo().to(`room:${room.id}`).emit('encounter:finished', { roomId: room.id, mode: room.mode, results, endings });
+  getIo().to(`room:${room.id}`).emit('encounter:finished', { roomId: room.id, mode: room.mode, results, endings, story: room.log, epilogue });
   room.players.forEach((p) => roomOfUser.delete(p.userId)); // free to queue again immediately
 
   try {

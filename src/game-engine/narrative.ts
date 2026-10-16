@@ -1,24 +1,28 @@
 import type { Approach, Kind, Mode } from './types';
-import type { Effect } from './scenario';
 
 export const APPROACH_LABEL: Record<Approach, string> = {
   charm: 'Charm',
   hustle: 'Hustle',
-  gragra: 'Gra-Gra',
+  gragra: 'Bluff',
   wisdom: 'Wisdom',
 };
 
 export const joinNames = (names: string[]) =>
   names.length === 0 ? 'nobody' : names.length === 1 ? names[0] : `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
 
-export function fillTokens(text: string, v: { winner: string[]; loser: string[]; crew: string[] }) {
+export function fillTokens(
+  text: string,
+  v: { winner: string[]; loser: string[]; crew: string[]; move?: string; holder?: string[] },
+) {
   return text
     .replaceAll('{winner}', joinNames(v.winner))
     .replaceAll('{loser}', joinNames(v.loser))
-    .replaceAll('{crew}', joinNames(v.crew));
+    .replaceAll('{crew}', joinNames(v.crew))
+    .replaceAll('{move}', v.move ?? 'move')
+    .replaceAll('{holder}', joinNames(v.holder ?? []));
 }
 
-// The line that always states plainly what happened, including same-move clashes
+// The line that always states plainly what happened
 export function resultLine(i: {
   mode: Mode;
   kind: Kind;
@@ -28,6 +32,7 @@ export function resultLine(i: {
   loser: string[];
   passers: string[];
   failers: string[];
+  move?: string;
 }): string {
   const lead =
     i.same && i.approach
@@ -37,40 +42,31 @@ export function resultLine(i: {
       : '';
   const w = joinNames(i.winner);
   const l = joinNames(i.loser);
+  let main = '';
   switch (i.kind) {
     case 'decisive':
-      return `${lead}${w} pulled it off while ${l} came up short.`;
+      main = `${lead}${w} pulled it off while ${l} came up short.`;
+      break;
     case 'both_succeed':
-      return `${lead}Both landed it, but ${w} did it cleaner.`;
+      main = `${lead}Both landed it, but ${w} did it cleaner.`;
+      break;
     case 'both_fail':
-      return `${lead}Both fumbled it. ${w} fumbled less.`;
+      main = `${lead}Both fumbled it. ${w} fumbled less.`;
+      break;
     case 'tie':
-      return `${lead}Dead level. Neither side blinked.`;
+      main = `${lead}Dead level. Neither side blinked.`;
+      break;
     case 'all_pass':
-      return `${lead}Everyone came through.`;
+      main = `${lead}Everyone came through.`;
+      break;
     case 'mixed':
-      return `${lead}${joinNames(i.passers)} carried it while ${joinNames(i.failers)} struggled.`;
+      main = `${lead}${joinNames(i.passers)} carried it while ${joinNames(i.failers)} struggled.`;
+      break;
     case 'all_fail':
-      return `${lead}Nobody got it right.`;
+      main = `${lead}Nobody got it right.`;
+      break;
   }
-}
-
-export type FX = { winner?: Effect; loser?: Effect; all?: Effect };
-
-// Used when a scene does not define its own consequences
-export function defaultEffects(kind: Kind): FX {
-  switch (kind) {
-    case 'decisive':
-      return { winner: { mod: 1, label: 'Momentum' }, loser: { mod: -1, label: 'Rattled' } };
-    case 'both_succeed':
-      return { winner: { mod: 1, label: 'Edge' } };
-    case 'both_fail':
-      return { all: { mod: -1, label: 'Frazzled' } };
-    case 'all_pass':
-      return { all: { mod: 1, label: 'In the zone' } };
-    case 'all_fail':
-      return { all: { mod: -1, label: 'Shaken' } };
-    default:
-      return {};
-  }
+  const deciding = i.kind === 'decisive' || i.kind === 'both_succeed' || i.kind === 'both_fail';
+  const tail = i.move && i.mode !== 'coop' && deciding ? ` ${w}'s ${i.move} decided it.` : '';
+  return main + tail;
 }
