@@ -13,7 +13,8 @@ export const BALANCE = {
   referralStars: 10,
   chat: { maxLen: 500, declineCooldownHours: 24 },
   // placeholder prices, adjust freely
-  packs: [
+    packs: [
+    { id: 's8', stars: 8, priceNaira: 200 },
     { id: 's20', stars: 20, priceNaira: 500 },
     { id: 's60', stars: 60, priceNaira: 1200 },
     { id: 's150', stars: 150, priceNaira: 2500 },
