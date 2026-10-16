@@ -6,13 +6,12 @@ import { makeCode } from '../../lib/codes';
 import { weekKey } from '../../lib/time';
 import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver';
 import { resolveRound } from '../../game-engine/round';
-import { defaultEffects, fillTokens, resultLine, type FX } from '../../game-engine/narrative';
+import { fillTokens, resultLine } from '../../game-engine/narrative';
 import { pickEdge, pickVariant, type Scenario } from '../../game-engine/scenario';
 import type { Approach, Format, Kind, Mode, StarPlay, Tier } from '../../game-engine/types';
 import { pickScenario, dailyScenario, supports } from '../../content';
 import { afterEncounter } from '../progress/progress.service';
 
-type Carry = { mod: number; label: string };
 type Phase = 'choose' | 'edge' | 'reveal';
 type Player = {
   userId: string;
@@ -22,9 +21,8 @@ type Player = {
   stats: Record<Approach, number>;
   stars: number;
   action?: { approach: Approach };
-  carry: Carry | null;
   roll: (RollState & { approach: Approach }) | null;
-  edge: StarPlay | null; // the edge used this round
+  edge: StarPlay | null; // the bonus used this round
   edgeDone: boolean; // decided (or had nothing to decide)
   edgeBusy: boolean; // payment in flight
   afk: boolean;
@@ -71,8 +69,8 @@ export type Room = {
 };
 
 const COOP_POINTS: Partial<Record<Kind, number>> = { all_pass: 3, mixed: 2, all_fail: 0 };
-const MIN_EDGE = Math.min(...Object.values(BALANCE.starCost));
-const passed = (t: Tier) => t === 'win' || t === 'legendary';
+const EDGES: StarPlay[] = ['reroll', 'nudge']; // the bonuses currently offered
+const MIN_EDGE = Math.min(...EDGES.map((id) => BALANCE.starCost[id]));
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // Active games live in memory (fast). Results are saved to Supabase when a game ends.
@@ -158,25 +156,25 @@ export function publicState(room: Room) {
       username: p.username,
       avatar: p.avatar,
       team: p.team,
-      // "ready" means: chose a move (choose phase) or decided on an edge (edge phase)
+      // "ready" means: chose a move (choose phase) or decided on a bonus (edge phase)
       acted: room.phase === 'edge' ? p.edgeDone : !!p.action,
-      status: p.carry,
+      status: null, // next-scene effects are switched off for now
     })),
   };
 }
 export const emitState = (room: Room) => getIo().to(`room:${room.id}`).emit('room:state', publicState(room));
 
-/** A player's own roll, sent only to them. Nobody else sees it until the reveal. */
-export function sendPrivate(room: Room, userId: string) {
+/** Builds a player's private roll payload, or null if they have nothing to show right now. */
+function privateRoll(room: Room, userId: string) {
   const p = room.players.find((x) => x.userId === userId);
-  if (!p || !p.roll || p.afk || room.phase !== 'edge') return;
+  if (!p || !p.roll || p.afk || room.phase !== 'edge') return null;
   const r = p.roll;
-  const edges = (Object.keys(BALANCE.starCost) as StarPlay[]).map((id) => ({
+  const edges = EDGES.map((id) => ({
     id,
     cost: BALANCE.starCost[id],
-    usable: !p.edgeDone && p.stars >= BALANCE.starCost[id] && !(id === 'shield' && passed(r.tier)),
+    usable: !p.edgeDone && p.stars >= BALANCE.starCost[id],
   }));
-  getIo().to(`user:${userId}`).emit('roll:private', {
+  return {
     round: room.round,
     approach: r.approach,
     die: r.die,
@@ -191,7 +189,21 @@ export function sendPrivate(room: Room, userId: string) {
     done: p.edgeDone,
     edges,
     remainingMs: room.deadline ? Math.max(0, room.deadline - Date.now()) : null,
-  });
+  };
+}
+
+/** A player's own roll, sent only to them. Nobody else sees it until the reveal. */
+export function sendPrivate(room: Room, userId: string) {
+  const payload = privateRoll(room, userId);
+  if (payload) getIo().to(`user:${userId}`).emit('roll:private', payload);
+}
+
+/** Lets a client ask for its roll again (refresh, reconnect, missed event). */
+export function myRoll(userId: string) {
+  const room = rooms.get(roomOfUser.get(userId) ?? '');
+  const payload = room ? privateRoll(room, userId) : null;
+  if (!payload) throw new AppError(409, 'not_accepting_actions');
+  return payload;
 }
 
 export async function joinRoom(room: Room, userId: string) {
@@ -216,7 +228,6 @@ export async function joinRoom(room: Room, userId: string) {
       team,
       stats: prof.stats,
       stars: prof.stars,
-      carry: null,
       roll: null,
       edge: null,
       edgeDone: false,
@@ -284,21 +295,19 @@ export function submitAction(userId: string, approach: Approach) {
   else emitState(room);
 }
 
-// ---------- Step 2: everyone rolls privately, then may use an edge ----------
+// ---------- Step 2: everyone rolls privately, then may use a bonus ----------
 function startRolls(room: Room) {
   if (room.phase !== 'choose' || room.status !== 'active' || room.resolving) return;
   if (room.timer) clearTimeout(room.timer);
   const scene = room.scenario.scenes[room.sceneKey];
 
   for (const p of room.players) {
-    p.afk = !p.action; // AFK players get a random approach and never see an edge prompt
+    p.afk = !p.action; // AFK players get a random approach and never see a bonus prompt
     const approach = p.action?.approach ?? scene.choices[Math.floor(Math.random() * scene.choices.length)].approach;
     const choice = scene.choices.find((c) => c.approach === approach)!;
     const base = Math.min(p.stats[approach] ?? 0, BALANCE.maxModifier);
-    // last round's consequence (Momentum, Rattled...) applies to this roll only
-    p.roll = { approach, ...rollBase({ modifier: base + (p.carry?.mod ?? 0), dc: choice.dc }) };
-    p.carry = null;
-    // nothing to decide if you're AFK or can't afford the cheapest edge
+    p.roll = { approach, ...rollBase({ modifier: base, dc: choice.dc }) };
+    // nothing to decide if you're AFK or can't afford the cheapest bonus
     p.edgeDone = p.afk || p.stars < MIN_EDGE;
   }
 
@@ -322,12 +331,12 @@ export async function playEdge(userId: string, choice: StarPlay | 'skip') {
   if (choice === 'skip') {
     p.edgeDone = true;
   } else {
+    if (!EDGES.includes(choice)) throw new AppError(400, 'invalid_edge');
     const cost = BALANCE.starCost[choice];
     if (cost > p.stars) throw new AppError(402, 'not_enough_stars');
-    if (choice === 'shield' && passed(p.roll.tier)) throw new AppError(400, 'shield_not_needed');
     p.edgeBusy = true;
     try {
-      // stars are only charged here, when the edge is actually used
+      // stars are only charged here, when the bonus is actually used
       const { data, error } = await supabase.rpc('apply_stars', {
         p_user: userId,
         p_delta: -cost,
@@ -413,25 +422,6 @@ async function settle(room: Room) {
     : '';
   const recap = flavor ? `${headline} ${flavor}` : headline;
 
-  // consequences for the next round: scene-defined if present, otherwise sensible defaults
-  const authored = route.winner || route.loser || route.all;
-  const fx: FX = authored ? { winner: route.winner, loser: route.loser, all: route.all } : defaultEffects(outcome.kind);
-  const shieldedIds = new Set(rows.filter((r) => r.shielded).map((r) => r.userId));
-  const effects: { userId: string; mod: number; label: string }[] = [];
-  const blocked: { userId: string; label: string }[] = [];
-  for (const p of room.players) {
-    const specific = outcome.winnerTeam === null ? undefined : p.team === outcome.winnerTeam ? fx.winner : fx.loser;
-    const e = specific ?? fx.all;
-    if (!e) continue;
-    // a Shield stops a penalty from following you into the next scene
-    if (e.mod < 0 && shieldedIds.has(p.userId)) {
-      blocked.push({ userId: p.userId, label: e.label });
-      continue;
-    }
-    p.carry = { mod: e.mod, label: e.label };
-    effects.push({ userId: p.userId, mod: e.mod, label: e.label });
-  }
-
   if (room.mode === 'coop') room.coopPoints += COOP_POINTS[outcome.kind] ?? 0;
   else if (outcome.winnerTeam !== null) room.teamWins[outcome.winnerTeam] = (room.teamWins[outcome.winnerTeam] ?? 0) + 1;
 
@@ -461,8 +451,8 @@ async function settle(room: Room) {
     same: outcome.same,
     winnerTeam: outcome.winnerTeam,
     headline,
-    effects,
-    blocked,
+    effects: [], // next-scene effects are switched off for now
+    blocked: [],
     ends,
     revealMs: BALANCE.resultDelayMs,
   });

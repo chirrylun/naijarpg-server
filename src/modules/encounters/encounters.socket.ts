@@ -4,7 +4,7 @@ import { handle } from '../../realtime/handle';
 import { AppError } from '../../lib/errors';
 import { APPROACHES } from '../../game-engine/types';
 import { joinQueue, leaveQueue } from './matchmaking';
-import { joinRoom, leaveRoom, playEdge, requestRematch, roomByCode, rooms, submitAction } from './rooms';
+import { joinRoom, leaveRoom, myRoll, playEdge, requestRematch, roomByCode, rooms, submitAction } from './rooms';
 
 export function registerEncounterSockets(socket: Socket) {
   handle(socket, 'queue:join',
@@ -21,14 +21,18 @@ export function registerEncounterSockets(socket: Socket) {
   });
 
   handle(socket, 'round:submit',
-  z.object({ approach: z.enum(APPROACHES) }),
-  async (uid, d) => { submitAction(uid, d.approach); },
-  { max: 10, windowMs: 10_000 });
+    z.object({ approach: z.enum(APPROACHES) }),
+    async (uid, d) => { submitAction(uid, d.approach); },
+    { max: 10, windowMs: 10_000 });
 
-handle(socket, 'edge:use',
-  z.object({ edge: z.enum(['reroll', 'nudge', 'shield', 'skip']) }),
-  async (uid, d) => { await playEdge(uid, d.edge); },
-  { max: 10, windowMs: 10_000 });
+  handle(socket, 'edge:use',
+    z.object({ edge: z.enum(['reroll', 'nudge', 'skip']) }),
+    async (uid, d) => { await playEdge(uid, d.edge); },
+    { max: 10, windowMs: 10_000 });
+
+  // returns the caller's private roll for the current edge phase
+  handle(socket, 'roll:mine', z.object({}), async (uid) => myRoll(uid),
+    { max: 10, windowMs: 10_000 });
 
   handle(socket, 'rematch:request', z.object({ roomId: z.string().uuid() }), (uid, d) => requestRematch(uid, d.roomId));
 
