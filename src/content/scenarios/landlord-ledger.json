@@ -1,0 +1,309 @@
+{
+  "id": "landlord-ledger",
+  "title": "The Ledger",
+  "tagline": "The rent is going up, the landlord keeps a notebook, and only one tenant gets the old price.",
+  "modes": ["rival", "coop"],
+  "formats": ["1v1"],
+  "start": "knock",
+  "marks": {
+    "ledger_good": { "label": "Good in the ledger", "tip": "Baba Landlord wrote something nice about you. Charm gets easier.", "rounds": 4 },
+    "ledger_bad": { "label": "Bad in the ledger", "tip": "He wrote something against you. Charm gets harder.", "rounds": 4 },
+    "paid_early": { "label": "Paid early", "tip": "You handed over cash, so you are short. Hustle gets harder, but he is pleased.", "rounds": 3 },
+    "knows_agreement": { "label": "Read the agreement", "tip": "You know the tenancy rules. Wisdom gets easier.", "rounds": 4 },
+    "leverage": { "label": "He is nervous of you", "tip": "You scared him. Bluffing gets easier, charm gets harder.", "rounds": 3 },
+    "repair_hero": { "label": "Fixed his gutter", "tip": "He saw you fix it. Hustle gets easier.", "rounds": 3 },
+    "neighbours_back": { "label": "Neighbours back you", "tip": "Mama Tolu and the others are with you. Charm gets easier.", "rounds": 3 },
+    "nephew_ally": { "label": "Nephew likes you", "tip": "Tunde is on your side. Charm and Wisdom get easier.", "rounds": 3 }
+  },
+  "scenes": {
+    "knock": {
+      "title": "First of the Month",
+      "text": {
+        "default": "7 am on the 1st. Banging on your door. It is Baba Landlord with his famous thick notebook, the ledger. He announces that rent is going up by forty percent, but one of you, you or {rival}, will keep last year's price. 'The one who is the better tenant. I have been watching.' {rival} is already in the corridor in a wrapper.",
+        "coop": "7 am on the 1st. Banging on your door. It is Baba Landlord with his famous thick notebook, the ledger. He announces that rent is going up by forty percent, but your flat can keep last year's price if you and {partner} prove you are good tenants. 'I have been watching,' he says."
+      },
+      "stakes": { "default": "Last year's rent, while the other tenant pays the new price.", "coop": "Keeping the flat at the old price." },
+      "choices": [
+        { "approach": "charm", "label": "Offer him tea and ask about his health", "dc": 12 },
+        { "approach": "hustle", "label": "Pay a month's rent early to show you are serious", "dc": 13 },
+        { "approach": "gragra", "label": "Threaten to report him to the Tenants' Association", "dc": 13 },
+        { "approach": "wisdom", "label": "Ask to see the tenancy agreement before he says anything else", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "tea", "recap": { "default": "{winner} brings him tea, and he writes something kind in the ledger. {loser} watches from the corridor, and he writes something about that too.", "coop": "You bring him tea, and he writes something kind in the ledger." }, "set": [{ "to": "winner", "mark": "ledger_good" }, { "to": "loser", "mark": "ledger_bad" }] },
+          "hustle": { "to": "repairs", "recap": { "default": "{winner} counts out a month's rent in cash and his eyes light up. {loser} realises the other tenant has already bought favour.", "coop": "You count out a month's rent in cash and his eyes light up." }, "set": [{ "to": "winner", "mark": "ledger_good" }, { "to": "winner", "mark": "paid_early" }, { "to": "loser", "mark": "ledger_bad" }] },
+          "gragra": { "to": "confront", "recap": { "default": "{winner} says 'Tenants' Association' and his pen stops. {loser} wishes they had said it first.", "coop": "You say 'Tenants' Association' and his pen stops." }, "set": [{ "to": "winner", "mark": "leverage" }, { "to": "loser", "mark": "ledger_bad" }] },
+          "wisdom": { "to": "agreement", "recap": { "default": "{winner} asks for the tenancy agreement and starts reading. {loser} is still deciding what to say.", "coop": "You ask for the tenancy agreement and start reading." }, "set": [{ "to": "winner", "mark": "knows_agreement" }, { "to": "loser", "mark": "ledger_bad" }] }
+        },
+        "both_fail": { "to": "ledger_war", "recap": "You talk over each other, and he writes both names with a long sigh.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "tea", "recap": "He cannot choose, so he takes tea from both of you." },
+        "same": { "to": "ledger_war", "recap": "You both did the same thing, so he writes 'copycats' next to both names.", "set": [{ "to": "all", "mark": "ledger_bad" }] }
+      }
+    },
+    "tea": {
+      "title": "Tea and Gossip",
+      "text": {
+        "default": "Baba Landlord settles in with the tea and opens the ledger. 'Everybody wants to be the better tenant,' he says, 'but I only write what I see.' He asks about noise, bins and generator smoke. {rival} is listening through the wall.",
+        "coop": "Baba Landlord settles in with the tea and opens the ledger. 'Everybody wants to be the better tenant,' he says, 'but I only write what I see.' He asks about noise, bins and generator smoke. {partner} is listening beside you."
+      },
+      "stakes": "What he writes about you.",
+      "twists": [
+        { "if": "ledger_good", "text": "{holder} has a good line in the ledger already." },
+        { "if": "ledger_bad", "text": "{holder} has a bad line in the ledger already." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Compliment the new paint he did himself", "dc": 11, "mods": [{ "mark": "ledger_good", "dc": -2 }, { "mark": "ledger_bad", "dc": 2 }] },
+        { "approach": "hustle", "label": "Offer to take the bins to the dump every week", "dc": 12 },
+        { "approach": "gragra", "label": { "default": "Blame the noise on {rival}", "coop": "Blame the noise on the neighbours downstairs" }, "dc": 13, "mods": [{ "mark": "ledger_bad", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Ask which complaints are actually on record", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "water_tank", "recap": { "default": "He likes {winner}'s paint comment and writes it down twice. {loser} is asked to hold his cup.", "coop": "He likes your paint comment and writes it down twice." }, "set": [{ "to": "winner", "mark": "ledger_good" }] },
+          "hustle": { "to": "water_tank", "recap": { "default": "{winner} signs up for bin duty, and he writes 'reliable'. {loser} is told the bins smell.", "coop": "You sign up for bin duty, and he writes 'reliable'." }, "set": [{ "to": "winner", "mark": "repair_hero" }, { "to": "loser", "mark": "ledger_bad" }] },
+          "default": { "to": "compound_meeting", "recap": { "default": "{winner}'s version sticks, and the neighbours hear about it. {loser} storms out to defend their name.", "coop": "Your version sticks, and the neighbours hear about it." }, "set": [{ "to": "winner", "mark": "leverage" }, { "to": "loser", "mark": "neighbours_back" }] }
+        },
+        "both_fail": { "to": "water_tank", "recap": "He reads both names, writes nothing, and tells you both to stop talking. Then the pump dies.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "compound_meeting", "recap": "The compound hears the noise and gathers in the corridor." }
+      }
+    },
+    "repairs": {
+      "title": "The Gutter",
+      "text": {
+        "default": "Baba Landlord points at the gutter. 'If you are the better tenant, fix that before noon.' It is spraying water onto both doorsteps. A plumber costs ₦15,000, and {rival} is eyeing the ladder.",
+        "coop": "Baba Landlord points at the gutter. 'If you are the better tenant, fix that before noon.' It is spraying water onto your doorstep. A plumber costs ₦15,000, and you and {partner} are eyeing the ladder."
+      },
+      "stakes": "Looking useful without spending rent money.",
+      "twists": [{ "if": "paid_early", "text": "{holder} has less cash than they want to admit." }],
+      "choices": [
+        { "approach": "charm", "label": "Charm the plumber's nephew into a discount", "dc": 12, "mods": [{ "mark": "ledger_good", "dc": -2 }] },
+        { "approach": "hustle", "label": "Climb the ladder and fix it yourself", "dc": 13, "mods": [{ "mark": "paid_early", "dc": 2 }] },
+        { "approach": "gragra", "label": "Say the gutter is his job and refuse", "dc": 13, "mods": [{ "mark": "knows_agreement", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Check the agreement: repairs over ₦10,000 are his", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -3 }] }
+      ],
+      "next": {
+        "decisive": {
+          "hustle": { "to": "water_tank", "recap": { "default": "{winner} fixes the gutter in an hour and he writes 'handy'. {loser} stands in a puddle.", "coop": "You fix the gutter in an hour and he writes 'handy'." }, "set": [{ "to": "winner", "mark": "repair_hero" }, { "to": "loser", "mark": "ledger_bad" }] },
+          "charm": { "to": "compound_meeting", "recap": { "default": "{winner} gets the plumber's nephew to fix it for a plate of stew, and the neighbours notice. {loser} gets ignored.", "coop": "You get the plumber's nephew to fix it for a plate of stew, and the neighbours notice." }, "set": [{ "to": "winner", "mark": "neighbours_back" }] },
+          "default": { "to": "meter_man", "recap": { "default": "{winner} makes the point so well he walks off to find someone else to fix it. {loser} is left wondering who pays.", "coop": "You make the point so well he walks off to find someone else to fix it." }, "set": [{ "to": "winner", "mark": "knows_agreement" }, { "to": "loser", "mark": "ledger_bad" }] }
+        },
+        "both_fail": { "to": "meter_man", "recap": "The ladder slips, the gutter drops, and water floods the corridor. A PHED van pulls up right on cue.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "water_tank", "recap": "You both climb the ladder, and the gutter gets fixed by two people shouting at each other." }
+      }
+    },
+    "confront": {
+      "title": "The Association",
+      "text": "He closes the ledger. 'You want to report me? Go ahead. The Association chairman is my cousin.' Doors open one by one along the corridor as neighbours listen to the shouting.",
+      "stakes": "Being heard by the right people.",
+      "twists": [{ "if": "leverage", "text": "{holder} has him nervous, and he knows it." }],
+      "choices": [
+        { "approach": "charm", "label": "Calm everyone down and apologise", "dc": 11 },
+        { "approach": "hustle", "label": "Run to find the Association chairman", "dc": 13 },
+        { "approach": "gragra", "label": "Repeat the threat louder", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Ask him to put the new rent in writing", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "compound_meeting", "recap": { "default": "{winner} calms the corridor and the neighbours nod. {loser} looks like the one who started the noise.", "coop": "You calm the corridor and the neighbours nod." }, "set": [{ "to": "winner", "mark": "neighbours_back" }, { "to": "loser", "mark": "ledger_bad" }] },
+          "wisdom": { "to": "meter_man", "recap": { "default": "{winner} asks for it in writing, and he goes quiet. {loser} is still shouting.", "coop": "You ask for it in writing, and he goes quiet." }, "set": [{ "to": "winner", "mark": "knows_agreement" }] },
+          "default": { "to": "water_tank", "recap": { "default": "{winner} stands firm, and he backs down to check on the pump. {loser} is left with the corridor staring.", "coop": "You stand firm, and he backs down to check on the pump." }, "set": [{ "to": "winner", "mark": "leverage" }, { "to": "loser", "mark": "ledger_bad" }] }
+        },
+        "both_fail": { "to": "compound_meeting", "recap": "Everybody is shouting at everybody, and the neighbours decide you are both the problem.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "meter_man", "recap": "He shuts the ledger and says he has a meeting with the electricity people." }
+      }
+    },
+    "agreement": {
+      "title": "Clause Seven",
+      "text": {
+        "default": "Clause seven says the rent can only change with six months' notice. Baba Landlord goes quiet, then smiles thinly: 'The educated one.' {rival} suddenly goes to look for their own copy.",
+        "coop": "Clause seven says the rent can only change with six months' notice. Baba Landlord goes quiet, then smiles thinly: 'The educated one.' You and {partner} suddenly feel brave."
+      },
+      "stakes": "Using the rules without making him angry.",
+      "twists": [{ "if": "knows_agreement", "text": "{holder} is holding the agreement like a shield." }],
+      "choices": [
+        { "approach": "charm", "label": "Joke about it so he does not feel cornered", "dc": 11, "mods": [{ "mark": "ledger_good", "dc": -2 }] },
+        { "approach": "hustle", "label": "Photocopy it and post it on the notice board", "dc": 12 },
+        { "approach": "gragra", "label": "Tell the whole compound he is breaking the rules", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }, { "mark": "ledger_bad", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Offer to pay on time every month for the old price", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -3 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "meter_man", "recap": { "default": "He laughs at {winner}'s joke and relaxes. {loser} is still holding their copy of the agreement.", "coop": "He laughs at your joke and relaxes." }, "set": [{ "to": "winner", "mark": "ledger_good" }] },
+          "wisdom": { "to": "meter_man", "recap": { "default": "{winner}'s offer makes him pause and write something down. {loser} is still arguing clause numbers.", "coop": "Your offer makes him pause and write something down." }, "set": [{ "to": "winner", "mark": "ledger_good" }] },
+          "default": { "to": "compound_meeting", "recap": { "default": "{winner} posts the clause on the notice board and the neighbours gather round. {loser} is left to explain it to him.", "coop": "You post the clause on the notice board and the neighbours gather round." }, "set": [{ "to": "winner", "mark": "neighbours_back" }, { "to": "loser", "mark": "ledger_bad" }] }
+        },
+        "both_fail": { "to": "compound_meeting", "recap": "He storms off, and the neighbours want to know why you both made him shout.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "meter_man", "recap": "He says he will think about it. You both know he will not." }
+      }
+    },
+    "ledger_war": {
+      "title": "Two Names, Two Lines",
+      "text": "He writes both names with a long sigh. Then the water pump coughs, a generator dies, and a PHED van parks outside. 'See what I am dealing with,' he says, 'and you two are fighting over rent.'",
+      "stakes": "Getting out of his bad books.",
+      "choices": [
+        { "approach": "charm", "label": "Offer to help him with the water", "dc": 12 },
+        { "approach": "hustle", "label": "Run to the pump and try to fix it", "dc": 13 },
+        { "approach": "gragra", "label": "Tell him the PHED problem is his, not yours", "dc": 13 },
+        { "approach": "wisdom", "label": "Quietly ask what he needs most", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "meter_man", "recap": { "default": "{winner} stays calm and he scratches out a bad line. {loser} is still apologising to the wall.", "coop": "You stay calm and he scratches out a bad line." }, "set": [{ "to": "winner", "mark": "ledger_good" }] },
+        "both_fail": { "to": "water_tank", "recap": "You both make it worse, and the pump gives up completely.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "meter_man", "recap": "He sighs and walks towards the PHED van." }
+      }
+    },
+    "water_tank": {
+      "title": "No Water on the 1st",
+      "text": {
+        "default": "The pump coughs and dies. The tank is empty, forty people need water, and it is 8 am. 'Whoever fixes this, I will remember,' Baba Landlord shouts, and {rival} is already at the tank.",
+        "coop": "The pump coughs and dies. The tank is empty, forty people need water, and it is 8 am. 'Whoever fixes this, I will remember,' Baba Landlord shouts, and you and {partner} look at each other."
+      },
+      "stakes": "Looking useful while forty people watch.",
+      "twists": [{ "if": "repair_hero", "text": "{holder} has fixed one thing already and is willing to fix another." }],
+      "choices": [
+        { "approach": "charm", "label": "Organise the compound to carry buckets from the borehole next door", "dc": 11, "mods": [{ "mark": "neighbours_back", "dc": -2 }] },
+        { "approach": "hustle", "label": "Fix the pump yourself", "dc": 13, "mods": [{ "mark": "repair_hero", "dc": -2 }, { "mark": "paid_early", "dc": 2 }] },
+        { "approach": "gragra", "label": "Blame the neighbours for using too much water", "dc": 13, "mods": [{ "mark": "neighbours_back", "dc": 3 }] },
+        { "approach": "wisdom", "label": "Check the float switch first, it might be simple", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -1 }] }
+      ],
+      "next": {
+        "decisive": { "to": "nephew_visit", "recap": { "default": "{winner} gets water flowing and the whole compound claps. {loser} is still holding an empty bucket.", "coop": "You get water flowing and the whole compound claps." }, "set": [{ "to": "winner", "mark": "ledger_good" }, { "to": "loser", "mark": "ledger_bad" }] },
+        "both_fail": { "to": "nephew_visit", "recap": "The pump stays dead and the compound turns on both of you.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "nephew_visit", "recap": "A neighbour fixes the pump while you both argue." }
+      }
+    },
+    "meter_man": {
+      "title": "The PHED Man",
+      "text": {
+        "default": "A PHED officer in a yellow jacket stands at the gate with a disconnection notice. Baba Landlord says the bill belongs to the tenants. The tenants say it is his. {rival} is already offering the officer a cold drink.",
+        "coop": "A PHED officer in a yellow jacket stands at the gate with a disconnection notice. Baba Landlord says the bill belongs to the tenants. The tenants say it is his. You and {partner} step up to speak for them."
+      },
+      "stakes": "Keeping the lights on without paying for everyone.",
+      "choices": [
+        { "approach": "charm", "label": "Offer the officer a cold drink and a seat", "dc": 11, "mods": [{ "mark": "ledger_good", "dc": -2 }] },
+        { "approach": "hustle", "label": "Pay part of the bill to buy time", "dc": 13, "mods": [{ "mark": "paid_early", "dc": 2 }] },
+        { "approach": "gragra", "label": "Shout that the officer has no right", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Ask to see the meter number and the account name", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -3 }] }
+      ],
+      "next": {
+        "decisive": { "to": "nephew_visit", "recap": { "default": "{winner} handles the officer and the lights stay on. {loser} is left holding the notice.", "coop": "You handle the officer and the lights stay on." }, "set": [{ "to": "winner", "mark": "ledger_good" }, { "to": "loser", "mark": "ledger_bad" }] },
+        "both_fail": { "to": "nephew_visit", "recap": "The officer cuts the main line for a minute as a warning. The compound goes dark.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "nephew_visit", "recap": "The officer gives everyone until evening and leaves." }
+      }
+    },
+    "compound_meeting": {
+      "title": "Compound Meeting",
+      "text": "Neighbours fill the corridor: Mama Tolu, the Okafors, Chuka the corper. Everyone has a complaint about the landlord, and the room wants one person to speak for them. Baba Landlord watches from the stairs, writing.",
+      "stakes": "Who the compound backs.",
+      "twists": [{ "if": "neighbours_back", "text": "{holder} has Mama Tolu nodding along." }],
+      "choices": [
+        { "approach": "charm", "label": "Speak for everyone, gently", "dc": 11, "mods": [{ "mark": "neighbours_back", "dc": -2 }] },
+        { "approach": "hustle", "label": "Pass round a signing sheet", "dc": 12 },
+        { "approach": "gragra", "label": "Lead the shouting", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Propose a compromise: new rent for all, repairs in writing", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "nephew_visit", "recap": { "default": "{winner} wins the room and the neighbours cheer. {loser} is left looking like the one he wrote about.", "coop": "You win the room and the neighbours cheer." }, "set": [{ "to": "winner", "mark": "neighbours_back" }, { "to": "loser", "mark": "ledger_bad" }] },
+        "both_fail": { "to": "nephew_visit", "recap": "The meeting dissolves into shouting, and Baba Landlord writes two long lines.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "nephew_visit", "recap": "The room cannot choose, so everyone goes home." }
+      }
+    },
+    "nephew_visit": {
+      "title": "Nephew Tunde",
+      "text": {
+        "default": "A shiny SUV pulls in. Tunde, Baba Landlord's nephew, steps out in sunglasses with a tape measure. He wants to see the flats because 'Uncle might sell'. The ledger is open on the bonnet, and {rival} is already smiling at him.",
+        "coop": "A shiny SUV pulls in. Tunde, Baba Landlord's nephew, steps out in sunglasses with a tape measure. He wants to see the flats because 'Uncle might sell'. The ledger is open on the bonnet, and you and {partner} straighten your shirts."
+      },
+      "stakes": "Impressing the one who might inherit the house.",
+      "twists": [
+        { "if": "ledger_good", "text": "{holder} has a good page in the ledger, open on the bonnet." },
+        { "if": "ledger_bad", "text": "{holder} has a bad page in the ledger, open on the bonnet." },
+        { "if": "neighbours_back", "text": "{holder} has neighbours quietly vouching for them." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Give him a tour and pour cold drinks", "dc": 12, "mods": [{ "mark": "ledger_good", "dc": -2 }, { "mark": "nephew_ally", "dc": -2 }] },
+        { "approach": "hustle", "label": "Move your things to hide the clutter", "dc": 12 },
+        { "approach": "gragra", "label": "Tell him the flat is not for sale", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Ask what he really wants", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "inspection", "recap": { "default": "Tunde takes a liking to {winner}'s answers. {loser} gets a slow nod and a tape measure around the doorway.", "coop": "Tunde takes a liking to your answers." }, "set": [{ "to": "winner", "mark": "nephew_ally" }, { "to": "loser", "mark": "ledger_bad" }] },
+        "both_fail": { "to": "inspection", "recap": "Tunde leaves with a bad feeling about both flats.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "inspection", "recap": "He asks both of you the same question and gets two different answers." }
+      }
+    },
+    "inspection": {
+      "title": "The Inspection",
+      "text": "Baba Landlord and Tunde walk through both flats with a clipboard, checking ceilings, sockets and bathrooms. In one kitchen a pot of stew is bubbling, and it smells suspiciously good. The ledger travels with them like a Bible.",
+      "stakes": "What the clipboard says about your flat.",
+      "twists": [
+        { "if": "repair_hero", "text": "{holder}'s flat has a gutter that does not leak." },
+        { "if": "nephew_ally", "text": "{holder} gets a thumbs-up from Tunde." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Offer them the stew", "dc": 11, "mods": [{ "mark": "nephew_ally", "dc": -2 }, { "mark": "ledger_good", "dc": -2 }] },
+        { "approach": "hustle", "label": "Fix the loose socket before they reach it", "dc": 13, "mods": [{ "mark": "repair_hero", "dc": -2 }] },
+        { "approach": "gragra", "label": "Argue that the stains are old", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Show a folder of receipts and photos", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -3 }] }
+      ],
+      "next": {
+        "decisive": { "to": "evening_rent", "recap": { "default": "The clipboard ticks happily for {winner}'s flat. {loser}'s flat gets a long list.", "coop": "The clipboard ticks happily for your flat." }, "set": [{ "to": "winner", "mark": "ledger_good" }, { "to": "loser", "mark": "ledger_bad" }] },
+        "both_fail": { "to": "evening_rent", "recap": "The clipboard fills with two long lists.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "evening_rent", "recap": "Both flats pass, but only just." }
+      }
+    },
+    "evening_rent": {
+      "title": "Evening Rent",
+      "text": {
+        "default": "6 pm. Baba Landlord calls you both to the corridor. He holds two envelopes, one for last year's price and one for the new price. 'Tonight, one last thing,' he says. 'The water bill nobody paid.' {rival} stands next to you, not blinking.",
+        "coop": "6 pm. Baba Landlord calls you and {partner} to the corridor. He holds two envelopes, one for last year's price and one for the new price. 'Tonight, one last thing,' he says. 'The water bill nobody paid.'"
+      },
+      "stakes": "Paying for the water without losing the price.",
+      "twists": [{ "if": "paid_early", "text": "{holder} is already short on cash." }],
+      "choices": [
+        { "approach": "charm", "label": "Offer to split the bill with the compound", "dc": 11, "mods": [{ "mark": "neighbours_back", "dc": -2 }] },
+        { "approach": "hustle", "label": "Pay the whole bill on the spot", "dc": 13, "mods": [{ "mark": "paid_early", "dc": 2 }] },
+        { "approach": "gragra", "label": "Tell him the water bill is his", "dc": 13, "mods": [{ "mark": "leverage", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Offer to pay half now and half in the morning", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "verdict", "recap": { "default": "He nods at {winner}'s offer and writes a last line. {loser} gets a long look and a pen click.", "coop": "He nods at your offer and writes a last line." }, "set": [{ "to": "winner", "mark": "ledger_good" }, { "to": "loser", "mark": "ledger_bad" }] },
+        "both_fail": { "to": "verdict", "recap": "He puts both envelopes back in his pocket. 'Tomorrow,' he says.", "set": [{ "to": "all", "mark": "ledger_bad" }] },
+        "tie": { "to": "verdict", "recap": "He splits the water bill between you and tells you to be quiet." }
+      }
+    },
+    "verdict": {
+      "title": "The Verdict",
+      "text": "In the evening light, Baba Landlord opens the ledger, reads both pages aloud and sets down his pen. The whole compound has gathered to hear. Whatever you say now will decide which envelope you get.",
+      "stakes": "Last year's price, or the new one.",
+      "twists": [
+        { "if": "ledger_good", "text": "{holder} has a lot of good lines in the ledger." },
+        { "if": "ledger_bad", "text": "{holder} has a lot of bad lines in the ledger." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Thank him warmly for being a fair landlord", "dc": 11, "mods": [{ "mark": "ledger_good", "dc": -3 }, { "mark": "ledger_bad", "dc": 3 }] },
+        { "approach": "hustle", "label": "Hand over the signed agreement and cash", "dc": 13, "mods": [{ "mark": "paid_early", "dc": 2 }] },
+        { "approach": "gragra", "label": "Demand an answer right now", "dc": 13, "mods": [{ "mark": "leverage", "dc": -3 }] },
+        { "approach": "wisdom", "label": "Quote clause seven and ask for a deal", "dc": 11, "mods": [{ "mark": "knows_agreement", "dc": -3 }] }
+      ],
+      "next": { "default": null }
+    }
+  },
+  "endings": {
+    "win": "He sets the old-price envelope in front of you and the whole compound claps. {loser} gets the new price and a handshake that feels a lot like a warning.",
+    "loss": "He slides the new-price envelope across the table. {winner} gets last year's price, and you get a note about 'improvement'.",
+    "draw": "He cannot decide, so you both get a middle price and a list of rules.",
+    "success": "You both get last year's price, and the ledger gets a new page that says 'good tenants'.",
+    "fail": "The new price goes up for your flat, and the ledger gets a new page that says 'tenants who argue'."
+  },
+  "epilogues": [
+    { "if": "leverage", "text": "{holder} still hears 'Tenants' Association' in Baba Landlord's nightmares." },
+    { "if": "knows_agreement", "text": "{holder} now keeps a photocopy of the agreement in every drawer." },
+    { "if": "repair_hero", "text": "{holder} still gets called when the gutter leaks." },
+    { "if": "nephew_ally", "text": "Tunde sends {holder} a festive greeting every December." },
+    { "if": "neighbours_back", "text": "Mama Tolu still brings {holder} soup on cold days." },
+    { "if": "ledger_bad", "text": "Baba Landlord's ledger still has a page about {holder}." },
+    { "if": "paid_early", "text": "{holder} is still waiting for a receipt." }
+  ]
+}

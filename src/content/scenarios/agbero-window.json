@@ -1,0 +1,305 @@
+{
+  "id": "agbero-window",
+  "title": "Go-Slow Levy",
+  "tagline": "Stuck in traffic, a knock on the window, and a promotion on the line.",
+  "modes": ["rival", "coop"],
+  "formats": ["1v1"],
+  "start": "knock",
+  "marks": {
+    "driver_ally": { "label": "Driver is on your side", "tip": "Mr. Femi backs you. Charm and Wisdom get easier.", "rounds": 3 },
+    "driver_annoyed": { "label": "Driver is annoyed", "tip": "Mr. Femi wants you out of his car. Charm gets harder.", "rounds": 3 },
+    "agbero_friend": { "label": "Chairman's friend", "tip": "Kayode respects you. Charm gets easier.", "rounds": 3 },
+    "agbero_grudge": { "label": "On Kayode's bad list", "tip": "He remembers you. Hustle and Bluffing get harder.", "rounds": 3 },
+    "paid_levy": { "label": "Paid the levy", "tip": "His boys leave you alone. Hustle gets easier.", "rounds": 3 },
+    "short_cash": { "label": "Short on cash", "tip": "You are out of notes. Paying fast is not possible.", "rounds": 3 },
+    "on_camera": { "label": "On camera", "tip": "Someone is filming you. Bluffing gets harder.", "rounds": 3 },
+    "calm": { "label": "Looks calm", "tip": "You seem in control. Charm gets easier.", "rounds": 3 },
+    "sweaty": { "label": "Rattled", "tip": "You look flustered. Charm gets harder.", "rounds": 3 },
+    "shortcut": { "label": "Knows the back road", "tip": "You know the way around. Hustle gets easier.", "rounds": 3 }
+  },
+  "scenes": {
+    "knock": {
+      "title": "Knock Knock",
+      "text": {
+        "default": "Lekki-Epe expressway, 6:15 pm. The Uber has not moved in twenty minutes and your client dinner is at 7:30. You and {rival} are colleagues, and the promotion goes to whoever lands this client. Then someone knocks on the window: an agbero in a faded vest, hand out. 'Oga, na road levy.'",
+        "coop": "Lekki-Epe expressway, 6:15 pm. The Uber has not moved in twenty minutes and your client dinner is at 7:30. You and {partner} must land this client together or lose the account. Then someone knocks on the window: an agbero in a faded vest, hand out. 'Oga, na road levy.'"
+      },
+      "stakes": { "default": "Looking like the one in control.", "coop": "Keeping the dinner alive." },
+      "choices": [
+        { "approach": "charm", "label": "Roll the window down and greet him like family: 'Chairman, how work?'", "dc": 12 },
+        { "approach": "hustle", "label": "Hand him a ₦500 note and ask him to move on", "dc": 12 },
+        { "approach": "gragra", "label": "Tell him you work for the Lagos State government", "dc": 13 },
+        { "approach": "wisdom", "label": "Keep the window up and quietly ask the driver who he is", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "chairman", "recap": { "default": "{winner} greets him like family and he laughs. {loser} sits stiff, pretending not to be afraid.", "coop": "You greet him like family and he laughs." }, "set": [{ "to": "winner", "mark": "agbero_friend" }, { "to": "loser", "mark": "sweaty" }] },
+          "hustle": { "to": "levy_line", "recap": { "default": "{winner} drops a note in his palm and he nods. {loser} watches the money disappear and says nothing.", "coop": "You drop a note in his palm and he nods." }, "set": [{ "to": "winner", "mark": "paid_levy" }, { "to": "loser", "mark": "driver_annoyed" }] },
+          "gragra": { "to": "crowd", "recap": { "default": "{winner}'s 'government' line makes him step back, but a passer-by has started filming. {loser} is sinking into the seat.", "coop": "Your 'government' line makes him step back, but a passer-by has started filming." }, "set": [{ "to": "winner", "mark": "on_camera" }, { "to": "loser", "mark": "sweaty" }] },
+          "wisdom": { "to": "driver_talk", "recap": { "default": "{winner} asks Mr. Femi quietly, and Mr. Femi smiles: he knows this man. {loser} sat stiff, and the agbero noticed.", "coop": "You ask Mr. Femi quietly, and he smiles: he knows this man." }, "set": [{ "to": "winner", "mark": "driver_ally" }, { "to": "loser", "mark": "agbero_grudge" }] }
+        },
+        "both_fail": { "to": "window_bang", "recap": "You argue about what to do while the knocking turns into banging.", "set": [{ "to": "all", "mark": "sweaty" }] },
+        "tie": { "to": "driver_talk", "recap": "Nobody moves, so Mr. Femi rolls down his own window and starts talking." },
+        "same": { "to": "crowd", "recap": "You gave the same answer, so he decides you are a team and calls his boys.", "set": [{ "to": "all", "mark": "on_camera" }] }
+      }
+    },
+    "chairman": {
+      "title": "Chairman Kayode",
+      "text": {
+        "default": "His name is Kayode, but his boys call him Chairman. He leans on the window, grinning, and says the road belongs to him until the next bridge. He can open the back road under the bridge, for a price, and {rival} is sitting very still.",
+        "coop": "His name is Kayode, but his boys call him Chairman. He leans on the window, grinning, and says the road belongs to him until the next bridge. He can open the back road under the bridge, for a price, and you and {partner} are sitting very still."
+      },
+      "stakes": "The back road, and the Chairman's good side.",
+      "twists": [
+        { "if": "agbero_friend", "text": "{holder} is getting a wide grin from the Chairman." },
+        { "if": "sweaty", "text": "{holder} is sweating through their shirt." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Ask about his boys and his family, and listen", "dc": 11, "mods": [{ "mark": "agbero_friend", "dc": -2 }] },
+        { "approach": "hustle", "label": "Offer a small tip for 'security'", "dc": 12 },
+        { "approach": "gragra", "label": "Say you know people at the local council", "dc": 13, "mods": [{ "mark": "agbero_friend", "dc": 3 }] },
+        { "approach": "wisdom", "label": "Ask which road is fastest and what he wants for it", "dc": 11, "mods": [{ "mark": "agbero_friend", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "backroad", "recap": { "default": "{winner} has him laughing and he waves the car towards the bridge. {loser} gets a look.", "coop": "You have him laughing and he waves the car towards the bridge." }, "set": [{ "to": "winner", "mark": "shortcut" }, { "to": "loser", "mark": "agbero_grudge" }] },
+          "wisdom": { "to": "backroad", "recap": { "default": "{winner} asks the right questions and gets the bridge boys' names. {loser} is still wondering what he wants.", "coop": "You ask the right questions and get the bridge boys' names." }, "set": [{ "to": "winner", "mark": "shortcut" }] },
+          "default": { "to": "crawl", "recap": { "default": "{winner} pays him off and the boys step back. {loser} has nothing in their hands.", "coop": "You pay him off and the boys step back." }, "set": [{ "to": "winner", "mark": "paid_levy" }, { "to": "loser", "mark": "short_cash" }] }
+        },
+        "both_fail": { "to": "crawl", "recap": "The Chairman gets bored and walks off. The traffic does not move, and neither do you.", "set": [{ "to": "all", "mark": "driver_annoyed" }] },
+        "tie": { "to": "backroad", "recap": "He shrugs and tells his boys to let your car through, for now." }
+      }
+    },
+    "levy_line": {
+      "title": "The Second Boy",
+      "text": "A second boy appears at the other window, hand out. 'That one na for the road. Mine na for security.' Mr. Femi sighs loudly and looks at you through the mirror.",
+      "stakes": "Your money and Mr. Femi's patience.",
+      "twists": [
+        { "if": "paid_levy", "text": "{holder} already paid once, and the boys can see the notes." },
+        { "if": "driver_annoyed", "text": "{holder} is the one Mr. Femi blames for the delay." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Pay and ask for a receipt, with a laugh", "dc": 11, "mods": [{ "mark": "paid_levy", "dc": -2 }] },
+        { "approach": "hustle", "label": "Pay the second note faster than he asks", "dc": 12, "mods": [{ "mark": "paid_levy", "dc": -2 }], "lock": { "mark": "short_cash", "reason": "You are out of notes." } },
+        { "approach": "gragra", "label": "Refuse: 'I already paid your oga'", "dc": 13, "mods": [{ "mark": "driver_annoyed", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Ask Mr. Femi to talk to him", "dc": 11, "mods": [{ "mark": "driver_annoyed", "dc": 3 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "crawl", "recap": { "default": "{winner} pays with a joke and the boy laughs. {loser} watches the money go.", "coop": "You pay with a joke and the boy laughs." }, "set": [{ "to": "winner", "mark": "calm" }] },
+          "hustle": { "to": "crawl", "recap": { "default": "{winner} pays fast and the boys leave them alone. {loser} gets nothing but Mr. Femi's sigh.", "coop": "You pay fast and the boys leave you alone." }, "set": [{ "to": "winner", "mark": "short_cash" }, { "to": "loser", "mark": "driver_annoyed" }] },
+          "default": { "to": "backroad", "recap": { "default": "Mr. Femi sorts it out, grumbling, and takes {winner}'s side. {loser} gets a stare in the mirror.", "coop": "Mr. Femi sorts it out, grumbling, and takes your side." }, "set": [{ "to": "winner", "mark": "driver_ally" }, { "to": "loser", "mark": "agbero_grudge" }] }
+        },
+        "both_fail": { "to": "crawl", "recap": "Neither of you pays, the boy walks off cursing, and Mr. Femi turns up the radio to drown you out.", "set": [{ "to": "all", "mark": "agbero_grudge" }] },
+        "tie": { "to": "crawl", "recap": "He shrugs and moves to the next car." }
+      }
+    },
+    "crowd": {
+      "title": "The Whole Road Is Watching",
+      "text": "A small crowd has gathered. A hawker laughs, a phone is up, and the agbero says to everyone, 'This one says he works for the government!' Mr. Femi stares straight ahead.",
+      "stakes": "How you look on camera.",
+      "twists": [{ "if": "on_camera", "text": "{holder} is being filmed from two directions." }],
+      "choices": [
+        { "approach": "charm", "label": "Turn to the camera and apologise warmly", "dc": 12, "mods": [{ "mark": "on_camera", "dc": 2 }] },
+        { "approach": "hustle", "label": "Hand him money quietly to end it", "dc": 12 },
+        { "approach": "gragra", "label": "Double down on the government line", "dc": 13, "lock": { "mark": "on_camera", "reason": "Someone is filming you, so you cannot bluff now." } },
+        { "approach": "wisdom", "label": "Say nothing and let Mr. Femi speak first", "dc": 11, "mods": [{ "mark": "driver_ally", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "crawl", "recap": { "default": "{winner} apologises so warmly that the crowd goes 'Aww'. {loser} is the one the camera lingers on.", "coop": "You apologise so warmly that the crowd goes 'Aww'." }, "set": [{ "to": "winner", "mark": "calm" }, { "to": "loser", "mark": "sweaty" }] },
+          "wisdom": { "to": "backroad", "recap": { "default": "Mr. Femi talks the crowd down and credits {winner} for staying quiet. {loser} is still fidgeting.", "coop": "Mr. Femi talks the crowd down and credits you for staying quiet." }, "set": [{ "to": "winner", "mark": "driver_ally" }] },
+          "default": { "to": "crawl", "recap": { "default": "{winner} ends it with a note and a nod. {loser} wishes they had thought of it.", "coop": "You end it with a note and a nod." }, "set": [{ "to": "winner", "mark": "paid_levy" }, { "to": "loser", "mark": "on_camera" }] }
+        },
+        "both_fail": { "to": "crawl", "recap": "The video is already online. The crowd claps when you both look away.", "set": [{ "to": "all", "mark": "on_camera" }] },
+        "tie": { "to": "crawl", "recap": "The crowd gets bored and starts debating football." }
+      }
+    },
+    "driver_talk": {
+      "title": "Mr. Femi Knows a Guy",
+      "text": "Mr. Femi rolls his window down: 'Kayode, na me! Abeg, make we pass.' He tells you the back road under the bridge takes ten minutes if the bridge boys agree. Then he looks at you in the mirror: 'But who go pay?'",
+      "stakes": "The back road, and who pays for it.",
+      "twists": [
+        { "if": "driver_ally", "text": "{holder} has Mr. Femi smiling in the mirror." },
+        { "if": "agbero_grudge", "text": "{holder} is the one the agbero keeps staring at." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Promise a big tip and a five-star rating", "dc": 11, "mods": [{ "mark": "driver_ally", "dc": -2 }] },
+        { "approach": "hustle", "label": "Pay fuel money upfront", "dc": 12 },
+        { "approach": "gragra", "label": "Say your company will refund everything", "dc": 13, "mods": [{ "mark": "driver_annoyed", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Agree the price clearly before he moves", "dc": 11, "mods": [{ "mark": "driver_ally", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "backroad", "recap": { "default": "Mr. Femi grins at {winner}'s promise and turns the wheel. {loser} gets a shrug.", "coop": "Mr. Femi grins at your promise and turns the wheel." }, "set": [{ "to": "winner", "mark": "driver_ally" }] },
+          "hustle": { "to": "crawl", "recap": { "default": "{winner} hands over fuel money and Mr. Femi pockets it, then changes his mind about the road. {loser} wonders if that was worth it.", "coop": "You hand over fuel money and Mr. Femi pockets it, then changes his mind about the road." }, "set": [{ "to": "winner", "mark": "short_cash" }] },
+          "default": { "to": "backroad", "recap": { "default": "{winner} lays out the deal and Mr. Femi nods. {loser} is still arguing about the price.", "coop": "You lay out the deal and Mr. Femi nods." }, "set": [{ "to": "winner", "mark": "shortcut" }, { "to": "loser", "mark": "driver_annoyed" }] }
+        },
+        "both_fail": { "to": "crawl", "recap": "Mr. Femi shrugs: 'Una dey argue. Na crawl we go.'", "set": [{ "to": "all", "mark": "driver_annoyed" }] },
+        "tie": { "to": "backroad", "recap": "He decides to take the risk, for his own reasons." }
+      }
+    },
+    "window_bang": {
+      "title": "The Banging",
+      "text": "The banging gets louder. A second agbero joins and starts testing the back door. Mr. Femi locks the car and swears. You have lost three more minutes, and the dinner is now twenty-five minutes away.",
+      "stakes": "Getting out of this mess without losing the car.",
+      "choices": [
+        { "approach": "charm", "label": "Open the window an inch and plead", "dc": 12 },
+        { "approach": "hustle", "label": "Slide a note through the gap", "dc": 12 },
+        { "approach": "gragra", "label": "Threaten to call the police", "dc": 13 },
+        { "approach": "wisdom", "label": "Tell Mr. Femi to lock up and wait it out", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "hustle": { "to": "crawl", "recap": { "default": "{winner} slides a note through and the banging stops. {loser} is out of ideas.", "coop": "You slide a note through and the banging stops." }, "set": [{ "to": "winner", "mark": "paid_levy" }, { "to": "loser", "mark": "sweaty" }] },
+          "default": { "to": "backroad", "recap": { "default": "{winner} keeps the car calm until the boys drift away, and Mr. Femi points at the back road. {loser} is still flinching.", "coop": "You keep the car calm until the boys drift away, and Mr. Femi points at the back road." }, "set": [{ "to": "winner", "mark": "driver_ally" }, { "to": "loser", "mark": "sweaty" }] }
+        },
+        "both_fail": { "to": "crawl", "recap": "The boys lose interest, but you have lost twenty minutes.", "set": [{ "to": "all", "mark": "sweaty" }] },
+        "tie": { "to": "crawl", "recap": "The banging stops all at once, and nobody knows why." }
+      }
+    },
+    "backroad": {
+      "title": "The Back Road",
+      "text": {
+        "default": "Under the bridge, three boys sit on a drum guarding a dirt road. It is a shortcut, but they want ₦2,000 a car, and the potholes look like craters. {rival} watches your face, waiting for you to blink.",
+        "coop": "Under the bridge, three boys sit on a drum guarding a dirt road. It is a shortcut, but they want ₦2,000 a car, and the potholes look like craters. You and {partner} trade a look."
+      },
+      "stakes": "Saving time without losing the car's axle.",
+      "twists": [
+        { "if": "shortcut", "text": "{holder} knows this back road like their own bedroom." },
+        { "if": "agbero_friend", "text": "{holder} has a friend among the bridge boys." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Greet the boys like old friends", "dc": 12, "mods": [{ "mark": "agbero_friend", "dc": -3 }, { "mark": "agbero_grudge", "dc": 3 }] },
+        { "approach": "hustle", "label": "Pay up quickly and tell Mr. Femi to move", "dc": 12, "mods": [{ "mark": "paid_levy", "dc": -2 }], "lock": { "mark": "short_cash", "reason": "You have no cash left." } },
+        { "approach": "gragra", "label": "Say the Chairman said to let you through", "dc": 13, "mods": [{ "mark": "agbero_friend", "dc": -3 }, { "mark": "agbero_grudge", "dc": 3 }] },
+        { "approach": "wisdom", "label": "Walk the road first and check the potholes", "dc": 11, "mods": [{ "mark": "shortcut", "dc": -3 }] }
+      ],
+      "next": {
+        "decisive": { "to": "client_call", "recap": { "default": "{winner} gets the car through the potholes calmly. {loser} spends the ride gripping the seat.", "coop": "You get the car through the potholes calmly." }, "set": [{ "to": "winner", "mark": "calm" }, { "to": "loser", "mark": "sweaty" }] },
+        "both_fail": { "to": "client_call", "recap": "The car bounces, scrapes and stalls. You push it out together as the boys watch.", "set": [{ "to": "all", "mark": "sweaty" }] },
+        "tie": { "to": "client_call", "recap": "You both get through with a cracked bumper." }
+      }
+    },
+    "crawl": {
+      "title": "Inch by Inch",
+      "text": "Horns, hawkers with sachet water and plantain chips, and a danfo squeezing in beside you. Ten minutes become twenty. Everyone in the car is thinking about the same dinner, and nobody wants to say it.",
+      "stakes": "Keeping your nerve while the clock runs.",
+      "twists": [
+        { "if": "paid_levy", "text": "{holder} has paid and wants to be thanked for it." },
+        { "if": "short_cash", "text": "{holder} is counting coins." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Buy water and plantain chips from a hawker and make friends", "dc": 11, "lock": { "mark": "short_cash", "reason": "You have no cash for plantain chips." } },
+        { "approach": "hustle", "label": "Step out and walk to the bridge to look at the road", "dc": 13, "mods": [{ "mark": "sweaty", "dc": 2 }] },
+        { "approach": "gragra", "label": "Shout at the danfo to give way", "dc": 13, "mods": [{ "mark": "on_camera", "dc": 3 }] },
+        { "approach": "wisdom", "label": "Call the client and warn them early", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "client_call", "recap": { "default": "{winner} keeps their cool while the car crawls. {loser} is the one pacing in their seat.", "coop": "You keep your cool while the car crawls." }, "set": [{ "to": "winner", "mark": "calm" }, { "to": "loser", "mark": "sweaty" }] },
+        "both_fail": { "to": "client_call", "recap": "Nothing changes, and you both start sweating.", "set": [{ "to": "all", "mark": "sweaty" }] },
+        "tie": { "to": "client_call", "recap": "A hawker sells you both a bag of chips and a rumour of a clear road." }
+      }
+    },
+    "client_call": {
+      "title": "Where Are You?",
+      "text": "The phone rings, and it is the client's assistant: 'We start in forty minutes. I can hear horns. Are you sure you are coming?' Whoever answers sets the tone for the whole evening.",
+      "stakes": "The client's confidence.",
+      "twists": [
+        { "if": "calm", "text": "{holder} sounds like someone who has everything under control." },
+        { "if": "sweaty", "text": "{holder} sounds out of breath." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Reassure her with a joke and a promise", "dc": 12, "mods": [{ "mark": "calm", "dc": -2 }, { "mark": "sweaty", "dc": 2 }] },
+        { "approach": "hustle", "label": "Promise to be there in twenty minutes", "dc": 13, "mods": [{ "mark": "shortcut", "dc": -2 }] },
+        { "approach": "gragra", "label": "Say you are already in the lobby", "dc": 13, "mods": [{ "mark": "on_camera", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Admit it is the traffic and offer to start on the phone", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "big_man", "recap": { "default": "{winner} sounds calm and the client relaxes. {loser} is still wiping their forehead.", "coop": "You sound calm and the client relaxes." }, "set": [{ "to": "winner", "mark": "calm" }, { "to": "loser", "mark": "sweaty" }] },
+        "both_fail": { "to": "big_man", "recap": "The line crackles, and the assistant says she will call back. She does not.", "set": [{ "to": "all", "mark": "sweaty" }] },
+        "tie": { "to": "big_man", "recap": "She says she will keep seats for you both." }
+      }
+    },
+    "big_man": {
+      "title": "The Chairman Himself",
+      "text": {
+        "default": "An SUV blocks the road. The real Chairman steps out in a clean agbada, because the boys called him. 'Who is the one disrespecting my people?' he asks, and every eye in the traffic turns to the back of your Uber. {rival} says nothing and hopes it is you.",
+        "coop": "An SUV blocks the road. The real Chairman steps out in a clean agbada, because the boys called him. 'Who is the one disrespecting my people?' he asks, and every eye in the traffic turns to the back of your Uber. You and {partner} look at each other."
+      },
+      "stakes": "Being let through without losing money or face.",
+      "twists": [
+        { "if": "agbero_friend", "text": "{holder} is being waved over like an old friend." },
+        { "if": "agbero_grudge", "text": "{holder} is the one he points at." },
+        { "if": "paid_levy", "text": "{holder} gets a nod: 'This one don pay.'" },
+        { "if": "on_camera", "text": "{holder} has a phone pointed at them." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Greet him with both hands and apologise warmly", "dc": 12, "mods": [{ "mark": "agbero_friend", "dc": -3 }, { "mark": "agbero_grudge", "dc": 3 }, { "mark": "paid_levy", "dc": -2 }] },
+        { "approach": "hustle", "label": "Offer a clean ₦5,000 and a handshake", "dc": 13, "mods": [{ "mark": "paid_levy", "dc": -2 }], "lock": { "mark": "short_cash", "reason": "You have no cash left." } },
+        { "approach": "gragra", "label": "Say your boss knows the governor", "dc": 13, "mods": [{ "mark": "agbero_grudge", "dc": 3 }], "lock": { "mark": "on_camera", "reason": "A phone is filming you." } },
+        { "approach": "wisdom", "label": "Ask politely what the problem is and listen", "dc": 11, "mods": [{ "mark": "driver_ally", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "hotel_gate", "recap": { "default": "The Chairman smiles at {winner} and waves the Uber on. {loser} gets a long look and a muttered warning.", "coop": "The Chairman smiles and waves the Uber on." }, "set": [{ "to": "winner", "mark": "agbero_friend" }, { "to": "loser", "mark": "agbero_grudge" }] },
+        "both_fail": { "to": "hotel_gate", "recap": "He is not impressed with either of you. Mr. Femi pays him with a sigh and mutters about deducting it from your tip.", "set": [{ "to": "all", "mark": "short_cash" }] },
+        "tie": { "to": "hotel_gate", "recap": "He tells the boys to let the car through and walks back to his SUV." }
+      }
+    },
+    "hotel_gate": {
+      "title": "The Hotel Gate",
+      "text": "7:22 pm. The hotel security says the car must park across the road and the guests must walk. It is raining lightly. Your client is inside, and the dinner starts in eight minutes.",
+      "stakes": "Arriving in time and looking composed.",
+      "twists": [
+        { "if": "calm", "text": "{holder} still looks sharp." },
+        { "if": "sweaty", "text": "{holder} looks like a wet towel." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Smile at security and ask for an umbrella", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }, { "mark": "sweaty", "dc": 2 }] },
+        { "approach": "hustle", "label": "Jog across the road and into the lobby", "dc": 13, "mods": [{ "mark": "sweaty", "dc": 2 }] },
+        { "approach": "gragra", "label": "Tell security you are the main guest", "dc": 13, "mods": [{ "mark": "on_camera", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Wait for the rain to ease and fix your shirt", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "lobby", "recap": { "default": "{winner} walks in looking like they planned it. {loser} walks in two steps behind, dripping.", "coop": "You walk in looking like you planned it." }, "set": [{ "to": "winner", "mark": "calm" }, { "to": "loser", "mark": "sweaty" }] },
+        "both_fail": { "to": "lobby", "recap": "Both of you arrive soaked and out of breath.", "set": [{ "to": "all", "mark": "sweaty" }] },
+        "tie": { "to": "lobby", "recap": "You reach the lobby together, equally damp." }
+      }
+    },
+    "lobby": {
+      "title": "The Lobby",
+      "text": {
+        "default": "The client is at the table with two empty chairs. You and {rival} walk in together, both late and both pretending you are not. One of you will do the talking, and the other will watch the promotion walk away.",
+        "coop": "The client is at the table with two empty chairs. You and {partner} walk in together, both late and both pretending you are not. One mistake now and the account is gone."
+      },
+      "stakes": { "default": "The client's signature, and the promotion.", "coop": "The client's signature." },
+      "twists": [
+        { "if": "calm", "text": "{holder} looks like the one who planned the whole evening." },
+        { "if": "sweaty", "text": "{holder} is dabbing their forehead with a napkin." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Apologise with a smile and a story about the traffic", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }, { "mark": "sweaty", "dc": 2 }] },
+        { "approach": "hustle", "label": "Slide the contract across before he orders", "dc": 13 },
+        { "approach": "gragra", "label": "Say the delay was a deliberate security check", "dc": 13, "lock": { "mark": "on_camera", "reason": "The video of you arguing is on the client's phone." } },
+        { "approach": "wisdom", "label": "Let the client talk first and listen", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }] }
+      ],
+      "next": { "default": null }
+    }
+  },
+  "endings": {
+    "win": "You walked in two minutes late and still looked like the calm one. The client signed with you, and the promotion came on Monday. {loser} has been quietly explaining the road to everyone.",
+    "loss": "You arrived at the table to find {winner} already finishing the pitch. The promotion went to them, and you still have the wet shirt.",
+    "draw": "The client signed with both of you and said she could not decide, so the promotion is now a joint 'project'.",
+    "success": "You walked in together, breathless, and the client signed on the spot. The boss said she had never seen two people so grateful for a hotel.",
+    "fail": "The client had already left by the time you arrived. The account was gone, and the boss had a few questions about the Uber."
+  },
+  "epilogues": [
+    { "if": "agbero_friend", "text": "{holder} still has Chairman Kayode's number saved as 'Road Chairman'." },
+    { "if": "paid_levy", "text": "{holder} is still waiting for the company to refund the levy." },
+    { "if": "on_camera", "text": "The video of {holder} and the agbero got forty thousand views by Monday." },
+    { "if": "driver_ally", "text": "Mr. Femi now picks up {holder} every Friday." },
+    { "if": "sweaty", "text": "{holder} spent the dinner dabbing sweat with a menu." },
+    { "if": "shortcut", "text": "{holder} now sells the back road to everyone in the office." },
+    { "if": "agbero_grudge", "text": "{holder} avoids that stretch of road after dark." }
+  ]
+}

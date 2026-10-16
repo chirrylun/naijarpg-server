@@ -1,7 +1,7 @@
 export const BALANCE = {
   roundSeconds: 40,
   resultDelayMs: 6500,
-  maxRounds: 6,
+  maxRounds: 8,
   maxModifier: 3,
   maxTotalModifier: 4,
  minTotalModifier: -2,

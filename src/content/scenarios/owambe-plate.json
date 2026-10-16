@@ -1,0 +1,350 @@
+{
+  "id": "owambe-plate",
+  "title": "Plate for the Roommate",
+  "tagline": "One owambe, two hungry roommates, and a bet over who brings home the better plate.",
+  "modes": ["rival", "coop"],
+  "formats": ["1v1"],
+  "start": "gate",
+  "marks": {
+    "kitchen_pass": { "label": "Kitchen pass", "tip": "Aunty Bisi trusts you. Charm and Hustle get easier at the food.", "rounds": 3 },
+    "family_seat": { "label": "Family table", "tip": "You sit with the real family. Safe from the MC, but bluffing gets harder because they know everyone.", "rounds": 3 },
+    "high_table": { "label": "High table", "tip": "People think you matter. Bluffing gets easier, until somebody checks.", "rounds": 3 },
+    "stash_spot": { "label": "Knows the stash", "tip": "You know where the take-home packs are hidden. Wisdom gets easier.", "rounds": 4 },
+    "cold_rice": { "label": "Last in line", "tip": "You are at the back of every queue. Hustle gets harder.", "rounds": 2 },
+    "watched": { "label": "Watched by security", "tip": "An usher has his eye on you. Bluffing gets harder.", "rounds": 3 },
+    "mother_fan": { "label": "Bride's mother likes you", "tip": "She vouches for you. Charm and Bluffing get easier.", "rounds": 3 },
+    "full_bag": { "label": "Full bag", "tip": "You have the food, but it is heavy. Hustle gets harder.", "rounds": 3 },
+    "dance_hero": { "label": "Dance floor hero", "tip": "The crowd loves you. Charm gets easier.", "rounds": 3 },
+    "called_out": { "label": "Called out on the mic", "tip": "The whole hall heard your name. Bluffing is off the table.", "rounds": 2 },
+    "aunty_grudge": { "label": "On Aunty's bad side", "tip": "The serving aunty is watching you. Charm gets harder.", "rounds": 3 }
+  },
+  "scenes": {
+    "gate": {
+      "title": "The Gate",
+      "text": {
+        "default": "Surulere, Saturday, 3 pm. The owambe is loud and the jollof smell reaches the gate. You and {rival} are roommates who both promised the flat a plate, and whoever brings home the better haul skips the dishes for a month. The usher is checking names.",
+        "coop": "Surulere, Saturday, 3 pm. The owambe is loud and the jollof smell reaches the gate. You and {partner} promised four hungry roommates a full tray, and they are waiting on a video call. The usher is checking names."
+      },
+      "stakes": { "default": "Getting in with the upper hand.", "coop": "Getting both of you in and fed." },
+      "choices": [
+        { "approach": "charm", "label": "Compliment the usher's gele and ask for a seat near the food", "dc": 12 },
+        { "approach": "hustle", "label": "Slip into the guest line and move fast", "dc": 13 },
+        { "approach": "gragra", "label": "Announce loudly: 'I am from the bride's side!'", "dc": 12 },
+        { "approach": "wisdom", "label": "Hang back and watch where the food goes first", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "kitchen", "recap": { "default": "The usher loves {winner}'s compliment and waves them to the serving tent. {loser} gets a polite 'wait over there'.", "coop": "The usher loves it and waves you both to the serving tent." }, "set": [{ "to": "winner", "mark": "kitchen_pass" }, { "to": "loser", "mark": "cold_rice" }] },
+          "hustle": { "to": "family_table", "recap": { "default": "{winner} cuts through the line and lands a seat with the family. {loser} is stuck behind a wall of aso ebi.", "coop": "You cut through the line and land seats with the family." }, "set": [{ "to": "winner", "mark": "family_seat" }, { "to": "loser", "mark": "cold_rice" }] },
+          "gragra": { "to": "high_table", "recap": { "default": "{winner} says 'bride's side' so loudly the usher bows. {loser} is held at the gate while he checks the list.", "coop": "You say 'bride's side' so loudly the usher bows." }, "set": [{ "to": "winner", "mark": "high_table" }, { "to": "loser", "mark": "watched" }] },
+          "wisdom": { "to": "back_gate", "recap": { "default": "{winner} spots the caterer's van and the back entrance. {loser} gets lost in the main crowd.", "coop": "You spot the caterer's van and the back entrance." }, "set": [{ "to": "winner", "mark": "stash_spot" }, { "to": "loser", "mark": "cold_rice" }] }
+        },
+        "both_fail": { "to": "queue", "recap": "The usher sees you both trying too hard and sends you to the back of a very long line.", "set": [{ "to": "all", "mark": "cold_rice" }] },
+        "tie": { "to": "family_table", "recap": "You both reach the door together, so the usher seats you at the same table." },
+        "same": { "to": "family_table", "recap": "You both used the same line, so the usher decides you must be together and keeps an eye on you.", "set": [{ "to": "all", "mark": "watched" }] }
+      }
+    },
+    "queue": {
+      "title": "The Long Line",
+      "text": "The line crawls past the cake table. People walk by with plates the size of car tyres, and the jollof smell is torture. A boy selling zobo looks like the only person who knows where everything is.",
+      "stakes": "Getting out of the line with something.",
+      "choices": [
+        { "approach": "charm", "label": "Buy a cup of zobo and ask the boy where the staff eat", "dc": 11 },
+        { "approach": "hustle", "label": "Cut in beside a cousin you pretend to know", "dc": 13, "mods": [{ "mark": "cold_rice", "dc": 2 }] },
+        { "approach": "gragra", "label": "Complain loudly that the line is too slow", "dc": 13, "mods": [{ "mark": "watched", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Use the wait to study how the food moves", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "foil_stash", "recap": { "default": "The zobo boy points {winner} to a tent behind the hall. {loser} is still staring at the cake.", "coop": "The zobo boy points you to a tent behind the hall." }, "set": [{ "to": "winner", "mark": "stash_spot" }] },
+          "wisdom": { "to": "foil_stash", "recap": { "default": "{winner} notices where the servers vanish with foil packs. {loser} just keeps inching forward.", "coop": "You notice where the servers vanish with foil packs." }, "set": [{ "to": "winner", "mark": "stash_spot" }] },
+          "default": { "to": "spray_floor", "recap": { "default": "{winner} bursts out of the line into the dancing crowd. {loser} gets shoved back into the queue.", "coop": "You burst out of the line into the dancing crowd." }, "set": [{ "to": "winner", "mark": "dance_hero" }, { "to": "loser", "mark": "cold_rice" }] }
+        },
+        "both_fail": { "to": "spray_floor", "recap": "A cousin pulls you both onto the dance floor to 'show your steps'.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "foil_stash", "recap": "The zobo boy sells you both a cup and the same whisper." }
+      }
+    },
+    "kitchen": {
+      "title": "Behind the Pot",
+      "text": {
+        "default": "Aunty Bisi runs the serving tent like a general. She hands you a ladle and says, 'Carry this out, and do not touch the pots.' The take-home foil packs are stacked behind her, and {rival} is eyeing them too.",
+        "coop": "Aunty Bisi runs the serving tent like a general. She hands you a ladle and says, 'Carry this out, and do not touch the pots.' The take-home foil packs are stacked behind her, and you and {partner} are eyeing them."
+      },
+      "stakes": "Aunty Bisi's trust, and the foil packs.",
+      "twists": [
+        { "if": "kitchen_pass", "text": "{holder} is allowed behind the pots with a ladle." },
+        { "if": "cold_rice", "text": "{holder} is still outside, smelling the rice." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Keep Aunty Bisi laughing with jokes about the groom", "dc": 11, "mods": [{ "mark": "kitchen_pass", "dc": -2 }, { "mark": "aunty_grudge", "dc": 2 }] },
+        { "approach": "hustle", "label": "Carry two trays at once to impress her", "dc": 13, "mods": [{ "mark": "kitchen_pass", "dc": -2 }, { "mark": "cold_rice", "dc": 2 }] },
+        { "approach": "gragra", "label": "Tell her the bride's mother promised you a pack", "dc": 13, "mods": [{ "mark": "watched", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Count the packs and only take what is left over", "dc": 11, "mods": [{ "mark": "stash_spot", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "foil_stash", "recap": { "default": "Aunty Bisi laughs so hard she shows {winner} where the foil packs hide. {loser} is handed a mop.", "coop": "Aunty Bisi laughs so hard she shows you where the foil packs hide." }, "set": [{ "to": "winner", "mark": "stash_spot" }, { "to": "loser", "mark": "aunty_grudge" }] },
+          "wisdom": { "to": "foil_stash", "recap": { "default": "{winner} counts the packs and quietly claims the leftovers. {loser} stands there holding a ladle.", "coop": "You count the packs and quietly claim the leftovers." }, "set": [{ "to": "winner", "mark": "stash_spot" }] },
+          "default": { "to": "spray_floor", "recap": { "default": "{winner} carries the tray out through the dancers and the crowd cheers. {loser} gets a look from Aunty Bisi.", "coop": "You carry the tray out through the dancers and the crowd cheers." }, "set": [{ "to": "winner", "mark": "dance_hero" }, { "to": "loser", "mark": "aunty_grudge" }] }
+        },
+        "both_fail": { "to": "spray_floor", "recap": "Jollof lands on the floor and Aunty Bisi throws you both out through the dance floor.", "set": [{ "to": "all", "mark": "aunty_grudge" }] },
+        "tie": { "to": "foil_stash", "recap": "Aunty Bisi cannot choose, so she hands you both an empty tray and the same look." }
+      }
+    },
+    "family_table": {
+      "title": "The Family Table",
+      "text": {
+        "default": "You are seated among aunties and cousins while a loud cousin tells everyone how the groom proposed. Plates are served small here, and {rival} is hovering behind your chair.",
+        "coop": "You are seated among aunties and cousins while a loud cousin tells everyone how the groom proposed. Plates are served small here, and {partner} is next to you, plotting."
+      },
+      "stakes": "A bigger portion, and a way to the foil packs.",
+      "twists": [{ "if": "family_seat", "text": "{holder} is safe with the family, but everyone is watching." }],
+      "choices": [
+        { "approach": "charm", "label": "Tell the aunties their gele is the best in the hall", "dc": 11, "mods": [{ "mark": "family_seat", "dc": -2 }] },
+        { "approach": "hustle", "label": "Offer to carry plates to the elders", "dc": 12 },
+        { "approach": "gragra", "label": "Claim to be the groom's cousin from Ibadan", "dc": 13, "mods": [{ "mark": "family_seat", "dc": 3 }, { "mark": "watched", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Listen to the gossip and learn the names", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "table_talk", "recap": { "default": "The aunties adopt {winner} and pass them the best meat. {loser} gets a polite smile.", "coop": "The aunties adopt you both and pass you the best meat." }, "set": [{ "to": "winner", "mark": "mother_fan" }, { "to": "loser", "mark": "watched" }] },
+          "wisdom": { "to": "foil_stash", "recap": { "default": "{winner} overhears which aunty guards the foil packs. {loser} is still hearing about the proposal.", "coop": "You overhear which aunty guards the foil packs." }, "set": [{ "to": "winner", "mark": "stash_spot" }] },
+          "default": { "to": "spray_floor", "recap": { "default": "{winner} is pulled onto the dance floor by the cousins. {loser} is left holding someone's plate.", "coop": "The cousins pull you onto the dance floor." }, "set": [{ "to": "winner", "mark": "dance_hero" }, { "to": "loser", "mark": "cold_rice" }] }
+        },
+        "both_fail": { "to": "spray_floor", "recap": "The aunties see through you both, and a cousin drags you onto the floor.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "table_talk", "recap": "Every aunty wants to talk to both of you at once." }
+      }
+    },
+    "high_table": {
+      "title": "The High Table",
+      "text": {
+        "default": "Your bluff worked, and you are at the high table with a view of the whole hall. Waiters bring small chops first, and {rival}, lower down, is watching you with narrow eyes.",
+        "coop": "Your bluff worked, and you are at the high table with a view of the whole hall. {partner} is beside you, trying to look important."
+      },
+      "stakes": "Staying believed while the food arrives.",
+      "twists": [
+        { "if": "high_table", "text": "{holder} is treated like a VIP, and nobody has checked yet." },
+        { "if": "watched", "text": "{holder} can feel an usher staring from the door." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Compliment the groom's father on his agbada", "dc": 11, "mods": [{ "mark": "high_table", "dc": -2 }] },
+        { "approach": "hustle", "label": "Ask a waiter for extra chops 'for your family'", "dc": 12 },
+        { "approach": "gragra", "label": "Wave at people as if you know them", "dc": 13, "lock": { "mark": "watched", "reason": "An usher is watching you too closely." } },
+        { "approach": "wisdom", "label": "Say little and eat slowly", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "table_talk", "recap": { "default": "The groom's father beams at {winner} and pulls them closer. {loser} gets a stiff nod.", "coop": "The groom's father beams at you and pulls you closer." }, "set": [{ "to": "winner", "mark": "mother_fan" }, { "to": "loser", "mark": "watched" }] },
+          "wisdom": { "to": "foil_stash", "recap": { "default": "{winner} notices which waiter carries foil packs out the side door. {loser} is still staring at the cake.", "coop": "You notice which waiter carries foil packs out the side door." }, "set": [{ "to": "winner", "mark": "stash_spot" }] },
+          "default": { "to": "spray_floor", "recap": { "default": "A waiter slips {winner} an extra plate and the dance floor opens up. {loser} is left with the small chops.", "coop": "A waiter slips you an extra plate and the dance floor opens up." }, "set": [{ "to": "winner", "mark": "full_bag" }, { "to": "loser", "mark": "watched" }] }
+        },
+        "both_fail": { "to": "table_talk", "recap": "A waiter squints at you both: 'Which table did I say you belong to?'", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "table_talk", "recap": "The MC announces a toast to the table, and everyone looks at you both." }
+      }
+    },
+    "back_gate": {
+      "title": "The Back Gate",
+      "text": "The caterer's van is parked behind the hall with its doors open. Boys carry empty pots out and full trays in. Nobody guards the gate, but everybody is busy.",
+      "stakes": "Getting to the food before anyone checks.",
+      "twists": [{ "if": "stash_spot", "text": "{holder} already knows which van carries the packs." }],
+      "choices": [
+        { "approach": "charm", "label": "Greet the van boys like old friends", "dc": 11 },
+        { "approach": "hustle", "label": "Grab a stack of empty trays and walk in like staff", "dc": 13 },
+        { "approach": "gragra", "label": "Tell the driver the caterer said to give you a box", "dc": 13 },
+        { "approach": "wisdom", "label": "Wait and watch who goes in and out first", "dc": 11, "mods": [{ "mark": "stash_spot", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "foil_stash", "recap": { "default": "The van boys laugh with {winner} and point to the stash. {loser} stays at the gate and gets ignored.", "coop": "The van boys laugh with you and point to the stash." }, "set": [{ "to": "winner", "mark": "kitchen_pass" }] },
+          "wisdom": { "to": "foil_stash", "recap": { "default": "{winner} waits, watches and walks in behind the right boy. {loser} is still trying to look busy.", "coop": "You wait, watch and walk in behind the right boy." }, "set": [{ "to": "winner", "mark": "stash_spot" }] },
+          "default": { "to": "spray_floor", "recap": { "default": "{winner} marches through the hall with trays and nobody stops them. {loser} follows, looking guilty.", "coop": "You march through the hall with trays and nobody stops you." }, "set": [{ "to": "winner", "mark": "full_bag" }, { "to": "loser", "mark": "watched" }] }
+        },
+        "both_fail": { "to": "spray_floor", "recap": "A van boy shouts 'Thief!' as a joke, and half the hall turns to look. You both run onto the dance floor.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "foil_stash", "recap": "The van boys shrug and let you both inside." }
+      }
+    },
+    "foil_stash": {
+      "title": "The Foil-Pack Stash",
+      "text": {
+        "default": "Behind the tent, forty foil packs sit under a cloth, guarded by one tired boy on a plastic chair. Whoever leaves with the most packs is winning the dishes bet, and {rival} has found the stash too.",
+        "coop": "Behind the tent, forty foil packs sit under a cloth, guarded by one tired boy on a plastic chair. You and {partner} need enough packs for the whole flat."
+      },
+      "stakes": { "default": "The packs, and who carries them out.", "coop": "Packs for the whole flat." },
+      "twists": [
+        { "if": "stash_spot", "text": "{holder} knew exactly where to look." },
+        { "if": "kitchen_pass", "text": "{holder} can drop Aunty Bisi's name." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Make the boy laugh and ask for 'one small pack'", "dc": 11, "mods": [{ "mark": "kitchen_pass", "dc": -2 }, { "mark": "stash_spot", "dc": -2 }] },
+        { "approach": "hustle", "label": "Grab an armful and walk off fast", "dc": 13, "mods": [{ "mark": "cold_rice", "dc": 2 }, { "mark": "full_bag", "dc": 2 }] },
+        { "approach": "gragra", "label": "Tell him Aunty Bisi said to give you ten", "dc": 13, "mods": [{ "mark": "aunty_grudge", "dc": 3 }] },
+        { "approach": "wisdom", "label": "Offer to carry the empty trays so the packs go with you", "dc": 11, "mods": [{ "mark": "stash_spot", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "mc_callout", "recap": { "default": "The boy likes {winner} and hands over four packs with a wink. {loser} gets one pack and a glare.", "coop": "The boy likes you and hands over four packs with a wink." }, "set": [{ "to": "winner", "mark": "full_bag" }] },
+          "hustle": { "to": "mc_callout", "recap": { "default": "{winner} grabs six packs and vanishes before he looks up. {loser} is left empty-handed.", "coop": "You grab six packs and vanish before he looks up." }, "set": [{ "to": "winner", "mark": "full_bag" }, { "to": "loser", "mark": "watched" }] },
+          "default": { "to": "mc_callout", "recap": { "default": "{winner} plays the boy perfectly and leaves with a respectable bag. {loser} gets two packs.", "coop": "You play the boy perfectly and leave with a respectable bag." }, "set": [{ "to": "winner", "mark": "full_bag" }] }
+        },
+        "both_fail": { "to": "mc_callout", "recap": "The boy sits on the packs and refuses to move. You each leave with one small pack.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "mc_callout", "recap": "He gives you both exactly two packs and a lecture." }
+      }
+    },
+    "table_talk": {
+      "title": "Table Talk",
+      "text": {
+        "default": "The bride's mother taps her glass and asks every guest at the table to say how they know her daughter. When it reaches you, she smiles and waits. {rival} is two chairs away, listening for your answer.",
+        "coop": "The bride's mother taps her glass and asks every guest at the table to say how they know her daughter. When it reaches you, she smiles and waits. {partner} is beside you, ready to back your story."
+      },
+      "stakes": { "default": "Being believed, and the front of the food line.", "coop": "Keeping your story straight together." },
+      "twists": [
+        { "if": "high_table", "text": "{holder} was introduced as 'someone important', so everyone is waiting for the story." },
+        { "if": "family_seat", "text": "{holder} could be checked against the family tree at any moment." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Tell a warm, funny story about the bride in school", "dc": 12 },
+        { "approach": "hustle", "label": "Offer to help the little ones fill their plates", "dc": 12 },
+        { "approach": "gragra", "label": "Invent a long friendship with names and dates", "dc": 13, "mods": [{ "mark": "high_table", "dc": -2 }, { "mark": "mother_fan", "dc": -2 }], "lock": { "mark": "family_seat", "reason": "The family knows every cousin by name." } },
+        { "approach": "wisdom", "label": "Say you know the groom's side and ask about the cake", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "mc_callout", "recap": { "default": "The bride's mother tears up at {winner}'s story and squeezes their hand. {loser} claps politely.", "coop": "The bride's mother tears up at your story and squeezes your hand." }, "set": [{ "to": "winner", "mark": "mother_fan" }] },
+          "default": { "to": "mc_callout", "recap": { "default": "{winner} gets a smile and a heavy plate. {loser} gets a 'hm' and a smaller plate.", "coop": "You get a smile and a heavy plate." }, "set": [{ "to": "winner", "mark": "full_bag" }, { "to": "loser", "mark": "watched" }] }
+        },
+        "both_fail": { "to": "mc_callout", "recap": "Her smile gets thinner with every answer. Neither story adds up.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "mc_callout", "recap": "She asks the next person before either of you finishes." }
+      }
+    },
+    "spray_floor": {
+      "title": "Spray Floor",
+      "text": {
+        "default": "The band hits a high-life song and the floor erupts. Notes fly through the air, and a plate of jollof sits on the edge of the stage with nobody guarding it. {rival} is two steps from it.",
+        "coop": "The band hits a high-life song and the floor erupts. Notes fly through the air, and a plate of jollof sits on the edge of the stage with nobody guarding it. You and {partner} are two steps from it."
+      },
+      "stakes": "The plate on the stage, and the crowd's love.",
+      "twists": [
+        { "if": "dance_hero", "text": "{holder} already has the crowd's attention." },
+        { "if": "cold_rice", "text": "{holder} is hungry and slightly sweaty." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Dance with the bride's grandmother", "dc": 11, "mods": [{ "mark": "dance_hero", "dc": -2 }] },
+        { "approach": "hustle", "label": "Dash for the plate through the dancers", "dc": 13, "mods": [{ "mark": "cold_rice", "dc": 2 }, { "mark": "full_bag", "dc": 2 }] },
+        { "approach": "gragra", "label": "Yell 'Let the real dancers through!'", "dc": 13, "mods": [{ "mark": "watched", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Wait for the song to change, then take the plate quietly", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "mc_callout", "recap": { "default": "The grandmother adores {winner} and the whole floor cheers. {loser} is trampled by happy cousins.", "coop": "The grandmother adores you and the whole floor cheers." }, "set": [{ "to": "winner", "mark": "dance_hero" }] },
+          "hustle": { "to": "mc_callout", "recap": { "default": "{winner} dives through the dancers and returns with the plate and a story. {loser} is left spinning.", "coop": "You dive through the dancers and return with the plate and a story." }, "set": [{ "to": "winner", "mark": "full_bag" }] },
+          "default": { "to": "mc_callout", "recap": { "default": "{winner} claims the plate while the song changes. {loser} is still doing the last dance move.", "coop": "You claim the plate while the song changes." }, "set": [{ "to": "winner", "mark": "full_bag" }] }
+        },
+        "both_fail": { "to": "mc_callout", "recap": "You both crash into the stage and the plate lands in the drummer's lap.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "mc_callout", "recap": "You both grab the plate at once and split the jollof on the spot." }
+      }
+    },
+    "mc_callout": {
+      "title": "The MC Has a Question",
+      "text": {
+        "default": "The MC grabs the microphone: 'Will everyone who is NOT from the family please raise a hand?' The hall laughs and goes quiet. Your bag is under the table. {rival} stares straight ahead.",
+        "coop": "The MC grabs the microphone: 'Will everyone who is NOT from the family please raise a hand?' The hall laughs and goes quiet. Your bag is under the table. {partner} stares straight ahead."
+      },
+      "stakes": { "default": "Not being named on the mic.", "coop": "Keeping both of you out of the spotlight." },
+      "twists": [
+        { "if": "family_seat", "text": "{holder} sits at the family table and is safe from the question." },
+        { "if": "high_table", "text": "{holder} is a VIP who may be asked for a name." },
+        { "if": "full_bag", "text": "{holder} has a bag that is hard to hide." },
+        { "if": "mother_fan", "text": "{holder} has the bride's mother nodding encouragingly." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Laugh and clap as if the joke is on someone else", "dc": 12, "mods": [{ "mark": "dance_hero", "dc": -3 }, { "mark": "mother_fan", "dc": -3 }] },
+        { "approach": "hustle", "label": "Slip out to the car park for 'a phone call'", "dc": 13, "mods": [{ "mark": "full_bag", "dc": 3 }] },
+        { "approach": "gragra", "label": "Stand up and claim to be family", "dc": 13, "mods": [{ "mark": "high_table", "dc": -2 }, { "mark": "mother_fan", "dc": -2 }, { "mark": "watched", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Raise your hand and joke that you came for the jollof", "dc": 11 }
+      ],
+      "next": {
+        "decisive": { "to": "pot_crisis", "recap": { "default": "{loser} is named on the mic and the whole hall turns round. {winner} stays in the shadows with the bag.", "coop": "The MC points at one of you, and the hall turns round. You laugh it off together." }, "set": [{ "to": "loser", "mark": "called_out" }] },
+        "both_fail": { "to": "pot_crisis", "recap": "The MC points at you both: 'You two, near the cake!' The hall roars.", "set": [{ "to": "all", "mark": "called_out" }] },
+        "tie": { "to": "pot_crisis", "recap": "The MC mixes up your names, so nobody is sure who he meant." }
+      }
+    },
+    "pot_crisis": {
+      "title": "The Last Pot",
+      "text": "The caterer shouts that the jollof is finished. A hush falls, then a small riot of plates begins. One pot is left, and it sits next to a large aunty with a ladle and a rule: 'Family first.'",
+      "stakes": "The last scoop, and what the aunty remembers about you.",
+      "twists": [
+        { "if": "called_out", "text": "{holder} was just named on the mic, and the aunty remembers." },
+        { "if": "kitchen_pass", "text": "{holder} is the one Aunty Bisi allows near the pot." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Offer to carry the pot to the family table", "dc": 12, "mods": [{ "mark": "kitchen_pass", "dc": -3 }, { "mark": "aunty_grudge", "dc": 3 }] },
+        { "approach": "hustle", "label": "Join the scramble for the pot", "dc": 13, "mods": [{ "mark": "full_bag", "dc": 3 }, { "mark": "called_out", "dc": 2 }] },
+        { "approach": "gragra", "label": "Declare the bride asked you to guard the last pot", "dc": 13, "lock": { "mark": "called_out", "reason": "You were just called out on the mic." } },
+        { "approach": "wisdom", "label": "Suggest she serves the elders first, then fills foil packs", "dc": 11, "mods": [{ "mark": "stash_spot", "dc": -2 }, { "mark": "mother_fan", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "exit_gate", "recap": { "default": "The aunty hands {winner} the pot handle and a scoop. {loser} is told to hold the door.", "coop": "The aunty hands you the pot handle and a scoop." }, "set": [{ "to": "winner", "mark": "kitchen_pass" }, { "to": "loser", "mark": "aunty_grudge" }] },
+          "default": { "to": "exit_gate", "recap": { "default": "{winner} comes out of the scramble with a full pack and a torn sleeve. {loser} gets an elbow.", "coop": "You come out of the scramble with a full pack and a torn sleeve." }, "set": [{ "to": "winner", "mark": "full_bag" }, { "to": "loser", "mark": "watched" }] }
+        },
+        "both_fail": { "to": "exit_gate", "recap": "The aunty drops the ladle on the pot and declares that nobody gets any.", "set": [{ "to": "all", "mark": "watched" }] },
+        "tie": { "to": "exit_gate", "recap": "She gives each of you exactly one scoop and a stare." }
+      }
+    },
+    "exit_gate": {
+      "title": "The Bag Check",
+      "text": {
+        "default": "Security stands at the gate checking bags 'for glasses and spoons.' Your bag clinks. {rival} is right behind you, pretending not to care.",
+        "coop": "Security stands at the gate checking bags 'for glasses and spoons.' Your bag clinks. {partner} is right behind you, whistling."
+      },
+      "stakes": "Getting home with what you have.",
+      "twists": [
+        { "if": "watched", "text": "{holder} has been followed by the same usher all evening." },
+        { "if": "full_bag", "text": "{holder} is carrying a bag with a suspicious shape." },
+        { "if": "called_out", "text": "{holder} is recognised: 'Ah, the one from the mic!'" }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Greet security and tell him a funny kolanut story", "dc": 12, "mods": [{ "mark": "watched", "dc": 3 }, { "mark": "dance_hero", "dc": -2 }, { "mark": "kitchen_pass", "dc": -2 }] },
+        { "approach": "hustle", "label": "Walk fast and don't look back", "dc": 13, "mods": [{ "mark": "full_bag", "dc": 3 }] },
+        { "approach": "gragra", "label": "Say the groom's father is your uncle", "dc": 13, "lock": { "mark": "called_out", "reason": "You were named on the mic. They know your face." } },
+        { "approach": "wisdom", "label": "Open the bag yourself and show only what you want him to see", "dc": 11, "mods": [{ "mark": "stash_spot", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": { "to": "doorstep", "recap": { "default": "{winner} strolls through the gate with the bag. {loser} is stopped for a full search.", "coop": "You stroll through the gate with the bag." } },
+        "both_fail": { "to": "doorstep", "recap": "Security takes half your packs 'for the caterer'. You both walk home lighter." },
+        "tie": { "to": "doorstep", "recap": "He lets you both through with a warning." }
+      }
+    },
+    "doorstep": {
+      "title": "The Flat Is Waiting",
+      "text": {
+        "default": "Home at last. The flat smells the bag before the door opens, and the roommates line up with plates and judgment. The dishes bet is settled right here by the better haul and the better story.",
+        "coop": "Home at last. The flat smells the bag before the door opens, and four hungry roommates line up with plates and judgment. They want food and a story, and they want both now."
+      },
+      "stakes": { "default": "Skipping the dishes for a month.", "coop": "Feeding the whole flat." },
+      "choices": [
+        { "approach": "charm", "label": "Serve everyone like a hero and tell the story", "dc": 11 },
+        { "approach": "hustle", "label": "Grab the best plate for yourself first", "dc": 12 },
+        { "approach": "gragra", "label": "Exaggerate how hard you fought for the food", "dc": 12 },
+        { "approach": "wisdom", "label": "Divide the food evenly and keep one spare pack for tomorrow", "dc": 11 }
+      ],
+      "next": { "default": null }
+    }
+  },
+  "endings": {
+    "win": "Your roommates cheer you through the door, and {loser} washes dishes for a month, telling the story wrong. The pack you carried becomes a legend.",
+    "loss": "You walked in second. {winner} had already told the story and handed out plates, and the dishes are yours for a month.",
+    "draw": "The haul is exactly the same, so the flat declares a draw and makes you both wash up together.",
+    "success": "The whole flat eats well, and nobody asks how you did it.",
+    "fail": "The roommates open the bag and find crumbs. They order shawarma, and you wash the dishes."
+  },
+  "epilogues": [
+    { "if": "kitchen_pass", "text": "{holder} now gets a free plate whenever Aunty Bisi caters." },
+    { "if": "called_out", "text": "{holder} will never live down being named on the MC's microphone." },
+    { "if": "stash_spot", "text": "{holder} still knows where the foil packs are hidden at every owambe." },
+    { "if": "full_bag", "text": "{holder}'s bag was the topic of the flat's group chat for a week." },
+    { "if": "dance_hero", "text": "{holder}'s dance floor video is in the family group chat." },
+    { "if": "mother_fan", "text": "The bride's mother still asks about {holder} at every family event." },
+    { "if": "watched", "text": "An usher at the venue still remembers {holder}'s face." }
+  ]
+}
