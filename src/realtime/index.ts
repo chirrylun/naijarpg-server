@@ -4,7 +4,7 @@ import { addPresence, removePresence, liveCount } from './presence'
 import { registerEncounterSockets } from '../modules/encounters/encounters.socket';
 import { registerChatSockets } from '../modules/chat/chat.socket';
 import { leaveQueue } from '../modules/encounters/matchmaking';
-import { emitState, roomOfUser, rooms } from '../modules/encounters/rooms';
+import { emitState, roomOfUser, rooms, sendPrivate } from '../modules/encounters/rooms';
 
 async function authenticate(socket: Socket, token?: string) {
   const user = await userFromToken(token);
@@ -13,7 +13,7 @@ async function authenticate(socket: Socket, token?: string) {
   socket.join(`user:${user.id}`); // personal room: chat, star updates, etc.
   const roomId = roomOfUser.get(user.id); // reconnect mid-game: put them back in
   const room = roomId ? rooms.get(roomId) : undefined;
-  if (room) { socket.join(`room:${room.id}`); emitState(room); }
+if (room) { socket.join(`room:${room.id}`); emitState(room); sendPrivate(room, user.id); }
   return { userId: user.id, roomId: room?.id ?? null };
 }
 
