@@ -1,0 +1,348 @@
+{
+  "id": "night-return",
+  "title": "Night Don Fall",
+  "tagline": "The last danfo has dropped you. Your house is twenty minutes away. And the boys are waiting ahead.",
+  "modes": ["rival", "coop"],
+  "formats": ["1v1"],
+  "start": "junction",
+  "marks": {
+    "street_wise": { "label": "Reads the street", "tip": "You can tell when something is off. Wisdom gets easier.", "rounds": 4 },
+    "boys_know_you": { "label": "Boys know your face", "tip": "One of the boys recognises you. Charm gets easier with them.", "rounds": 3 },
+    "on_their_list": { "label": "On their list", "tip": "The boys have marked you. Charm and gra-gra get harder.", "rounds": 3 },
+    "paid_small": { "label": "Dropped something", "tip": "You already settled them. Hustle gets easier, but your pocket is lighter.", "rounds": 3 },
+    "cash_low": { "label": "Pocket don dry", "tip": "No more money to give. You cannot pay your way out.", "rounds": 3 },
+    "light_dead": { "label": "Phone dey die", "tip": "No torch and no network. Wisdom gets harder.", "rounds": 3 },
+    "cool_head": { "label": "Cool head", "tip": "You look calm and people notice. Charm gets easier.", "rounds": 3 },
+    "shaky": { "label": "Body dey shake", "tip": "Your nerves are showing. Charm gets harder.", "rounds": 3 },
+    "dropped_name": { "label": "Dropped a big name", "tip": "You used a big man's name. Gra-gra gets easier, until somebody checks.", "rounds": 3 },
+    "vigilante_friend": { "label": "Vigilante knows you", "tip": "The vigilante men trust you. Charm and wisdom get easier.", "rounds": 3 },
+    "phone_taken": { "label": "Phone in their hand", "tip": "They are holding your phone. You cannot call anybody.", "rounds": 2 }
+  },
+  "scenes": {
+    "junction": {
+      "title": "Last Stop",
+      "text": {
+        "default": "11:40 pm. The danfo drops you at the junction and zooms off. No okada. No keke. NEPA has taken light, so the whole street is dark. Your house is twenty minutes away on foot, and your phone is on 8%. {rival} lives on your street too. In the danfo, you both made a bet: whoever gets home first with phone and money still in hand, the other person buys suya tomorrow.",
+        "coop": "11:40 pm. The danfo drops you at the junction and zooms off. No okada. No keke. NEPA has taken light, so the whole street is dark. Your house is twenty minutes away on foot, and your phone is on 8%. {partner} lives on your street too. You both agreed in the danfo: nobody walks alone tonight."
+      },
+      "stakes": { "default": "Reaching home first with your phone and your money.", "coop": "Reaching home together, with nobody left behind." },
+      "choices": [
+        { "approach": "charm", "label": "Beg the last keke rider: 'Oga, abeg, one more trip. Na for my mama sake.'", "dc": 12 },
+        { "approach": "hustle", "label": "Run to the main road and catch any bike or bus", "dc": 13 },
+        { "approach": "gragra", "label": "Make a loud fake call: 'Hello? Oga Kayode? I don reach o, come meet me!'", "dc": 12 },
+        { "approach": "wisdom", "label": "Stand under the shop light and watch which road still has people", "dc": 11 }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "keke", "recap": { "default": "{winner} sweet-talks the keke man and he agrees to one last trip. {loser} just stands there, looking pitiful.", "coop": "You sweet-talk the keke man and he agrees to one last trip for both of you." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "hustle": { "to": "main_road", "recap": { "default": "{winner} runs ahead and finds the road empty but clear. {loser} is already out of breath.", "coop": "You run ahead together and find the road empty but clear." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] },
+          "gragra": { "to": "main_road", "recap": { "default": "{winner}'s fake call is so loud that two men by the roadside look away. {loser} follows behind, feeling like a small boy.", "coop": "Your fake call is so loud that two men by the roadside look away." }, "set": [{ "to": "winner", "mark": "dropped_name" }, { "to": "loser", "mark": "shaky" }] },
+          "wisdom": { "to": "inner_street", "recap": { "default": "{winner} notices a woman closing her shop. She points to the inner street where people still dey. {loser} was looking the wrong way.", "coop": "You notice a woman closing her shop. She points you to the inner street where people still dey." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "light_dead" }] }
+        },
+        "both_fail": { "to": "main_road", "recap": "You both argue about which way to go, and the last keke leaves. The street gets quieter.", "set": [{ "to": "all", "mark": "light_dead" }] },
+        "tie": { "to": "keke", "recap": "The keke man is too tired to choose, so he takes both of you." },
+        "same": { "to": "main_road", "recap": "You both did the same thing at the same time, and the rider decides you are trouble and drives off.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "default": { "to": "main_road", "recap": "You find your way onto the main road together." }
+      }
+    },
+    "keke": {
+      "title": "Last Keke",
+      "text": {
+        "default": "The keke rider is half asleep with his head on the steering wheel. 'Last trip,' he says. 'But I no go pass the bridge. After the bridge na boys dey for road.' He wants ₦1,500. {rival} is already counting money.",
+        "coop": "The keke rider is half asleep with his head on the steering wheel. 'Last trip,' he says. 'But I no go pass the bridge. After the bridge na boys dey for road.' He wants ₦1,500. You and {partner} count your money together."
+      },
+      "stakes": { "default": "A ride to the bridge, and the money in your pocket.", "coop": "Getting both of you to the bridge with money left." },
+      "twists": [
+        { "if": "cool_head", "text": "{holder} looks calm enough to bargain." },
+        { "if": "shaky", "text": "{holder} keeps looking over their shoulder." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Joke with him: 'Oga, you no go tire? Na your wife dey wait you?'", "dc": 11, "mods": [{ "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Pay ₦1,000 and jump inside before he changes his mind", "dc": 12, "mods": [{ "mark": "paid_small", "dc": -2 }] },
+        { "approach": "gragra", "label": "Insist loud: 'I dey enter this keke every night! Na my area!'", "dc": 13, "mods": [{ "mark": "dropped_name", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Ask him what the boys at the bridge dey do tonight", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "rope", "recap": { "default": "The rider laughs at {winner}'s joke and whispers a tip: 'Ask for General. Him no dey vex quick.' {loser} pretends to know already.", "coop": "The rider laughs at your joke and whispers a tip: 'Ask for General. Him no dey vex quick.'" }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] },
+          "hustle": { "to": "rope", "recap": { "default": "{winner} pays fast and gets the front seat. {loser} squeezes in the back in a bad mood.", "coop": "You pay fast and take the front seat." }, "set": [{ "to": "winner", "mark": "paid_small" }, { "to": "loser", "mark": "cash_low" }] },
+          "gragra": { "to": "rope", "recap": { "default": "{winner} insists so hard that the rider gives in. {loser} pays full price for nothing.", "coop": "You insist so hard that the rider gives in." }, "set": [{ "to": "winner", "mark": "dropped_name" }, { "to": "loser", "mark": "shaky" }] },
+          "wisdom": { "to": "rope", "recap": { "default": "{winner} learns that police patrol sometimes passes after midnight, and the boys know it. {loser} is still asking about the fare.", "coop": "You learn that police patrol sometimes passes after midnight, and the boys know it." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "light_dead" }] }
+        },
+        "both_fail": { "to": "rope", "recap": "The rider doubles the price when he hears you arguing. You both pay, and the ride feels heavy.", "set": [{ "to": "all", "mark": "cash_low" }] },
+        "tie": { "to": "rope", "recap": "The rider says, 'Make una pay ₦750 each and keep quiet.'" },
+        "default": { "to": "rope", "recap": "You get a ride to the bridge, and the keke goes quiet." }
+      }
+    },
+    "main_road": {
+      "title": "The Long Road",
+      "text": {
+        "default": "The main road is empty. Street lights dead. Only the headlights of passing cars show you the potholes. Far ahead you hear loud music and smell burning tyre. {rival} walks fast beside you and says nothing.",
+        "coop": "The main road is empty. Street lights dead. Only the headlights of passing cars show you the potholes. Far ahead you hear loud music and smell burning tyre. {partner} walks close beside you and says nothing."
+      },
+      "stakes": { "default": "Getting to the bridge before trouble finds you.", "coop": "Staying together and staying calm." },
+      "twists": [
+        { "if": "street_wise", "text": "{holder} saw the glow ahead from far and slowed down in time." },
+        { "if": "light_dead", "text": "{holder}'s phone torch just died." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": { "default": "Gist {rival} about football to keep your mind off the dark", "coop": "Gist {partner} about anything to keep your mind off the dark" }, "dc": 11, "mods": [{ "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Walk fast and stay close to the shops", "dc": 12 },
+        { "approach": "gragra", "label": "Walk in the middle of the road like you own it", "dc": 13, "mods": [{ "mark": "on_their_list", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Switch off your torch to save battery and walk beside the shops", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "rope", "recap": { "default": "{winner} makes the walk feel shorter with a funny gist. {loser} starts to feel left out.", "coop": "You make the walk feel shorter with a funny gist." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "hustle": { "to": "rope", "recap": { "default": "{winner} sets a quick pace and reaches the bridge first. {loser} is out of breath.", "coop": "You set a quick pace and reach the bridge together." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] },
+          "gragra": { "to": "rope", "recap": { "default": "A drunk man shouts at {winner} from a corner, but {winner} keeps walking like he is nothing. {loser} jumps at their own shadow.", "coop": "A drunk man shouts at you from a corner, but you keep walking like he is nothing." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "wisdom": { "to": "rope", "recap": { "default": "{winner} sees the glow ahead early and slows down. {loser} nearly walks straight into it.", "coop": "You see the glow ahead early and slow down." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "light_dead" }] }
+        },
+        "both_fail": { "to": "rope", "recap": "A motorbike zooms past too close, and you both jump into the gutter. Your heart is beating like a drum.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "tie": { "to": "rope", "recap": "You walk side by side and reach the bridge at the same time." },
+        "default": { "to": "rope", "recap": "You reach the bridge with your heart in your mouth." }
+      }
+    },
+    "inner_street": {
+      "title": "Inner Street",
+      "text": {
+        "default": "You cut into a side street to avoid the main road. Generators are roaring, a drunk man is singing at a gate, and a dog is barking somewhere. Behind you, you hear footsteps. When you stop, they stop. {rival} heard it too.",
+        "coop": "You cut into a side street to avoid the main road. Generators are roaring, a drunk man is singing at a gate, and a dog is barking somewhere. Behind you, you hear footsteps. When you stop, they stop. {partner} holds your sleeve."
+      },
+      "stakes": { "default": "Getting through without being followed.", "coop": "Getting through together." },
+      "choices": [
+        { "approach": "charm", "label": "Greet the drunk man: 'Oga, good night o. Which way for main road?'", "dc": 11, "mods": [{ "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Jump the gutter and run", "dc": 13 },
+        { "approach": "gragra", "label": "Turn round and shout: 'Who dey follow me? Show yourself!'", "dc": 12, "mods": [{ "mark": "on_their_list", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Stop at a gate and wait for the footsteps to pass", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "rope", "recap": { "default": "The drunk man laughs and shows {winner} the quickest way. {loser} is still scared of the dog.", "coop": "The drunk man laughs and shows you the quickest way." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "hustle": { "to": "rope", "recap": { "default": "{winner} clears the gutter and runs. {loser} lands inside it.", "coop": "You clear the gutter and run together." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] },
+          "gragra": { "to": "rope", "recap": { "default": "The footsteps stop. It was only a small boy with a bucket of pure water. {winner} feels brave. {loser} feels silly.", "coop": "The footsteps stop. It was only a small boy with a bucket of pure water. You both laugh, shaking." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "wisdom": { "to": "rope", "recap": { "default": "{winner} waits behind a gate and watches a man walk past without looking. {loser} nearly walks into him.", "coop": "You wait behind a gate and watch a man walk past without looking." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "light_dead" }] }
+        },
+        "both_fail": { "to": "rope", "recap": "You both stand there arguing, and the dog starts barking at you. You rush out onto the main road, right by the bridge.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "tie": { "to": "rope", "recap": "Nobody follows you, and you both pretend you were not scared." },
+        "default": { "to": "rope", "recap": "The side street spits you out at the bridge." }
+      }
+    },
+    "rope": {
+      "title": "The Rope",
+      "text": {
+        "default": "A rope is stretched across the road, held by two boys. Tyres are burning, a speaker is playing loud music, and bottles of ogogoro sit on a plank. A car is stopped in front with its window down, and the driver is counting notes into somebody's hand. 'Oya, next!' someone shouts. {rival} slows down beside you. This is the only road to your house.",
+        "coop": "A rope is stretched across the road, held by two boys. Tyres are burning, a speaker is playing loud music, and bottles of ogogoro sit on a plank. A car is stopped in front with its window down, and the driver is counting notes into somebody's hand. 'Oya, next!' someone shouts. {partner} slows down beside you. This is the only road to your house."
+      },
+      "stakes": { "default": "Passing the rope with your phone and your money.", "coop": "Getting both of you past the rope in one piece." },
+      "twists": [
+        { "if": "street_wise", "text": "{holder} saw the glow from far and is ready." },
+        { "if": "shaky", "text": "{holder} cannot hide the fear on their face." },
+        { "if": "cool_head", "text": "{holder} walks up like it is a normal Tuesday." },
+        { "if": "dropped_name", "text": "{holder} already has a big man's name ready." },
+        { "if": "cash_low", "text": "{holder} is already patting empty pockets." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Greet them like you know them: 'Boys, how una dey? Night don reach o!'", "dc": 12, "mods": [{ "mark": "boys_know_you", "dc": -2 }, { "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Take out ₦500 before they ask and hand it over", "dc": 12, "mods": [{ "mark": "paid_small", "dc": -2 }], "lock": { "mark": "cash_low", "reason": "You no get money again." } },
+        { "approach": "gragra", "label": "Say you know their oga: 'I dey with Chairman Kayode people!'", "dc": 13, "mods": [{ "mark": "dropped_name", "dc": -2 }, { "mark": "on_their_list", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Stop and watch how they treat the car in front before you move", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "general", "recap": { "default": "The boys laugh at {winner}'s greeting and wave them closer. {loser} is told to wait.", "coop": "The boys laugh at your greeting and wave you closer." }, "set": [{ "to": "winner", "mark": "boys_know_you" }, { "to": "loser", "mark": "on_their_list" }] },
+          "hustle": { "to": "pocket_check", "recap": { "default": "{winner} puts ₦500 in a boy's hand before he asks, and he nods. But the boy next to him is looking at {loser}'s pocket.", "coop": "You put ₦500 in a boy's hand before he asks, and he nods. But the boy next to him is looking at your friend's pocket." }, "set": [{ "to": "winner", "mark": "paid_small" }, { "to": "loser", "mark": "cash_low" }] },
+          "gragra": { "to": "general", "recap": { "default": "The name makes the boys pause. 'Chairman Kayode? Wait here. General go decide.' {loser} is told to wait and say nothing.", "coop": "The name makes the boys pause. 'Chairman Kayode? Wait here. General go decide.'" }, "set": [{ "to": "winner", "mark": "dropped_name" }, { "to": "loser", "mark": "on_their_list" }] },
+          "wisdom": { "to": "uproar", "recap": { "default": "{winner} waits and watches, and sees that the boys are nervous about something. {loser} walks up too early.", "coop": "You wait and watch, and see that the boys are nervous about something." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] }
+        },
+        "both_fail": { "to": "pocket_check", "recap": "The boys don't like how you both are behaving. 'Oya, bring everything out.'", "set": [{ "to": "all", "mark": "on_their_list" }] },
+        "tie": { "to": "general", "recap": "The boys cannot decide which of you is the problem, so they call General." },
+        "same": { "to": "pocket_check", "recap": "You did the same thing, so the boys think you are together and want double.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "default": { "to": "general", "recap": "A boy waves you towards the General." }
+      }
+    },
+    "general": {
+      "title": "The General",
+      "text": {
+        "default": "The boy in the middle is bigger than the rest, with a towel round his neck and a bottle in his hand. They call him General. He looks you up and down: 'Which area you dey? Who be your landlord? Who know you for here?' The boys laugh. Everybody is waiting for your answer. {rival} is two steps behind you.",
+        "coop": "The boy in the middle is bigger than the rest, with a towel round his neck and a bottle in his hand. They call him General. He looks you up and down: 'Which area you dey? Who be your landlord? Who know you for here?' The boys laugh. Everybody is waiting for your answer. {partner} stands beside you."
+      },
+      "stakes": { "default": "Proving you belong in this area.", "coop": "Proving you belong here, together." },
+      "twists": [
+        { "if": "boys_know_you", "text": "{holder} gets a small nod from one of the boys." },
+        { "if": "on_their_list", "text": "{holder} is the one the boys keep looking at." },
+        { "if": "dropped_name", "text": "{holder} used a big man's name, and the General is listening for it." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Answer calmly and with respect: your street, your landlord's name, your gate colour", "dc": 11, "mods": [{ "mark": "boys_know_you", "dc": -2 }, { "mark": "on_their_list", "dc": 2 }, { "mark": "cool_head", "dc": -2 }] },
+        { "approach": "hustle", "label": "Offer ₦1,000 'for the boys' and ask to pass", "dc": 12, "mods": [{ "mark": "paid_small", "dc": -2 }], "lock": { "mark": "cash_low", "reason": "You no get money again." } },
+        { "approach": "gragra", "label": "Insist: 'Call Chairman Kayode now. He go tell you who I be!'", "dc": 13, "mods": [{ "mark": "dropped_name", "dc": 3 }, { "mark": "on_their_list", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Name the pastor, the shop and the gateman on your street, small details they can check", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "vigilante", "recap": { "default": "General smiles at {winner}'s answer: 'Na good boy. Go.' {loser} gets a long look and a muttered 'Next time.'", "coop": "General smiles at your answer: 'Na good people. Go.'" }, "set": [{ "to": "winner", "mark": "boys_know_you" }, { "to": "loser", "mark": "on_their_list" }] },
+          "hustle": { "to": "vigilante", "recap": { "default": "{winner} drops the money and General counts it twice before waving them on. {loser} is searched and told to wait.", "coop": "You drop the money and General counts it twice before waving you on." }, "set": [{ "to": "winner", "mark": "paid_small" }, { "to": "loser", "mark": "cash_low" }] },
+          "gragra": { "to": "vigilante", "recap": { "default": "General does not call anybody, but he does not want wahala either. 'Go. If I find out say you lie, we go meet again.' {loser} wonders how {winner} did that.", "coop": "General does not call anybody, but he does not want wahala either. 'Go. If I find out say you lie, we go meet again.'" }, "set": [{ "to": "winner", "mark": "dropped_name" }, { "to": "loser", "mark": "on_their_list" }] },
+          "wisdom": { "to": "vigilante", "recap": { "default": "{winner} names the pastor and the gateman, and a boy nods: he knows them. {loser} is still stammering.", "coop": "You name the pastor and the gateman, and a boy nods: he knows them." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] }
+        },
+        "both_fail": { "to": "vigilante", "recap": "General sighs and tells his boys to take ₦500 from each of you and 'let them go before I change my mind'.", "set": [{ "to": "all", "mark": "cash_low" }] },
+        "tie": { "to": "vigilante", "recap": "He waves you both through because he is tired." },
+        "default": { "to": "vigilante", "recap": "General waves you on with a warning." }
+      }
+    },
+    "pocket_check": {
+      "title": "Pocket Check",
+      "text": {
+        "default": "Two boys come close with torches. 'Oya, show us your phone. Make we see say na your own.' One of them is already reaching for your pocket. {rival} is told to stand against the wall. The speaker is so loud you can barely hear yourself think.",
+        "coop": "Two boys come close with torches. 'Oya, show us your phone. Make we see say na your own.' One of them is already reaching for your pocket. {partner} is told to stand against the wall. The speaker is so loud you can barely hear yourself think."
+      },
+      "stakes": { "default": "Keeping your phone and your money.", "coop": "Keeping your phones and your money." },
+      "twists": [
+        { "if": "paid_small", "text": "{holder} already dropped something, so these boys may go easy." },
+        { "if": "cash_low", "text": "{holder} has nothing left to give." },
+        { "if": "on_their_list", "text": "{holder} is the one they are watching." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Smile and joke: 'You go carry my phone, who I go call? My mama?'", "dc": 11, "mods": [{ "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Hand over all your cash quick and ask them to leave the phone", "dc": 13, "mods": [{ "mark": "paid_small", "dc": -3 }], "lock": { "mark": "cash_low", "reason": "You no get money again." } },
+        { "approach": "gragra", "label": "Refuse loud: 'Touch my phone and see wahala!'", "dc": 14, "mods": [{ "mark": "on_their_list", "dc": 2 }, { "mark": "dropped_name", "dc": -2 }] },
+        { "approach": "wisdom", "label": "Unlock the phone yourself and show your gallery and family photos as proof", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "vigilante", "recap": { "default": "The boys laugh at {winner}'s joke and wave them on. {loser} is told to empty their pockets.", "coop": "The boys laugh at your joke and wave you on." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "phone_taken" }] },
+          "hustle": { "to": "vigilante", "recap": { "default": "{winner} drops the money fast and keeps the phone. {loser} watches the phone go with a heavy heart.", "coop": "You drop the money fast and keep your phones." }, "set": [{ "to": "winner", "mark": "paid_small" }, { "to": "loser", "mark": "phone_taken" }] },
+          "gragra": { "to": "vigilante", "recap": { "default": "{winner}'s shout makes the boys step back for a second. Then somebody laughs and the tension breaks. {loser} stayed very still.", "coop": "Your shout makes the boys step back for a second. Then somebody laughs and the tension breaks." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "phone_taken" }] },
+          "wisdom": { "to": "vigilante", "recap": { "default": "{winner} shows the gallery and a boy says, 'Na your mama be that? Oya, go.' {loser} is still looking for the unlock button.", "coop": "You show the gallery and a boy says, 'Na your mama be that? Oya, go.'" }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "phone_taken" }] }
+        },
+        "both_fail": { "to": "vigilante", "recap": "They take your phones for a minute to 'check' them, then throw them back. Your hands are shaking.", "set": [{ "to": "all", "mark": "phone_taken" }] },
+        "tie": { "to": "vigilante", "recap": "A boy shouts that somebody is coming, and they let you go in a hurry." },
+        "default": { "to": "vigilante", "recap": "They let you go with your phone and your pride, mostly." }
+      }
+    },
+    "uproar": {
+      "title": "Everybody Run",
+      "text": {
+        "default": "A bottle breaks. Somebody shouts, 'Vigilante! Vigilante dey come!' and the speaker goes silent. The boys scatter in all directions, the rope drops, and a man runs past you with a plank. For three seconds, nobody is watching you. {rival} looks at you: run or stay still?",
+        "coop": "A bottle breaks. Somebody shouts, 'Vigilante! Vigilante dey come!' and the speaker goes silent. The boys scatter in all directions, the rope drops, and a man runs past you with a plank. For three seconds, nobody is watching you. {partner} looks at you: run or stay still?"
+      },
+      "stakes": { "default": "Slipping away without getting caught up in it.", "coop": "Getting away together." },
+      "choices": [
+        { "approach": "charm", "label": "Walk away slowly with your hands open, like someone who just came back from work", "dc": 11, "mods": [{ "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Run, jump the gutter and don't look back", "dc": 13 },
+        { "approach": "gragra", "label": "Shout 'I no be one of them o!' so everybody can hear", "dc": 13, "mods": [{ "mark": "on_their_list", "dc": 3 }] },
+        { "approach": "wisdom", "label": "Step behind a gate and wait for the noise to pass", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "vigilante", "recap": { "default": "{winner} walks away calmly, and a boy running past does not even look. {loser} stands there looking guilty.", "coop": "You walk away calmly, and a boy running past does not even look." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "hustle": { "to": "vigilante", "recap": { "default": "{winner} runs like somebody chasing a bus and gets away clean. {loser} trips in the gutter.", "coop": "You run like somebody chasing a bus and get away clean." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "light_dead" }] },
+          "gragra": { "to": "vigilante", "recap": { "default": "{winner} shouts so loud that everybody hears they are not one of the boys. {loser} wishes they had thought of it first.", "coop": "You shout so loud that everybody hears you are not one of the boys." }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "on_their_list" }] },
+          "wisdom": { "to": "vigilante", "recap": { "default": "{winner} steps behind a gate and nobody sees them. {loser} runs the wrong way.", "coop": "You step behind a gate and nobody sees you." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] }
+        },
+        "both_fail": { "to": "vigilante", "recap": "You both run in the same direction and straight into somebody's torch.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "tie": { "to": "vigilante", "recap": "You slip away together in the confusion." },
+        "default": { "to": "vigilante", "recap": "You get away in the confusion." }
+      }
+    },
+    "vigilante": {
+      "title": "The Torch",
+      "text": {
+        "default": "A torch hits your face. Three men in dark jackets with whistles and sticks: the street vigilante. 'Who be that? Stop there! You be one of the boys?' You are sweating and your clothes smell of burning tyre. {rival} is half hidden behind you.",
+        "coop": "A torch hits your face. Three men in dark jackets with whistles and sticks: the street vigilante. 'Who be that? Stop there! You be one of the boys?' You are sweating and your clothes smell of burning tyre. {partner} is half hidden behind you."
+      },
+      "stakes": { "default": "Proving you are not one of the boys.", "coop": "Proving you are not one of the boys, together." },
+      "twists": [
+        { "if": "on_their_list", "text": "{holder} was seen near the boys, and the vigilante saw it too." },
+        { "if": "boys_know_you", "text": "{holder} was seen smiling with the boys. Bad look." },
+        { "if": "vigilante_friend", "text": "{holder} knows one of these men." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Greet them with respect: 'Good evening, sir. I just come back from work.'", "dc": 11, "mods": [{ "mark": "boys_know_you", "dc": 2 }, { "mark": "on_their_list", "dc": 2 }, { "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }, { "mark": "vigilante_friend", "dc": -2 }] },
+        { "approach": "hustle", "label": "Call your neighbour to come and vouch for you", "dc": 12, "lock": { "mark": "phone_taken", "reason": "They have your phone." } },
+        { "approach": "gragra", "label": "Shout back: 'You know who I be? I live for this street!'", "dc": 13, "mods": [{ "mark": "on_their_list", "dc": 2 }, { "mark": "dropped_name", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Name your landlord, your gateman and the pastor next door", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "vigilante_friend", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "generator_row", "recap": { "default": "The vigilante lowers the torch. 'Oya, go home. Sorry.' {loser} is told to take their hand out of their pocket.", "coop": "The vigilante lowers the torch. 'Oya, go home. Sorry.'" }, "set": [{ "to": "winner", "mark": "vigilante_friend" }, { "to": "loser", "mark": "on_their_list" }] },
+          "hustle": { "to": "generator_row", "recap": { "default": "Your neighbour answers and says, 'Na my guy that.' The vigilante nods at {winner}. {loser} has to wait for their own neighbour.", "coop": "Your neighbour answers and says, 'Na my people those.' The vigilante nods." }, "set": [{ "to": "winner", "mark": "vigilante_friend" }, { "to": "loser", "mark": "shaky" }] },
+          "gragra": { "to": "generator_row", "recap": { "default": "{winner} shouts so confidently that they believe him. {loser} stayed quiet and now looks even more suspicious.", "coop": "You shout so confidently that they believe you." }, "set": [{ "to": "winner", "mark": "dropped_name" }, { "to": "loser", "mark": "on_their_list" }] },
+          "wisdom": { "to": "generator_row", "recap": { "default": "One of the men knows the pastor. 'Ah, Pastor Ade! Go, go.' {loser} gets a stare.", "coop": "One of the men knows the pastor. 'Ah, Pastor Ade! Go, go.'" }, "set": [{ "to": "winner", "mark": "vigilante_friend" }, { "to": "loser", "mark": "shaky" }] }
+        },
+        "both_fail": { "to": "generator_row", "recap": "They make you both sit on the kerb for a minute while they 'confirm'.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "tie": { "to": "generator_row", "recap": "They wave you both on and keep their torches on your backs." },
+        "default": { "to": "generator_row", "recap": "They let you go, still giving you the eye." }
+      }
+    },
+    "generator_row": {
+      "title": "Thief! Thief!",
+      "text": {
+        "default": "Your street, at last. But every generator is roaring and every gate is locked. A woman at her window sees two shadows and screams, 'Thief! Thief!' Torches come on in three compounds. Dogs start barking. This is how stories go wrong, even when you are innocent. {rival} is walking fast beside you, and a man is already coming out with a stick.",
+        "coop": "Your street, at last. But every generator is roaring and every gate is locked. A woman at her window sees two shadows and screams, 'Thief! Thief!' Torches come on in three compounds. Dogs start barking. This is how stories go wrong, even when you are innocent. {partner} grabs your arm, and a man is already coming out with a stick."
+      },
+      "stakes": { "default": "Making sure nobody thinks you are a thief.", "coop": "Making sure nobody thinks you are thieves." },
+      "twists": [
+        { "if": "vigilante_friend", "text": "{holder} can see a vigilante man nodding from the end of the street." },
+        { "if": "on_their_list", "text": "{holder} still smells of smoke and trouble." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Call out sweetly: 'Aunty Nkechi, na me o! Number 14!'", "dc": 11, "mods": [{ "mark": "vigilante_friend", "dc": -2 }, { "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Run to your gate and bang it", "dc": 13, "mods": [{ "mark": "on_their_list", "dc": 2 }] },
+        { "approach": "gragra", "label": "Shout back: 'Who dey call thief? Come out and see my face!'", "dc": 13, "mods": [{ "mark": "on_their_list", "dc": 2 }, { "mark": "dropped_name", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Stand still under the street lamp with your hands up and say your house number clearly", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -2 }, { "mark": "vigilante_friend", "dc": -2 }] }
+      ],
+      "next": {
+        "decisive": {
+          "charm": { "to": "gate", "recap": { "default": "The woman squints, recognises {winner}'s voice and shouts, 'Ah, na you! Sorry o!' {loser} is still being stared at by the man with the stick.", "coop": "The woman squints, recognises your voice and shouts, 'Ah, na you! Sorry o!'" }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "shaky" }] },
+          "hustle": { "to": "gate", "recap": { "default": "{winner} reaches the gate first and bangs so hard that the whole compound wakes up. {loser} is surrounded by torches.", "coop": "You reach the gate first and bang so hard that the whole compound wakes up." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] },
+          "gragra": { "to": "gate", "recap": { "default": "{winner}'s shout is so loud that everybody recognises the voice. 'Ah, na that guy!' {loser} is still being checked.", "coop": "Your shout is so loud that everybody recognises the voice. 'Ah, na that guy!'" }, "set": [{ "to": "winner", "mark": "cool_head" }, { "to": "loser", "mark": "on_their_list" }] },
+          "wisdom": { "to": "gate", "recap": { "default": "{winner} stands still under the lamp and says the address in a calm voice. People nod. {loser} keeps fidgeting.", "coop": "You stand still under the lamp and say the address in a calm voice. People nod." }, "set": [{ "to": "winner", "mark": "street_wise" }, { "to": "loser", "mark": "shaky" }] }
+        },
+        "both_fail": { "to": "gate", "recap": "You both end up arguing with the man with the stick until a neighbour recognises you and rescues you.", "set": [{ "to": "all", "mark": "shaky" }] },
+        "tie": { "to": "gate", "recap": "The woman goes quiet and the torches go off one by one." },
+        "default": { "to": "gate", "recap": "The street settles back down, and you walk the last few steps." }
+      }
+    },
+    "gate": {
+      "title": "Your Gate",
+      "text": {
+        "default": "Your compound gate is locked. The gateman is asleep on a plastic chair with his radio on. The padlock is huge. {rival} is already at the small gate with a hand on the bolt. Whoever gets in first tells the story tomorrow, and the other person buys suya.",
+        "coop": "Your compound gate is locked. The gateman is asleep on a plastic chair with his radio on. The padlock is huge. {partner} is already at the small gate with a hand on the bolt. Once you are both inside, you are safe."
+      },
+      "stakes": { "default": "Getting inside first and telling the story your way.", "coop": "Getting both of you safely inside." },
+      "twists": [
+        { "if": "street_wise", "text": "{holder} knows where the spare key hides." },
+        { "if": "light_dead", "text": "{holder}'s phone just died at the gate." },
+        { "if": "cool_head", "text": "{holder} looks like someone who came home from a normal day." }
+      ],
+      "choices": [
+        { "approach": "charm", "label": "Wake the gateman gently: 'Baba, na me. Tolu from Flat 3.'", "dc": 11, "mods": [{ "mark": "cool_head", "dc": -2 }, { "mark": "shaky", "dc": 2 }] },
+        { "approach": "hustle", "label": "Climb the small gate and jump in", "dc": 13 },
+        { "approach": "gragra", "label": "Bang the gate loud until the whole compound wakes up", "dc": 12, "mods": [{ "mark": "on_their_list", "dc": 2 }] },
+        { "approach": "wisdom", "label": "Use the spare key hidden behind the loose brick", "dc": 11, "mods": [{ "mark": "street_wise", "dc": -3 }, { "mark": "light_dead", "dc": 2 }] }
+      ],
+      "next": { "default": null }
+    }
+  },
+  "endings": {
+    "win": "You push the gate open first and walk in with your phone, your money and your mouth. The story is yours. {loser} buys the suya tomorrow and tells the story badly.",
+    "loss": "{winner} is already inside when you reach the gate, telling the story with big hands. You buy the suya.",
+    "draw": "You reach the gate at the exact same time. Nobody wins, and everybody argues about it till morning.",
+    "success": "You both reach the gate together, tired but fine. Nobody walks alone again.",
+    "fail": "You get home late and shaken, with half of your things. The group chat will have the story before you sleep."
+  },
+  "epilogues": [
+    { "if": "street_wise", "text": "{holder} now takes a different road home every night." },
+    { "if": "boys_know_you", "text": "One of the boys still greets {holder} by name at the junction." },
+    { "if": "on_their_list", "text": "The boys at the junction still look at {holder} twice." },
+    { "if": "cash_low", "text": "{holder} still owes a friend ₦500 from that night." },
+    { "if": "light_dead", "text": "{holder}'s phone died completely at the gate. The charger was inside the room." },
+    { "if": "cool_head", "text": "{holder} told the story in the compound next day, and people swore they were there." },
+    { "if": "dropped_name", "text": "Chairman Kayode asked who {holder} was. Nobody told him." },
+    { "if": "vigilante_friend", "text": "{holder} now gets a greeting from the vigilante men every evening." },
+    { "if": "shaky", "text": "{holder} did not sleep until 3 am." },
+    { "if": "phone_taken", "text": "{holder} still cannot believe they got that phone back." }
+  ]
+}
