@@ -9,6 +9,7 @@ export const BALANCE = {
   starCost: { reroll: 1, nudge: 2, shield: 2 },
   points: { win: 25, draw: 12, loss: 5, coopSuccess: 20, coopFail: 8 },
   coopPassAvg: 1.5,
+  useStats: false,
   edgeSeconds: 18,
   referralStars: 10,
   chat: { maxLen: 500, declineCooldownHours: 24 },

@@ -361,7 +361,7 @@ function startRolls(room: Room) {
         const open = openChoices(room, p, scene);
     const approach = p.action?.approach ?? open[Math.floor(Math.random() * open.length)].approach;
     const choice = scene.choices.find((c) => c.approach === approach)!;
-    const base = Math.min(p.stats[approach] ?? 0, BALANCE.maxModifier);
+    const base = BALANCE.useStats ? Math.min(p.stats[approach] ?? 0, BALANCE.maxModifier) : 0;
     p.roll = { approach, ...rollBase({ modifier: base, dc: choiceDc(room, p, choice) }) };
     // nothing to decide if you're AFK or can't afford the cheapest bonus
     p.edgeDone = p.afk || p.stars < MIN_EDGE;
