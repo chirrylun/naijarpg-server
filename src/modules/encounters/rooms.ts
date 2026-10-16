@@ -227,3 +227,22 @@ export async function requestRematch(userId: string, roomId: string) {
     await joinRoom(next, p.userId);
   }
 }
+
+export async function leaveRoom(userId: string) {
+  const room = rooms.get(roomOfUser.get(userId) ?? '');
+  if (!room || room.status !== 'waiting') return; // live games finish on their own (AFK rounds auto-play)
+
+  room.players = room.players.filter((p) => p.userId !== userId);
+  roomOfUser.delete(userId);
+  getIo().in(`user:${userId}`).socketsLeave(`room:${room.id}`);
+  await supabase.from('encounter_players').delete().match({ encounter_id: room.id, user_id: userId });
+
+  if (room.players.length === 0) {
+    rooms.delete(room.id);
+    if (room.code) roomByCode.delete(room.code);
+    await supabase.from('encounters').update({ status: 'abandoned' }).eq('id', room.id);
+  } else {
+    if (room.hostId === userId) room.hostId = room.players[0].userId;
+    emitState(room);
+  }
+}

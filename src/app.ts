@@ -13,6 +13,7 @@ import { starRoutes, paystackWebhook } from './modules/stars/stars.routes';
 import { avatarRoutes } from './modules/avatars/avatars.routes';
 import { referralRoutes } from './modules/referrals/referrals.routes';
 import { chatRoutes } from './modules/chat/chat.routes';
+import { ORIGINS } from './config/env';
 
 export function buildApp() {
   // trustProxy: behind Railway/Render, use the real client IP for rate limiting
@@ -22,7 +23,8 @@ export function buildApp() {
   app.decorateRequest('authEmail', null);
   app.decorateRequest('isAnonymous', true);
 
-  app.register(cors, { origin: env.CLIENT_ORIGIN.split(','), methods: ['GET', 'POST', 'PATCH', 'DELETE'] });
+    app.register(cors, { origin: ORIGINS, methods: ['GET', 'POST', 'PATCH', 'DELETE'] });
+
   app.register(rateLimit, {
     max: 120, timeWindow: '1 minute',
     // logged-in users are limited per account, everyone else per IP

@@ -4,7 +4,7 @@ import { handle } from '../../realtime/handle';
 import { AppError } from '../../lib/errors';
 import { APPROACHES } from '../../game-engine/types';
 import { joinQueue, leaveQueue } from './matchmaking';
-import { joinRoom, requestRematch, roomByCode, rooms, submitAction } from './rooms';
+import { joinRoom, requestRematch, roomByCode, rooms, submitAction, leaveRoom } from './rooms';
 
 export function registerEncounterSockets(socket: Socket) {
   handle(socket, 'queue:join',
@@ -26,4 +26,6 @@ export function registerEncounterSockets(socket: Socket) {
     { max: 10, windowMs: 10_000 });
 
   handle(socket, 'rematch:request', z.object({ roomId: z.string().uuid() }), (uid, d) => requestRematch(uid, d.roomId));
+
+  handle(socket, 'room:leave', z.object({}), async (uid) => { await leaveRoom(uid); });
 }

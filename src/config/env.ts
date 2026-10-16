@@ -9,4 +9,10 @@ const schema = z.object({
 });
 
 export const env = schema.parse(process.env);
-export const WEB_URL = env.CLIENT_ORIGIN.split(',')[0];
+
+// Clean each origin: trim spaces, strip quotes and trailing slashes
+export const ORIGINS = env.CLIENT_ORIGIN.split(',')
+  .map((o) => o.trim().replace(/^["']|["']$/g, '').replace(/\/+$/, ''))
+  .filter(Boolean);
+
+export const WEB_URL = ORIGINS[0];
