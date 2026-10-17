@@ -3,7 +3,7 @@ import type { Approach, Kind, Mode } from './types';
 export const APPROACH_LABEL: Record<Approach, string> = {
   charm: 'Charm',
   hustle: 'Hustle',
-  gragra: 'Bluff',
+  gragra: 'Lie',
   wisdom: 'Wisdom',
 };
 

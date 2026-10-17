@@ -94,6 +94,14 @@ const scene = z.object({
   next,
 });
 
+// One optional story bonus per scenario. You keep it until you earn one of the "lostBy" marks.
+const bonusDef = z.object({
+  label: z.string(), // shown on the meter, e.g. "Keep your cash"
+  lostBy: z.array(z.string()).min(1),
+  lostMessage: z.string(), // shown at the moment it is lost
+  earnedLine: z.string(), // results screen, when kept
+});
+
 export const scenarioSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -102,6 +110,7 @@ export const scenarioSchema = z.object({
   formats: z.array(z.enum(['1v1', '2v2'])).default(['1v1', '2v2']),
   start: z.string(),
   marks: z.record(z.string(), markDef).default({}),
+  bonus: bonusDef.optional(),
   scenes: z.record(z.string(), scene),
   endings: z
     .object({

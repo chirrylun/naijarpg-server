@@ -3,7 +3,7 @@ import { getIo } from '../../realtime/context';
 import { BALANCE } from '../../config/balance';
 import { AppError } from '../../lib/errors';
 import { makeCode } from '../../lib/codes';
-import { weekKey } from '../../lib/time';
+import { lagosDate, weekKey } from '../../lib/time';
 import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver';
 import { duelTie, resolveRound } from '../../game-engine/round';
 import { d20 } from '../../game-engine/dice';
@@ -62,6 +62,7 @@ export type Room = {
     held: Map<string, Map<string, number>>; // userId -> mark -> last round it is active
   world: Map<string, number>; // shared marks
   history: Map<string, Set<string>>; // every mark earned this game -> who earned it
+  bonusLost: Set<string>; // players who have lost the story bonus
   log: string[]; // one story line per round
   teamWins: Record<number, number>;
   coopPoints: number;
@@ -146,6 +147,7 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
         held: new Map(),
     world: new Map(),
     history: new Map(),
+    bonusLost: new Set(),
     log: [],
     isDaily: !!o.daily,
     players: [],
@@ -185,6 +187,11 @@ export function publicState(room: Room) {
     recap: room.status === 'active' ? room.recap : null,
     scenario: { id: room.scenario.id, title: room.scenario.title, tagline: room.scenario.tagline },
     world: activeIds(room, room.world).map((id) => markInfo(room, id)),
+    win: { points: room.mode === 'coop' ? BALANCE.points.coopSuccess : BALANCE.points.win, stars: BALANCE.winStars },
+    wins: room.mode === 'coop' ? null : { 0: room.teamWins[0] ?? 0, 1: room.teamWins[1] ?? 0 },
+    bonus: room.scenario.bonus
+      ? { label: room.scenario.bonus.label, stars: BALANCE.bonus.stars, points: BALANCE.bonus.points }
+      : null,
     scene:
       scene && {
         key: room.sceneKey,
@@ -211,6 +218,7 @@ export function publicState(room: Room) {
       avatar: p.avatar,
       team: p.team,
       acted: room.phase === 'edge' ? p.edgeDone : !!p.action,
+      bonusKept: !room.bonusLost.has(p.userId),
       marks: activeIds(room, room.held.get(p.userId)).map((id) => markInfo(room, id)),
     })),
   };
@@ -523,6 +531,8 @@ async function settle(room: Room) {
 
   // marks earned this round: they apply from the next round on
   const gained: { userId: string | null; mark: string; label: string; tip: string }[] = [];
+  const bonusLostNow = new Set<string>();
+  const bonusDef = room.scenario.bonus;
   for (const g of route.set ?? []) {
     const def = room.scenario.marks[g.mark];
     if (!def) continue;
@@ -546,6 +556,11 @@ async function settle(room: Room) {
       if (t) names.add(room.players.find((p) => p.userId === t)?.username ?? 'Player');
       room.history.set(g.mark, names);
       gained.push({ userId: t, mark: g.mark, label: def.label, tip: def.tip });
+      if (bonusDef?.lostBy.includes(g.mark)) {
+        // Link Up shares the bonus: one slip loses it for the whole crew
+        const hit = t === null || room.mode === 'coop' ? room.players.map((p) => p.userId) : [t];
+        for (const id of hit) if (!room.bonusLost.has(id)) (room.bonusLost.add(id), bonusLostNow.add(id));
+      }
     }
   }
 
@@ -580,6 +595,8 @@ async function settle(room: Room) {
     headline,
         gained,
     lead: lead ?? null,
+    bonusLost: [...bonusLostNow],
+    bonusLostMessage: bonusLostNow.size && bonusDef ? bonusDef.lostMessage : null,
     ends,
     tieRounds,
     revealMs,
@@ -594,28 +611,47 @@ async function settle(room: Room) {
   }, revealMs);
 }
 
+/** How many more stars a player may earn from games today (wins and bonuses share one daily cap). */
+async function starsLeftToday(userId: string): Promise<number> {
+  const dayStart = new Date(`${lagosDate()}T00:00:00+01:00`).toISOString(); // Lagos is UTC+1 all year
+  const { data } = await supabase
+    .from('star_ledger')
+    .select('delta')
+    .eq('user_id', userId)
+    .in('reason', ['game_win', 'game_bonus'])
+    .gte('created_at', dayStart);
+  const used = (data ?? []).reduce((sum, row) => sum + row.delta, 0);
+  return Math.max(0, BALANCE.dailyGameStarCap - used);
+}
+
 async function finish(room: Room) {
   room.status = 'finished';
   room.recap = null;
   const rounds = room.round;
   let winnerTeam: number | null = null;
   let success = false;
+  let decider: { team: number; die: number }[][] = [];
   if (room.mode === 'coop') success = room.coopPoints >= rounds * BALANCE.coopPassAvg;
   else {
     const w0 = room.teamWins[0] ?? 0;
     const w1 = room.teamWins[1] ?? 0;
     winnerTeam = w0 === w1 ? null : w0 > w1 ? 0 : 1;
+    // Level after the last scene: one die each decides it, and a tie rolls again. No game ends as a draw.
+    for (let i = 0; winnerTeam === null && i < 25; i++) {
+      const throwN = [0, 1].map((team) => ({ team, die: d20() }));
+      decider.push(throwN);
+      if (throwN[0].die !== throwN[1].die) winnerTeam = throwN[0].die > throwN[1].die ? 0 : 1;
+    }
+    if (winnerTeam === null) winnerTeam = Math.random() < 0.5 ? 0 : 1; // safety net, practically unreachable
   }
 
-  const results = room.players.map((p) => {
-    let result: 'win' | 'loss' | 'draw' | 'success' | 'fail';
+  const bonusDef = room.scenario.bonus;
+  const base = room.players.map((p) => {
+    let result: 'win' | 'loss' | 'success' | 'fail';
     let points: number;
     if (room.mode === 'coop') {
       result = success ? 'success' : 'fail';
       points = success ? BALANCE.points.coopSuccess : BALANCE.points.coopFail;
-    } else if (winnerTeam === null) {
-      result = 'draw';
-      points = BALANCE.points.draw;
     } else if (winnerTeam === p.team) {
       result = 'win';
       points = BALANCE.points.win;
@@ -623,8 +659,32 @@ async function finish(room: Room) {
       result = 'loss';
       points = BALANCE.points.loss;
     }
-    return { userId: p.userId, username: p.username, team: p.team, result, points };
+    const won = result === 'win' || result === 'success';
+    const bonusKept = !!bonusDef && !room.bonusLost.has(p.userId);
+    return { p, result, won, bonusKept, points: points + (bonusKept ? BALANCE.bonus.points : 0) };
   });
+
+  // work out stars (with the daily cap) before the result is shown, so the screen tells the truth
+  const results = await Promise.all(
+    base.map(async ({ p, result, won, bonusKept, points }) => {
+      const left = await starsLeftToday(p.userId);
+      const winStars = Math.min(won ? BALANCE.winStars : 0, left);
+      const bonusStars = Math.min(bonusKept ? BALANCE.bonus.stars : 0, left - winStars);
+      const wanted = (won ? BALANCE.winStars : 0) + (bonusKept ? BALANCE.bonus.stars : 0);
+      return {
+        userId: p.userId,
+        username: p.username,
+        team: p.team,
+        result,
+        points,
+        stars: winStars + bonusStars,
+        winStars,
+        bonusStars,
+        capped: winStars + bonusStars < wanted,
+        bonus: !bonusDef ? null : bonusKept ? ('earned' as const) : ('missed' as const),
+      };
+    }),
+  );
 
   // closing paragraph for each possible outcome; the web app shows the one that matches the player
   const names = {
@@ -635,7 +695,7 @@ async function finish(room: Room) {
   const endings: Record<string, string> = {};
   const e = room.scenario.endings;
   if (e) {
-    for (const k of ['win', 'loss', 'draw', 'success', 'fail'] as const) {
+    for (const k of ['win', 'loss', 'success', 'fail'] as const) {
       const v = e[k];
       if (v) endings[k] = fillTokens(pickVariant(v, room.mode, room.format), names);
     }
@@ -644,7 +704,16 @@ async function finish(room: Room) {
     .filter((x) => room.history.has(x.if))
     .map((x) => fillTokens(pickVariant(x.text, room.mode, room.format), { ...names, holder: [...(room.history.get(x.if) ?? [])] }));
 
-  getIo().to(`room:${room.id}`).emit('encounter:finished', { roomId: room.id, mode: room.mode, results, endings, story: room.log, epilogue });
+  getIo().to(`room:${room.id}`).emit('encounter:finished', {
+    roomId: room.id,
+    mode: room.mode,
+    results,
+    endings,
+    story: room.log,
+    epilogue,
+    decider,
+    bonus: bonusDef ? { label: bonusDef.label, earnedLine: bonusDef.earnedLine, lostMessage: bonusDef.lostMessage } : null,
+  });
   room.players.forEach((p) => roomOfUser.delete(p.userId)); // free to queue again immediately
 
   try {
@@ -665,7 +734,7 @@ async function finish(room: Room) {
     );
     await supabase
       .from('encounters')
-      .update({ status: 'finished', finished_at: new Date().toISOString(), outcome: { winnerTeam, success, rounds } })
+      .update({ status: 'finished', finished_at: new Date().toISOString(), outcome: { winnerTeam, success, rounds, decidedByDice: decider.length > 0 } })
       .eq('id', room.id);
     await Promise.all(
       results.map(async (r) => {
@@ -676,7 +745,10 @@ async function finish(room: Room) {
           p_points: r.points,
           p_won: r.result === 'win' || r.result === 'success',
         });
-        await afterEncounter(r.userId);
+        // apply_stars is idempotent per (user, reason, game), so a retry can never pay twice
+        if (r.winStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.winStars, p_reason: 'game_win', p_ref: room.id });
+        if (r.bonusStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.bonusStars, p_reason: 'game_bonus', p_ref: room.id });
+        await afterEncounter(r.userId); // also tells the client to refresh its stars
       }),
     );
   } catch (err) {

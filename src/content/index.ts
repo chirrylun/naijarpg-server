@@ -49,6 +49,7 @@ for (const s of scenarios) {
     scene.twists?.forEach((t) => mark(t.if, key));
   }
   s.epilogues?.forEach((x) => mark(x.if, 'epilogues'));
+  s.bonus?.lostBy.forEach((m) => mark(m, 'bonus'));
 }
 
 export type { Scenario };

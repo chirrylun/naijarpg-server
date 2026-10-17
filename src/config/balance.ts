@@ -8,7 +8,10 @@ export const BALANCE = {
   minTotalModifier: -3,
   nudgeBonus: 2,
   starCost: { reroll: 1, nudge: 2, shield: 2 },
-  points: { win: 25, draw: 12, loss: 5, coopSuccess: 20, coopFail: 8 },
+  points: { win: 25, draw: 12, loss: 5, coopSuccess: 20, coopFail: 8 }, // draw is no longer used: every duel has a winner
+  winStars: 2, // stars for winning a game (Link Up: for making it)
+  bonus: { stars: 1, points: 5 }, // the story bonus, earned win or lose
+  dailyGameStarCap: 6, // most stars a player can earn from games in one Lagos day
   coopPassAvg: 1.5,
   useStats: false,
   edgeSeconds: 18,
