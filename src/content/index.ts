@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { edgeLeaves, scenarioSchema, type Edge, type Scenario } from '../game-engine/scenario';
+import { soloProblems } from '../game-engine/soloCheck';
 import type { Format, Mode } from '../game-engine/types';
 
 const dir = path.join(process.cwd(), 'src', 'content', 'scenarios');
@@ -50,6 +51,10 @@ for (const s of scenarios) {
   }
   s.epilogues?.forEach((x) => mark(x.if, 'epilogues'));
   s.bonus?.lostBy.forEach((m) => mark(m, 'bonus'));
+
+  // one-player games run on the co-op route: refuse to start if a line would mention a partner who isn't there
+  const solo = soloProblems(s);
+  if (solo.length) throw new Error(`Scenario ${s.id} is not safe for solo play:\n  ${solo.join('\n  ')}`);
 }
 
 export type { Scenario };
