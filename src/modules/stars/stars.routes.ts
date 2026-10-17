@@ -1,15 +1,13 @@
-import { createHmac, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { supabase } from '../../db/supabase'
+import { supabase } from '../../db/supabase';
 import { env, WEB_URL } from '../../config/env';
 import { BALANCE } from '../../config/balance';
 import { AppError } from '../../lib/errors';
+import { bachsPost, verifyBachsSignature, BachsError } from '../../lib/bachs';
 import { requireUser } from '../../middleware/auth';
 import { fulfillPurchase } from './stars.service';
-
-const PAYSTACK = 'https://api.paystack.co';
-const psHeaders = () => ({ Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}`, 'Content-Type': 'application/json' });
 
 export async function starRoutes(app: FastifyInstance) {
   app.get('/packs', async () => BALANCE.packs);
@@ -23,51 +21,70 @@ export async function starRoutes(app: FastifyInstance) {
   });
 
   app.post('/checkout', { onRequest: requireUser, config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (req) => {
-    if (!env.PAYSTACK_SECRET_KEY) throw new AppError(503, 'payments_unavailable');
-    // Paystack needs an email, so guests must sign up first. Good conversion moment.
+    if (!env.BACHS_API_KEY) throw new AppError(503, 'payments_unavailable');
+    // guests sign up first, so purchases belong to a real account
     if (req.isAnonymous || !req.authEmail) throw new AppError(403, 'signup_required');
     const { packId } = z.object({ packId: z.string() }).parse(req.body);
     const pack = BALANCE.packs.find((p) => p.id === packId);
     if (!pack) throw new AppError(400, 'invalid_pack');
 
     const reference = `nrpg_${randomUUID()}`;
-    const amount = pack.priceNaira * 100; // kobo
+    let session: { checkout_id: string; checkout_url: string };
+    try {
+      session = await bachsPost('/v1/checkout-sessions', {
+        pricing: { currency: 'NGN', amount: pack.priceNaira.toFixed(2) }, // Bachs uses decimal strings, not kobo
+        customer: { email: req.authEmail },
+        success_url: `${WEB_URL}/shop`, // Bachs appends ?checkout_id=
+        cancel_url: `${WEB_URL}/shop`,
+        reference,
+        metadata: { user_id: req.userId, pack_id: pack.id },
+        expires_in_minutes: 60,
+      });
+    } catch (e) {
+      if (e instanceof BachsError) req.log.error({ status: e.status, body: e.body }, 'bachs checkout failed');
+      throw new AppError(502, 'payments_unavailable');
+    }
+
     await supabase.from('star_purchases').insert({
-      reference, user_id: req.userId, pack_id: pack.id, stars: pack.stars, amount_kobo: amount,
+      reference, checkout_id: session.checkout_id, user_id: req.userId,
+      pack_id: pack.id, stars: pack.stars, amount_kobo: pack.priceNaira * 100,
     }).throwOnError();
 
-    const res = await fetch(`${PAYSTACK}/transaction/initialize`, {
-      method: 'POST', headers: psHeaders(),
-      body: JSON.stringify({ email: req.authEmail, amount, reference, callback_url: `${WEB_URL}/shop?ref=${reference}` }),
-    });
-    const json = (await res.json()) as any;
-    if (!res.ok || !json.status) throw new AppError(502, 'paystack_error');
-    return { url: json.data.authorization_url, reference };
+    return { url: session.checkout_url };
   });
 
-  // The shop page calls this when the user returns from Paystack (webhook may be a few seconds late)
-  app.get('/verify/:reference', { onRequest: requireUser }, async (req) => {
-    const { reference } = req.params as { reference: string };
-    const { data: p } = await supabase.from('star_purchases').select('user_id').eq('reference', reference).maybeSingle();
+  // The shop page polls this after the redirect. It only reads: the webhook is what credits stars.
+  app.get('/verify/:checkoutId', { onRequest: requireUser }, async (req) => {
+    const { checkoutId } = req.params as { checkoutId: string };
+    const { data: p } = await supabase
+      .from('star_purchases').select('status, user_id').eq('checkout_id', checkoutId).maybeSingle();
     if (!p || p.user_id !== req.userId) throw new AppError(404, 'not_found');
-    const res = await fetch(`${PAYSTACK}/transaction/verify/${encodeURIComponent(reference)}`, { headers: psHeaders() });
-    const json = (await res.json()) as any;
-    const paid = json?.data?.status === 'success' && (await fulfillPurchase(reference, json.data.amount));
-    return { paid: !!paid };
+    return { paid: p.status === 'paid' };
   });
 }
 
 // Registered separately so it can read the raw body for signature checking
-export async function paystackWebhook(app: FastifyInstance) {
+export async function bachsWebhook(app: FastifyInstance) {
   app.addContentTypeParser('application/json', { parseAs: 'buffer' }, (req, body, done) => {
     (req as any).rawBody = body;
     try { done(null, JSON.parse((body as Buffer).toString())); } catch (e) { done(e as Error, undefined); }
   });
-  app.post('/paystack', async (req, reply) => {
-    const expected = createHmac('sha512', env.PAYSTACK_SECRET_KEY).update((req as any).rawBody).digest('hex');
-    if (req.headers['x-paystack-signature'] !== expected) return reply.code(401).send();
-    const evt = req.body as any;
-    if (evt.event === 'charge.success') await fulfillPurchase(evt.data.reference, evt.data.amount);
+
+  app.post('/bachs', { config: { rateLimit: false } }, async (req, reply) => {
+    const raw = ((req as any).rawBody as Buffer).toString('utf8');
+    const sig = req.headers['x-bachs-signature-v2'] as string | undefined;
+    if (!verifyBachsSignature(raw, sig, env.BACHS_WEBHOOK_SECRET)) return reply.code(400).send({ error: 'bad_signature' });
+
+    const evt = req.body as { type: string; data?: { checkout_id?: string; amount?: string; currency?: string } };
+    if (evt.type !== 'collection.succeeded' || !evt.data?.checkout_id) return { ok: true };
+
+    const { data: p } = await supabase
+      .from('star_purchases').select('reference').eq('checkout_id', evt.data.checkout_id).maybeSingle();
+    if (!p) return { ok: true }; // not one of ours
+    if (evt.data.currency !== 'NGN') { console.error('bachs currency mismatch', p.reference); return { ok: true }; }
+
+    // if this throws, the 500 makes Bachs retry the delivery
+    await fulfillPurchase(p.reference, Math.round(Number(evt.data.amount) * 100));
     return { ok: true };
   });
 }

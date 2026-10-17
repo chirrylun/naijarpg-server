@@ -9,7 +9,7 @@ import { userRoutes } from './modules/users/users.routes';
 import { encounterRoutes } from './modules/encounters/encounters.routes';
 import { leaderboardRoutes } from './modules/leaderboard/leaderboard.routes';
 import { dailyRoutes } from './modules/daily/daily.routes';
-import { starRoutes, paystackWebhook } from './modules/stars/stars.routes';
+import { starRoutes, bachsWebhook } from './modules/stars/stars.routes';
 import { avatarRoutes } from './modules/avatars/avatars.routes';
 import { referralRoutes } from './modules/referrals/referrals.routes';
 import { chatRoutes } from './modules/chat/chat.routes';
@@ -49,7 +49,7 @@ export function buildApp() {
   app.register(avatarRoutes, { prefix: '/api/avatars' });
   app.register(referralRoutes, { prefix: '/api/referrals' });
   app.register(chatRoutes, { prefix: '/api/chat' });
-  app.register(paystackWebhook, { prefix: '/api/webhooks' });
+  app.register(bachsWebhook, { prefix: '/api/webhooks' });
 
   return app;
 }
