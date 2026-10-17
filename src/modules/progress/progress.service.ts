@@ -28,8 +28,9 @@ async function rewardReferral(userId: string) {
   }
 }
 
-export async function afterEncounter(userId: string) {
+export async function afterEncounter(userId: string, opts: { solo?: boolean } = {}) {
   await touchStreak(userId).catch(console.error);
-  await rewardReferral(userId).catch(console.error);
+  // a solo game doesn't count as the "first encounter" for referrals, so fake accounts can't farm stars
+  if (!opts.solo) await rewardReferral(userId).catch(console.error);
   getIo().to(`user:${userId}`).emit('stars:refresh');
 }

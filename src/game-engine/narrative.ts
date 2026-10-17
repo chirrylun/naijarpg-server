@@ -33,9 +33,10 @@ export function resultLine(i: {
   passers: string[];
   failers: string[];
   move?: string;
+  solo?: boolean;
 }): string {
   const lead =
-    i.same && i.approach
+    !i.solo && i.same && i.approach
       ? i.mode === 'coop'
         ? `Everyone went ${APPROACH_LABEL[i.approach]}. `
         : `Same move on both sides: ${APPROACH_LABEL[i.approach]}. `
@@ -57,13 +58,13 @@ export function resultLine(i: {
       main = `${lead}Dead level. Neither side blinked.`;
       break;
     case 'all_pass':
-      main = `${lead}Everyone came through.`;
+      main = i.solo ? 'You pulled it off.' : `${lead}Everyone came through.`;
       break;
     case 'mixed':
       main = `${lead}${joinNames(i.passers)} carried it while ${joinNames(i.failers)} struggled.`;
       break;
     case 'all_fail':
-      main = `${lead}Nobody got it right.`;
+      main = i.solo ? "It didn't work out." : `${lead}Nobody got it right.`;
       break;
   }
   const deciding = i.kind === 'decisive' || i.kind === 'both_succeed' || i.kind === 'both_fail';

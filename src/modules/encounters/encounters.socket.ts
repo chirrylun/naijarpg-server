@@ -4,12 +4,15 @@ import { handle } from '../../realtime/handle';
 import { AppError } from '../../lib/errors';
 import { APPROACHES } from '../../game-engine/types';
 import { joinQueue, leaveQueue } from './matchmaking';
-import { joinRoom, leaveRoom, myRoll, playEdge, requestRematch, roomByCode, rooms, submitAction } from './rooms';
+import { joinRoom, leaveRoom, myRoll, playEdge, requestRematch, roomByCode, rooms, startSolo, submitAction } from './rooms';
 
 export function registerEncounterSockets(socket: Socket) {
   handle(socket, 'queue:join',
     z.object({ mode: z.enum(['rival', 'coop', 'team']), format: z.enum(['1v1', '2v2']), daily: z.boolean().optional() }),
     (uid, d) => joinQueue(uid, d.mode, d.format, !!d.daily));
+
+  // play alone: starts straight away
+  handle(socket, 'solo:start', z.object({}), (uid) => startSolo(uid), { max: 5, windowMs: 10_000 });
 
   handle(socket, 'queue:leave', z.object({}), async (uid) => { leaveQueue(uid); });
 

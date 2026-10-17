@@ -10,6 +10,7 @@ const variants = z.union([
     rival: z.string().optional(),
     team: z.string().optional(),
     coop: z.string().optional(),
+    solo: z.string().optional(), // one-player games (falls back to the co-op text)
     '1v1': z.string().optional(),
     '2v2': z.string().optional(),
     rival_1v1: z.string().optional(),
@@ -20,11 +21,11 @@ const variants = z.union([
 ]);
 export type Variants = z.infer<typeof variants>;
 
-export function pickVariant(v: Variants | undefined, mode: Mode, format: Format): string {
+export function pickVariant(v: Variants | undefined, mode: Mode | 'solo', format: Format): string {
   if (v === undefined) return '';
   if (typeof v === 'string') return v;
   const o = v as Record<string, string | undefined>;
-  return o[`${mode}_${format}`] ?? o[mode] ?? o[format] ?? v.default;
+  return o[`${mode}_${format}`] ?? o[mode] ?? (mode === 'solo' ? o.coop : undefined) ?? o[format] ?? v.default;
 }
 
 // A mark is a piece of story state attached to a player (or the whole scene)

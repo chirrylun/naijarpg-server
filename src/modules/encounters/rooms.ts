@@ -56,6 +56,7 @@ export type Room = {
   phase: Phase;
   hostId: string;
   isDaily: boolean;
+  solo: boolean; // one player against the story (stored as co-op with a single seat)
   players: Player[];
   sceneKey: string;
   round: number;
@@ -107,17 +108,19 @@ function twistsFor(room: Room, scene: Scene): string[] {
   for (const t of scene.twists ?? []) {
     const names = room.players.filter((p) => alive(room.held.get(p.userId), room.round, t.if)).map((p) => p.username);
     if (!names.length && !alive(room.world, room.round, t.if)) continue;
-    out.push(pickVariant(t.text, room.mode, room.format).replaceAll('{holder}', joinNames(names)));
+    out.push(pickVariant(t.text, textMode(room), room.format).replaceAll('{holder}', joinNames(names)));
     break; // one story note per scene is enough; more just clutters the screen
   }
   return out;
 }
+/** Which text version to show: one-player games read the solo text, then the co-op text */
+const textMode = (room: Room): Mode | 'solo' => (room.solo ? 'solo' : room.mode);
 // Active games live in memory (fast). Results are saved to Supabase when a game ends.
 export const rooms = new Map<string, Room>();
 export const roomByCode = new Map<string, string>();
 export const roomOfUser = new Map<string, string>();
 
-export async function createRoom(o: { hostId: string; mode: Mode; format: Format; daily?: boolean; invite?: boolean }) {
+export async function createRoom(o: { hostId: string; mode: Mode; format: Format; daily?: boolean; invite?: boolean; solo?: boolean }) {
   let scenario = o.daily ? dailyScenario() : pickScenario(o.mode, o.format);
   if (!supports(scenario, o.mode, o.format)) scenario = pickScenario(o.mode, o.format);
   const code = o.invite ? makeCode() : null;
@@ -139,7 +142,7 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
     code,
     mode: o.mode,
     format: o.format,
-    capacity: o.format === '1v1' ? 2 : 4,
+    capacity: o.solo ? 1 : o.format === '1v1' ? 2 : 4,
     scenario,
     status: 'waiting',
     phase: 'choose',
@@ -150,6 +153,7 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
     bonusLost: new Set(),
     log: [],
     isDaily: !!o.daily,
+    solo: !!o.solo,
     players: [],
     sceneKey: scenario.start,
     round: 1,
@@ -169,12 +173,13 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
 
 export function publicState(room: Room) {
   const scene = room.status === 'active' ? room.scenario.scenes[room.sceneKey] : null;
-  const m = room.mode;
+  const m = textMode(room);
   const f = room.format;
   return {
     id: room.id,
     code: room.code,
     mode: room.mode,
+    solo: room.solo,
     format: room.format,
     status: room.status,
     phase: room.phase,
@@ -187,7 +192,9 @@ export function publicState(room: Room) {
     recap: room.status === 'active' ? room.recap : null,
     scenario: { id: room.scenario.id, title: room.scenario.title, tagline: room.scenario.tagline },
     world: activeIds(room, room.world).map((id) => markInfo(room, id)),
-    win: { points: room.mode === 'coop' ? BALANCE.points.coopSuccess : BALANCE.points.win, stars: BALANCE.winStars },
+    win: room.solo
+      ? { points: BALANCE.soloSuccess, stars: BALANCE.soloWinStars }
+      : { points: room.mode === 'coop' ? BALANCE.points.coopSuccess : BALANCE.points.win, stars: BALANCE.winStars },
     wins: room.mode === 'coop' ? null : { 0: room.teamWins[0] ?? 0, 1: room.teamWins[1] ?? 0 },
     bonus: room.scenario.bonus
       ? { label: room.scenario.bonus.label, stars: BALANCE.bonus.stars, points: BALANCE.bonus.points }
@@ -516,10 +523,11 @@ async function settle(room: Room) {
     passers: namesOf(outcome.passers),
     failers: namesOf(outcome.failers),
     move,
+    solo: room.solo,
   });
   const headline = tieRounds.length ? `Level on the dice, so they rolled again. ${headlineCore}` : headlineCore;
   const flavor = route.recap
-    ? fillTokens(pickVariant(route.recap, room.mode, room.format), {
+    ? fillTokens(pickVariant(route.recap, textMode(room), room.format), {
         winner: winnerNames,
         loser: loserNames,
         crew: room.players.map((p) => p.username),
@@ -651,7 +659,7 @@ async function finish(room: Room) {
     let points: number;
     if (room.mode === 'coop') {
       result = success ? 'success' : 'fail';
-      points = success ? BALANCE.points.coopSuccess : BALANCE.points.coopFail;
+      points = room.solo ? (success ? BALANCE.soloSuccess : BALANCE.soloFail) : success ? BALANCE.points.coopSuccess : BALANCE.points.coopFail;
     } else if (winnerTeam === p.team) {
       result = 'win';
       points = BALANCE.points.win;
@@ -668,9 +676,10 @@ async function finish(room: Room) {
   const results = await Promise.all(
     base.map(async ({ p, result, won, bonusKept, points }) => {
       const left = await starsLeftToday(p.userId);
-      const winStars = Math.min(won ? BALANCE.winStars : 0, left);
+      const prize = room.solo ? BALANCE.soloWinStars : BALANCE.winStars;
+      const winStars = Math.min(won ? prize : 0, left);
       const bonusStars = Math.min(bonusKept ? BALANCE.bonus.stars : 0, left - winStars);
-      const wanted = (won ? BALANCE.winStars : 0) + (bonusKept ? BALANCE.bonus.stars : 0);
+      const wanted = (won ? prize : 0) + (bonusKept ? BALANCE.bonus.stars : 0);
       return {
         userId: p.userId,
         username: p.username,
@@ -697,12 +706,12 @@ async function finish(room: Room) {
   if (e) {
     for (const k of ['win', 'loss', 'success', 'fail'] as const) {
       const v = e[k];
-      if (v) endings[k] = fillTokens(pickVariant(v, room.mode, room.format), names);
+      if (v) endings[k] = fillTokens(pickVariant(v, textMode(room), room.format), names);
     }
   }
   const epilogue = (room.scenario.epilogues ?? [])
     .filter((x) => room.history.has(x.if))
-    .map((x) => fillTokens(pickVariant(x.text, room.mode, room.format), { ...names, holder: [...(room.history.get(x.if) ?? [])] }));
+    .map((x) => fillTokens(pickVariant(x.text, textMode(room), room.format), { ...names, holder: [...(room.history.get(x.if) ?? [])] }));
 
   getIo().to(`room:${room.id}`).emit('encounter:finished', {
     roomId: room.id,
@@ -748,7 +757,7 @@ async function finish(room: Room) {
         // apply_stars is idempotent per (user, reason, game), so a retry can never pay twice
         if (r.winStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.winStars, p_reason: 'game_win', p_ref: room.id });
         if (r.bonusStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.bonusStars, p_reason: 'game_bonus', p_ref: room.id });
-        await afterEncounter(r.userId); // also tells the client to refresh its stars
+        await afterEncounter(r.userId, { solo: room.solo }); // also tells the client to refresh its stars
       }),
     );
   } catch (err) {
@@ -768,10 +777,18 @@ export async function requestRematch(userId: string, roomId: string) {
   room.rematch.add(userId);
   io.to(`room:${room.id}`).emit('rematch:status', { ready: [...room.rematch] });
   if (room.rematch.size < room.capacity) return;
-  const next = await createRoom({ hostId: room.hostId, mode: room.mode, format: room.format });
+  const next = await createRoom({ hostId: room.hostId, mode: room.mode, format: room.format, solo: room.solo });
   io.to(`room:${room.id}`).emit('rematch:start', { roomId: next.id });
   for (const p of room.players) {
     io.in(`user:${p.userId}`).socketsLeave(`room:${room.id}`);
     await joinRoom(next, p.userId);
   }
+}
+
+/** Start a one-player game right away: no queue, no waiting. */
+export async function startSolo(userId: string) {
+  if (roomOfUser.has(userId)) throw new AppError(409, 'already_in_encounter');
+  const room = await createRoom({ hostId: userId, mode: 'coop', format: '1v1', solo: true });
+  await joinRoom(room, userId);
+  return { roomId: room.id };
 }
