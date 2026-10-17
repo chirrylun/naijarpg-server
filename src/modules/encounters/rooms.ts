@@ -5,7 +5,8 @@ import { AppError } from '../../lib/errors';
 import { makeCode } from '../../lib/codes';
 import { weekKey } from '../../lib/time';
 import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver';
-import { resolveRound } from '../../game-engine/round';
+import { duelTie, resolveRound } from '../../game-engine/round';
+import { d20 } from '../../game-engine/dice';
 import { fillTokens, resultLine, APPROACH_LABEL, joinNames } from '../../game-engine/narrative';
 import { pickEdge, pickVariant, type Scenario, type Scene } from '../../game-engine/scenario';
 import type { Approach, Format, Kind, Mode, StarPlay, Tier } from '../../game-engine/types';
@@ -106,6 +107,7 @@ function twistsFor(room: Room, scene: Scene): string[] {
     const names = room.players.filter((p) => alive(room.held.get(p.userId), room.round, t.if)).map((p) => p.username);
     if (!names.length && !alive(room.world, room.round, t.if)) continue;
     out.push(pickVariant(t.text, room.mode, room.format).replaceAll('{holder}', joinNames(names)));
+    break; // one story note per scene is enough; more just clutters the screen
   }
   return out;
 }
@@ -362,7 +364,13 @@ function startRolls(room: Room) {
     const approach = p.action?.approach ?? open[Math.floor(Math.random() * open.length)].approach;
     const choice = scene.choices.find((c) => c.approach === approach)!;
     const base = BALANCE.useStats ? Math.min(p.stats[approach] ?? 0, BALANCE.maxModifier) : 0;
-    p.roll = { approach, ...rollBase({ modifier: base, dc: choiceDc(room, p, choice) }) };
+    if (room.mode === 'coop') {
+      p.roll = { approach, ...rollBase({ modifier: base, dc: choiceDc(room, p, choice) }) };
+    } else {
+      // Duel: the highest total wins, so an "easier"/"harder" tag becomes a plain + or - on your roll
+      const shift = choice.dc - choiceDc(room, p, choice);
+      p.roll = { approach, ...rollBase({ modifier: base + shift, dc: choice.dc }) };
+    }
     // nothing to decide if you're AFK or can't afford the cheapest bonus
     p.edgeDone = p.afk || p.stars < MIN_EDGE;
   }
@@ -449,10 +457,39 @@ async function settle(room: Room) {
   });
 
   room.rolls.push(...rows);
-  const outcome = resolveRound(
-    room.mode,
-    rows.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin })),
-  );
+  const roundRolls = rows.map((r) => ({
+    userId: r.userId,
+    team: r.team,
+    approach: r.approach,
+    tier: r.tier,
+    margin: r.margin,
+    total: r.total,
+    dc: r.dc,
+  }));
+
+  // Duels: level on the top roll means everybody tied rolls again, until one side is higher
+  const tieRounds: { userId: string; die: number }[][] = [];
+  let tiebreakTeam: number | null = null;
+  if (room.mode !== 'coop') {
+    const teamOf = (id: string) => rows.find((r) => r.userId === id)!.team;
+    let contenders = duelTie(roundRolls);
+    for (let i = 0; contenders.length && i < 25; i++) {
+      const dice = contenders.map((userId) => ({ userId, die: d20() }));
+      tieRounds.push(dice);
+      const top = new Map<number, number>();
+      for (const t of dice) top.set(teamOf(t.userId), Math.max(top.get(teamOf(t.userId)) ?? 0, t.die));
+      const [first, second] = [...top.entries()];
+      if (first && second && first[1] !== second[1]) {
+        tiebreakTeam = first[1] > second[1] ? first[0] : second[0];
+        contenders = [];
+      } else {
+        contenders = dice.filter((t) => t.die === top.get(teamOf(t.userId))).map((t) => t.userId);
+      }
+    }
+    if (contenders.length) tiebreakTeam = teamOf(contenders[Math.floor(Math.random() * contenders.length)]); // safety net
+  }
+  const revealMs = BALANCE.resultDelayMs + tieRounds.length * BALANCE.tieRerollMs;
+  const outcome = resolveRound(room.mode, roundRolls, tiebreakTeam);
     const lead = outcome.lead;
   const route = pickEdge(scene, outcome.kind, outcome.same, lead?.approach ?? null);
 
@@ -461,7 +498,7 @@ async function settle(room: Room) {
   const loserNames = namesOf(outcome.loserIds);
   const move = lead ? APPROACH_LABEL[lead.approach] : undefined;
 
-  const headline = resultLine({
+  const headlineCore = resultLine({
     mode: room.mode,
     kind: outcome.kind,
     same: outcome.same,
@@ -472,6 +509,7 @@ async function settle(room: Room) {
     failers: namesOf(outcome.failers),
     move,
   });
+  const headline = tieRounds.length ? `Level on the dice, so they rolled again. ${headlineCore}` : headlineCore;
   const flavor = route.recap
     ? fillTokens(pickVariant(route.recap, room.mode, room.format), {
         winner: winnerNames,
@@ -543,7 +581,8 @@ async function settle(room: Room) {
         gained,
     lead: lead ?? null,
     ends,
-    revealMs: BALANCE.resultDelayMs,
+    tieRounds,
+    revealMs,
   });
 
   room.timer = setTimeout(() => {
@@ -552,7 +591,7 @@ async function settle(room: Room) {
     room.recap = recap; // shown at the top of the next scene
     room.round += 1;
     beginRound(room);
-  }, BALANCE.resultDelayMs);
+  }, revealMs);
 }
 
 async function finish(room: Room) {

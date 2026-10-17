@@ -6,16 +6,16 @@
   "formats": ["1v1"],
   "start": "knock",
   "marks": {
-    "driver_ally": { "label": "Driver is on your side", "tip": "Mr. Femi backs you. Charm and wisdom get easier.", "rounds": 3 },
-    "driver_annoyed": { "label": "Driver is vexed", "tip": "Mr. Femi wants you out of his car. Charm gets harder.", "rounds": 3 },
-    "agbero_friend": { "label": "Chairman's friend", "tip": "Kayode respects you. Charm gets easier.", "rounds": 3 },
-    "agbero_grudge": { "label": "On Kayode's bad list", "tip": "He remembers you. Hustle and gra-gra get harder.", "rounds": 3 },
-    "paid_levy": { "label": "Dropped something", "tip": "His boys leave you alone. Hustle gets easier.", "rounds": 3 },
-    "short_cash": { "label": "Pocket don dry", "tip": "You are out of notes. You cannot pay your way out.", "rounds": 3 },
-    "on_camera": { "label": "On camera", "tip": "Somebody is filming you. Gra-gra gets harder.", "rounds": 3 },
-    "calm": { "label": "Looks calm", "tip": "You look like you have everything under control. Charm gets easier.", "rounds": 3 },
-    "sweaty": { "label": "Body dey shake", "tip": "You look rattled. Charm gets harder.", "rounds": 3 },
-    "shortcut": { "label": "Knows the back road", "tip": "You know the way around. Hustle gets easier.", "rounds": 3 }
+    "driver_ally": { "label": "Driver is with you", "tip": "Mr. Femi is on your side. Charm and wisdom get easier.", "rounds": 3 },
+    "driver_annoyed": { "label": "Driver is angry", "tip": "Mr. Femi wants you out of his car. Charm gets harder.", "rounds": 3 },
+    "agbero_friend": { "label": "Kayode likes you", "tip": "He respects you. Charm gets easier.", "rounds": 3 },
+    "agbero_grudge": { "label": "Kayode is not happy with you", "tip": "He remembers you. Hustle and bluff get harder.", "rounds": 3 },
+    "paid_levy": { "label": "You paid already", "tip": "His boys leave you alone. Hustle gets easier.", "rounds": 3 },
+    "short_cash": { "label": "No money left", "tip": "You cannot pay your way out.", "rounds": 3 },
+    "on_camera": { "label": "Someone is filming", "tip": "Bluff gets harder.", "rounds": 3 },
+    "calm": { "label": "You look calm", "tip": "Charm gets easier.", "rounds": 3 },
+    "sweaty": { "label": "You look scared", "tip": "Charm gets harder.", "rounds": 3 },
+    "shortcut": { "label": "You know the road", "tip": "Hustle gets easier.", "rounds": 3 }
   },
   "scenes": {
     "knock": {
@@ -24,7 +24,7 @@
         "default": "Ikeja, 6:30 pm. The Bolt has not moved for twenty minutes on the Airport Road go-slow. Your Uncle Chuks lands from London at 8, and you and {rival} are both going to pick him up. Whoever reaches arrivals first carries his bags and gets first pick of the gifts. Then somebody knocks on the window: an agbero in a faded vest, hand out. 'Oga, anything for the boys?'",
         "coop": "Ikeja, 6:30 pm. The Bolt has not moved for twenty minutes on the Airport Road go-slow. Your Uncle Chuks lands from London at 8, and you and {partner} are going together to pick him up. If you miss him, he will not stop reminding you for ten years. Then somebody knocks on the window: an agbero in a faded vest, hand out. 'Oga, anything for the boys?'"
       },
-      "stakes": { "default": "Looking like the one in control.", "coop": "Getting to Uncle Chuks on time." },
+      "stakes": { "default": "Stay calm. The one who looks relaxed gets respect.", "coop": "Don't let him delay you. Uncle Chuks lands at 8." },
       "choices": [
         { "approach": "charm", "label": "Roll down the window and greet him like family: 'Chairman, how work?'", "dc": 12 },
         { "approach": "hustle", "label": "Hand him ₦500 and ask him to move on", "dc": 12 },
@@ -50,10 +50,10 @@
         "default": "His name is Kayode, but his boys call him Chairman. He leans on the window, grinning, and says the road belongs to him until the next bridge. For a price, he can open the back road under the bridge. {rival} is sitting very still.",
         "coop": "His name is Kayode, but his boys call him Chairman. He leans on the window, grinning, and says the road belongs to him until the next bridge. For a price, he can open the back road under the bridge. You and {partner} are sitting very still."
       },
-      "stakes": "The back road, and the Chairman's good side.",
+      "stakes": "Get on his good side and he will open the back road.",
       "twists": [
-        { "if": "agbero_friend", "text": "{holder} is getting a wide grin from the Chairman." },
-        { "if": "sweaty", "text": "{holder} is sweating through their shirt." }
+        { "if": "agbero_friend", "text": "The Chairman is smiling at {holder}." },
+        { "if": "sweaty", "text": "{holder} is sweating." }
       ],
       "choices": [
         { "approach": "charm", "label": "Ask about his boys and his family, and listen", "dc": 11, "mods": [{ "mark": "agbero_friend", "dc": -2 }] },
@@ -76,10 +76,10 @@
     "levy_line": {
       "title": "The Second Boy",
       "text": "A second boy appears at the other window, hand out. 'That one na for the road. Mine na for security.' Mr. Femi sighs loudly and looks at you through the mirror.",
-      "stakes": "Your money and Mr. Femi's patience.",
+      "stakes": "Watch your money, and don't make Mr. Femi vex.",
       "twists": [
-        { "if": "paid_levy", "text": "{holder} already paid once, and the boys can see the notes." },
-        { "if": "driver_annoyed", "text": "{holder} is the one Mr. Femi blames for the delay." }
+        { "if": "paid_levy", "text": "{holder} already paid once, and the boys saw the money." },
+        { "if": "driver_annoyed", "text": "Mr. Femi is angry with {holder} for the delay." }
       ],
       "choices": [
         { "approach": "charm", "label": "Pay and ask for a receipt, with a laugh", "dc": 11, "mods": [{ "mark": "paid_levy", "dc": -2 }] },
@@ -102,8 +102,8 @@
     "crowd": {
       "title": "The Whole Road Is Watching",
       "text": "A small crowd has gathered. A hawker is laughing, a phone is up, and the agbero says to everybody, 'This one says he dey work for government!' Mr. Femi stares straight ahead.",
-      "stakes": "How you look on camera.",
-      "twists": [{ "if": "on_camera", "text": "{holder} is being filmed from two directions." }],
+      "stakes": "People are watching, so mind how you talk.",
+      "twists": [{ "if": "on_camera", "text": "Somebody is filming {holder}." }],
       "choices": [
         { "approach": "charm", "label": "Turn to the camera and apologise warmly", "dc": 12, "mods": [{ "mark": "on_camera", "dc": 2 }] },
         { "approach": "hustle", "label": "Slip him money quietly to end it", "dc": 12 },
@@ -125,10 +125,10 @@
     "driver_talk": {
       "title": "Mr. Femi Knows a Guy",
       "text": "Mr. Femi rolls his window down: 'Kayode, na me! Abeg, make we pass.' He tells you the back road under the bridge takes ten minutes if the bridge boys agree. Then he looks at you in the mirror: 'But who go pay?'",
-      "stakes": "The back road, and who pays for it.",
+      "stakes": "Settle who pays before the car moves.",
       "twists": [
-        { "if": "driver_ally", "text": "{holder} has Mr. Femi smiling in the mirror." },
-        { "if": "agbero_grudge", "text": "{holder} is the one the agbero keeps staring at." }
+        { "if": "driver_ally", "text": "Mr. Femi is smiling at {holder} in the mirror." },
+        { "if": "agbero_grudge", "text": "The agbero keeps looking at {holder}." }
       ],
       "choices": [
         { "approach": "charm", "label": "Promise a big tip and a five-star rating", "dc": 11, "mods": [{ "mark": "driver_ally", "dc": -2 }] },
@@ -151,7 +151,7 @@
     "window_bang": {
       "title": "The Banging",
       "text": "The banging gets louder. A second agbero joins and starts testing the back door. Mr. Femi locks the car and swears. You have lost three more minutes, and Uncle Chuks has just sent a voice note asking where you are.",
-      "stakes": "Getting out of this mess without losing the car.",
+      "stakes": "Get out of this one without losing the car.",
       "choices": [
         { "approach": "charm", "label": "Open the window an inch and plead", "dc": 12 },
         { "approach": "hustle", "label": "Slide a note through the gap", "dc": 12 },
@@ -176,10 +176,10 @@
         "default": "Under the bridge, three boys sit on a drum guarding a dirt road. It is a shortcut, but they want ₦2,000 a car, and the potholes look like craters. {rival} watches your face, waiting for you to blink.",
         "coop": "Under the bridge, three boys sit on a drum guarding a dirt road. It is a shortcut, but they want ₦2,000 a car, and the potholes look like craters. You and {partner} look at each other."
       },
-      "stakes": "Saving time without breaking the car's axle.",
+      "stakes": "Save time, but don't spoil the car.",
       "twists": [
-        { "if": "shortcut", "text": "{holder} knows this back road like their own bedroom." },
-        { "if": "agbero_friend", "text": "{holder} has a friend among the bridge boys." }
+        { "if": "shortcut", "text": "{holder} knows this road very well." },
+        { "if": "agbero_friend", "text": "{holder} knows one of the bridge boys." }
       ],
       "choices": [
         { "approach": "charm", "label": "Greet the boys like old friends", "dc": 12, "mods": [{ "mark": "agbero_friend", "dc": -3 }, { "mark": "agbero_grudge", "dc": 3 }] },
@@ -202,9 +202,9 @@
     "crawl": {
       "title": "Inch by Inch",
       "text": "Horns, hawkers with pure water and plantain chips, and a danfo squeezing in beside you. Ten minutes become twenty. Everybody in the car is thinking about the same flight, and nobody wants to say it.",
-      "stakes": "Keeping your cool while the clock runs.",
+      "stakes": "Keep your cool. The time is running.",
       "twists": [
-        { "if": "paid_levy", "text": "{holder} has paid and wants to be thanked for it." },
+        { "if": "paid_levy", "text": "{holder} paid and wants some thanks." },
         { "if": "short_cash", "text": "{holder} is counting coins." }
       ],
       "choices": [
@@ -228,10 +228,10 @@
     "uncle_call": {
       "title": "Where Una Dey?",
       "text": "The phone rings, and it is Uncle Chuks, already landed. 'I don land o! Where una dey? I don buy the new phone for una and una never reach!' Whoever answers sets the mood for the whole welcome.",
-      "stakes": "Uncle Chuks's mood, and who he hugs first.",
+      "stakes": "How you answer will decide Uncle Chuks's mood.",
       "twists": [
-        { "if": "calm", "text": "{holder} sounds like somebody who has everything under control." },
-        { "if": "sweaty", "text": "{holder} sounds out of breath." }
+        { "if": "calm", "text": "{holder} sounds relaxed." },
+        { "if": "sweaty", "text": "{holder} sounds tired and out of breath." }
       ],
       "choices": [
         { "approach": "charm", "label": "Calm him with a joke and a promise", "dc": 12, "mods": [{ "mark": "calm", "dc": -2 }, { "mark": "sweaty", "dc": 2 }] },
@@ -257,12 +257,12 @@
         "default": "An SUV blocks the road. The real Chairman steps out in a clean agbada, because the boys called him. 'Who be the one wey dey disrespect my people?' he asks, and every eye in the traffic turns to the back of your Bolt. {rival} says nothing and hopes it is you.",
         "coop": "An SUV blocks the road. The real Chairman steps out in a clean agbada, because the boys called him. 'Who be the one wey dey disrespect my people?' he asks, and every eye in the traffic turns to the back of your Bolt. You and {partner} look at each other."
       },
-      "stakes": "Being let through without losing money or face.",
+      "stakes": "Show respect. Protect your money and your face.",
       "twists": [
-        { "if": "agbero_friend", "text": "{holder} is being waved over like an old friend." },
-        { "if": "agbero_grudge", "text": "{holder} is the one he points at." },
+        { "if": "agbero_friend", "text": "The Chairman waves {holder} over like an old friend." },
+        { "if": "agbero_grudge", "text": "The Chairman points at {holder}." },
         { "if": "paid_levy", "text": "{holder} gets a nod: 'This one don pay.'" },
-        { "if": "on_camera", "text": "{holder} has a phone pointed at them." }
+        { "if": "on_camera", "text": "Somebody is filming {holder}." }
       ],
       "choices": [
         { "approach": "charm", "label": "Greet him with both hands and apologise warmly", "dc": 12, "mods": [{ "mark": "agbero_friend", "dc": -3 }, { "mark": "agbero_grudge", "dc": 3 }, { "mark": "paid_levy", "dc": -2 }] },
@@ -285,10 +285,10 @@
     "arrivals_gate": {
       "title": "The Airport Gate",
       "text": "7:48 pm. The airport security says the car cannot stop at the arrivals gate, so you must walk. It is drizzling. Uncle Chuks has already sent two voice notes asking where you are.",
-      "stakes": "Arriving in time and looking composed.",
+      "stakes": "Reach him on time and look neat.",
       "twists": [
         { "if": "calm", "text": "{holder} still looks fresh." },
-        { "if": "sweaty", "text": "{holder} looks like a wet rag." }
+        { "if": "sweaty", "text": "{holder} is wet and tired." }
       ],
       "choices": [
         { "approach": "charm", "label": "Smile at security and ask for an umbrella", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }, { "mark": "sweaty", "dc": 2 }] },
@@ -314,10 +314,10 @@
         "default": "Murtala Muhammed airport, arrivals hall. Uncle Chuks is at the barrier with two big boxes and a trolley, shouting names. You and {rival} walk in at the same time, both late, both pretending you are not. One of you will hug him first, and the other will carry the small bag.",
         "coop": "Murtala Muhammed airport, arrivals hall. Uncle Chuks is at the barrier with two big boxes and a trolley, shouting names. You and {partner} walk in at the same time, both late, both pretending you are not. One mistake now and he will bring this up at every family event."
       },
-      "stakes": { "default": "The first hug, and first pick of the gifts.", "coop": "Making Uncle Chuks happy." },
+      "stakes": { "default": "Whoever hugs him first picks the gifts first.", "coop": "Make Uncle Chuks happy." },
       "twists": [
-        { "if": "calm", "text": "{holder} looks like the one who planned the whole evening." },
-        { "if": "sweaty", "text": "{holder} is dabbing their forehead with a tissue." }
+        { "if": "calm", "text": "{holder} looks like they planned everything." },
+        { "if": "sweaty", "text": "{holder} is wiping sweat off their face." }
       ],
       "choices": [
         { "approach": "charm", "label": "Run to him with open arms: 'Uncle! Welcome home!'", "dc": 11, "mods": [{ "mark": "calm", "dc": -2 }, { "mark": "sweaty", "dc": 2 }] },
@@ -340,7 +340,7 @@
     { "if": "paid_levy", "text": "{holder} is still waiting for somebody to refund the levy." },
     { "if": "on_camera", "text": "The video of {holder} and the agbero got forty thousand views by Monday." },
     { "if": "driver_ally", "text": "Mr. Femi now picks up {holder} every Friday." },
-    { "if": "sweaty", "text": "{holder} spent the welcome dabbing sweat with a tissue." },
+    { "if": "sweaty", "text": "{holder} spent the welcome wiping sweat with a tissue." },
     { "if": "shortcut", "text": "{holder} now sells the back road to everybody in the family." },
     { "if": "agbero_grudge", "text": "{holder} avoids that stretch of road after dark." }
   ]

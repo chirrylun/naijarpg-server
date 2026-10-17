@@ -1,10 +1,11 @@
 export const BALANCE = {
   roundSeconds: 40,
   resultDelayMs: 6500,
+  tieRerollMs: 2600, // extra reveal time for each tie-break re-roll
   maxRounds: 8,
   maxModifier: 3,
   maxTotalModifier: 4,
- minTotalModifier: -2,
+  minTotalModifier: -3,
   nudgeBonus: 2,
   starCost: { reroll: 1, nudge: 2, shield: 2 },
   points: { win: 25, draw: 12, loss: 5, coopSuccess: 20, coopFail: 8 },
