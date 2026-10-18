@@ -2,7 +2,7 @@ export const BALANCE = {
   roundSeconds: 40,
   resultDelayMs: 6500,
   tieRerollMs: 2600, // extra reveal time for each tie-break re-roll
-  maxRounds: 4, // every path through the current stories is exactly 4 scenes
+  maxRounds: 5, // safety cap: the longest path through a story is 5 scenes, shorter paths simply end sooner
   maxModifier: 3,
   maxTotalModifier: 4,
   minTotalModifier: -3,
