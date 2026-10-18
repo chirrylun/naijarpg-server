@@ -1,0 +1,2358 @@
+{
+  "id": "oga-at-the-top",
+  "title": "Oga at the Top",
+  "tagline": "Your sister sacrificed her pride for this interview. The oga who signed your letter retired yesterday and the interview is by 2pm. It's 7am now.",
+  "modes": [
+    "rival",
+    "coop"
+  ],
+  "start": "morning_panic",
+  "bonus": {
+    "label": "Keep your dignity",
+    "lostBy": [
+      "family_shame"
+    ],
+    "lostMessage": "You begged too many people. Your sister hears about it before you get home.",
+    "earnedLine": "You walked into that ministry with your head still high."
+  },
+  "marks": {
+    "connection_verified": {
+      "label": "Old oga's driver likes you",
+      "tip": "Charm and wisdom is easier.",
+      "rounds": 3
+    },
+    "secretary_owe": {
+      "label": "Madam Grace remembers you",
+      "tip": "Hustle is easier, gragra is harder.",
+      "rounds": 3
+    },
+    "wrong_floor": {
+      "label": "You went to the wrong office",
+      "tip": "Everything is harder.",
+      "rounds": 2
+    },
+    "short_cash": {
+      "label": "Pocket dry",
+      "tip": "You can't settle anybody again.",
+      "rounds": 4
+    },
+    "on_list": {
+      "label": "Security has your name",
+      "tip": "Lie gets harder.",
+      "rounds": 3
+    },
+    "other_candidate": {
+      "label": "The other person has a letter too",
+      "tip": "Rival is stronger.",
+      "rounds": 3
+    },
+    "sister_pride": {
+      "label": "Your sister's name is still clean",
+      "tip": "All approaches are easier.",
+      "rounds": 3
+    },
+    "gateman_friend": {
+      "label": "Baba Nuru likes you",
+      "tip": "Wisdom and hustle is easier.",
+      "rounds": 3
+    },
+    "family_shame": {
+      "label": "Your sister will hear about this",
+      "tip": "Your dignity bonus is gone.",
+      "rounds": 6
+    }
+  },
+  "scenes": {
+    "morning_panic": {
+      "title": "The Letter Is Useless",
+      "text": {
+        "default": "7am. Your phone wakes you. It's your sister: \"The oga that signed your letter retired last week. His replacement resumes today. I don't know him.\" She paid ₦50,000 to get that letter. You can hear her trying not to cry. The interview is 2pm at the Federal Ministry of Establishment. You have ₦15,000, one faded connection, and {rival} is also going for the same job. Your sister's reputation is on the line.",
+        "coop": "7am. Your phone wakes you. It's your sister: \"The oga that signed your letter retired last week. His replacement resumes today. I don't know him.\" She paid ₦50,000 to get that letter. You can hear her trying not to cry. The interview is 2pm at the Federal Ministry of Establishment. You have ₦15,000, one faded connection, and {partner} is supposed to help you. Your sister's reputation is on the line.",
+        "solo": "7am. Your phone wakes you. It's your sister: \"The oga that signed your letter retired last week. His replacement resumes today. I don't know him.\" She paid ₦50,000 to get that letter. You can hear her trying not to cry. The interview is 2pm at the Federal Ministry of Establishment. You have ₦15,000 and one faded connection. Your sister's reputation is on the line."
+      },
+      "stakes": {
+        "default": "Your sister paid ₦50,000 for this and only one candidate gets the card. Don't waste her money.",
+        "coop": "Your sister paid for this. Don't waste her money."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Call your sister back, calm her down, ask who else knows the new oga",
+          "dc": 11
+        },
+        {
+          "approach": "hustle",
+          "label": "Take a taxi straight to the ministry now, wait outside the new oga's office",
+          "dc": 12,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You don't have transport money left.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Call the old oga's driver directly, say the new oga is expecting you",
+          "dc": 13
+        },
+        {
+          "approach": "wisdom",
+          "label": "Check the ministry website, find the new oga's name and his former posting",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "sister_network",
+            "recap": {
+              "default": "{winner} calms sister down and she remembers: the new oga's secretary is from her village. She gives you the woman's name. {loser} is already dressing up.",
+              "coop": "You calm sister down and she remembers: the new oga's secretary is from her village. She gives you the woman's name."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "sister_pride"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "taxi_park",
+            "recap": {
+              "default": "{winner} grabs a taxi straight to the ministry and beats the traffic. {loser} is still at home looking for a clean shirt.",
+              "coop": "You grab a taxi straight to the ministry and beat the traffic."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "driver_bust",
+            "recap": {
+              "default": "{winner} calls old oga's driver and says 'the new oga is expecting me.' The driver laughs: 'Oga, that one no dey office today. Try tomorrow.' {loser} hears the whole thing.",
+              "coop": "You call old oga's driver and say 'the new oga is expecting me.' The driver laughs: 'Oga, that one no dey office today. Try tomorrow.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "wrong_floor"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "new_oga_gist",
+            "recap": {
+              "default": "{winner} finds the new oga's name: Dr. Ibrahim Sule. Formerly posted in Kano. Just transferred last week. {loser} is still asking people on WhatsApp.",
+              "coop": "You find the new oga's name: Dr. Ibrahim Sule. Formerly posted in Kano. Just transferred last week."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "sister_network",
+            "recap": {
+              "default": "{winner} calls sister but she is too upset to remember anything useful. She just keeps saying 'sorry.' {loser} watches {winner} struggle.",
+              "coop": "You call sister but she is too upset to remember anything useful. She just keeps saying 'sorry.'"
+            }
+          },
+          "hustle": {
+            "to": "taxi_park",
+            "recap": {
+              "default": "{winner} takes taxi but traffic is bad. The driver drops you at a bus stop. You walk the rest. {loser} passes you in a better taxi.",
+              "coop": "You take taxi but traffic is bad. The driver drops you at a bus stop. You walk the rest."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "driver_bust",
+            "recap": {
+              "default": "{winner} calls old driver and he says 'who give you my number?' He hangs up. {loser} is already at the ministry gate.",
+              "coop": "You call old driver and he says 'who give you my number?' He hangs up."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "wrong_floor"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "new_oga_gist",
+            "recap": {
+              "default": "{winner} checks website but the new oga's name is not updated yet. Old name still there. {loser} finds it on LinkedIn instead.",
+              "coop": "You check website but the new oga's name is not updated yet. Old name still there."
+            }
+          }
+        },
+        "tie": {
+          "to": "taxi_park",
+          "recap": "You both panic and end up at the ministry gate at the same time, arguing about who got there first."
+        }
+      }
+    },
+    "sister_network": {
+      "title": "Madam Grace from the Village",
+      "text": "Your sister sends you a number. \"Her name is Grace. She is the new oga's secretary. Tell her you're my brother. She owes me from when her son was sick.\" You call the number. A tired woman answers: \"Yes? Who is this?\" You can hear ministry noise behind her - printers, people shouting, somebody laughing too loud.",
+      "stakes": {
+        "default": "Madam Grace can put you in front of the new oga. Only one candidate gets the card, so make her remember you.",
+        "coop": "This woman can put you in front of the new oga. Don't mess it up."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Greet her like family: \"Aunty Grace! My sister said you're the only one who can help me\"",
+          "dc": 11,
+          "mods": [
+            {
+              "mark": "sister_pride",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Offer to 'appreciate' her if she puts your file on top",
+          "dc": 12,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You don't have money to appreciate anybody.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Say the new oga already knows about you, you're just confirming the time",
+          "dc": 13
+        },
+        {
+          "approach": "wisdom",
+          "label": "Ask about her son first, then mention your sister's name slowly",
+          "dc": 10,
+          "mods": [
+            {
+              "mark": "sister_pride",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} calls her Aunty Grace and she softens immediately. 'Your sister? That woman saved my son.' She gives you the real time: 2pm, Room 402. {loser} is still calling random numbers.",
+              "coop": "You call her Aunty Grace and she softens immediately. 'Your sister? That woman saved my son.' She gives you the real time: 2pm, Room 402."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "secretary_owe"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} offers appreciation and Grace goes quiet. 'Bring it when you come.' She gives you Room 402 but her voice is cold. {loser} hears the offer.",
+              "coop": "You offer appreciation and Grace goes quiet. 'Bring it when you come.' She gives you Room 402 but her voice is cold."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "wrong_office",
+            "recap": {
+              "default": "{winner} says 'the oga knows me.' Grace says 'Which oga?' You say the new oga's name wrong. She gives you Room 205, old oga's office. {loser} gets the right room from somebody else.",
+              "coop": "You say 'the oga knows me.' Grace says 'Which oga?' You say the new oga's name wrong. She gives you Room 205, old oga's office."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "wrong_floor"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} asks about her son first. Grace talks for ten minutes. Then you mention your sister and she almost cries. 'Come at 1:30. I'll prepare him.' {loser} is still holding.",
+              "coop": "You ask about her son first. Grace talks for ten minutes. Then you mention your sister and she almost cries. 'Come at 1:30. I'll prepare him.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "secretary_owe"
+              },
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} calls her Aunty Grace but says the wrong sister's name. Grace goes cold: 'I don't know that one.' She gives you the general line: 2pm, come and queue.",
+              "coop": "You call her Aunty Grace but say the wrong sister's name. Grace goes cold: 'I don't know that one.' She gives you the general line: 2pm, come and queue."
+            }
+          },
+          "hustle": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} offers appreciation but has nothing to give. Grace hears the empty pocket in your voice. 'Come by 2pm like everybody else.'",
+              "coop": "You offer appreciation but have nothing to give. Grace hears the empty pocket in your voice. 'Come by 2pm like everybody else.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              },
+              {
+                "to": "all",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "wrong_office",
+            "recap": {
+              "default": "{winner} says 'the oga knows me.' Grace says 'I'm his secretary, he tells me everything. He didn't mention you.' She hangs up.",
+              "coop": "You say 'the oga knows me.' Grace says 'I'm his secretary, he tells me everything. He didn't mention you.' She hangs up."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "wrong_floor"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} asks about her son but she doesn't want to talk. 'This is office line, not family meeting.' She gives you 2pm, Room 402, but she is annoyed.",
+              "coop": "You ask about her son but she doesn't want to talk. 'This is office line, not family meeting.' She gives you 2pm, Room 402, but she is annoyed."
+            }
+          }
+        },
+        "tie": {
+          "to": "secretary_office",
+          "recap": "You both call and get the same answer: 2pm, Room 402. Grace is too busy to remember either of you."
+        }
+      }
+    },
+    "new_oga_gist": {
+      "title": "Dr. Ibrahim Sule",
+      "text": "You find out the new oga is Dr. Ibrahim Sule, transferred from Kano last week. Formerly Director of Personnel. No scandal, no gossip. A career man. But his driver, Musa, is still the same driver from Kano - and your cousin's friend knows Musa's brother in Sabon Gari. The connection is thin, but it's something.",
+      "stakes": {
+        "default": "You have information. Turn it into access before the other candidate does.",
+        "coop": "You have information. Now you need to turn it into access."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Call your cousin's friend, ask him to call Musa's brother, ask Musa to greet you at the gate",
+          "dc": 12
+        },
+        {
+          "approach": "hustle",
+          "label": "Go to the ministry now, find Musa at the driver's shed, give him ₦2,000 to put in a good word",
+          "dc": 11,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You don't have ₦2,000 to give.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Walk into the ministry and tell security you're Dr. Sule's nephew from Kano",
+          "dc": 14,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 3,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Find Dr. Sule's former ministry in Kano, call their general line, ask about his reputation",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "driver_shed",
+            "recap": {
+              "default": "{winner} calls the chain: cousin, friend, Musa's brother, Musa. By 10am Musa is waving from the driver's shed. 'You be the one from Lagos?' {loser} is still asking people about the new oga.",
+              "coop": "You call the chain: cousin, friend, Musa's brother, Musa. By 10am Musa is waving from the driver's shed. 'You be the one from Lagos?'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "driver_shed",
+            "recap": {
+              "default": "{winner} finds Musa at the driver shed. Musa takes the ₦2,000 and says 'I go tell oga say you dey come.' {loser} sees the money change hands.",
+              "coop": "You find Musa at the driver shed. Musa takes the ₦2,000 and says 'I go tell oga say you dey come.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              },
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} says 'nephew from Kano' and security writes it down. They call upstairs. 'Dr. Sule say he no get nephew for Lagos.' {loser} is watching from the gate.",
+              "coop": "You say 'nephew from Kano' and security writes it down. They call upstairs. 'Dr. Sule say he no get nephew for Lagos.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} calls Kano and a clerk says: 'Dr. Sule? That one no like long talk. Come prepared, answer direct.' {loser} is still guessing what he wants.",
+              "coop": "You call Kano and a clerk says: 'Dr. Sule? That one no like long talk. Come prepared, answer direct.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "wrong_office",
+            "recap": {
+              "default": "{winner} calls the chain but Musa's brother is not picking. The connection dies there. {loser} gets through on the first try.",
+              "coop": "You call the chain but Musa's brother is not picking. The connection dies there."
+            }
+          },
+          "hustle": {
+            "to": "driver_shed",
+            "recap": {
+              "default": "{winner} finds Musa but has no money. Musa looks at the empty hand and says 'Oga busy today. Come tomorrow.' {loser} pays and gets through.",
+              "coop": "You find Musa but have no money. Musa looks at the empty hand and says 'Oga busy today. Come tomorrow.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} says 'nephew from Kano' and security laughs. 'Everyday we get ten nephews. Go and queue.' {loser} walks past with a real letter.",
+              "coop": "You say 'nephew from Kano' and security laughs. 'Everyday we get ten nephews. Go and queue.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} calls Kano but the line is bad. Somebody answers, says 'wrong number,' and hangs up. {loser} gets the real gist from Facebook.",
+              "coop": "You call Kano but the line is bad. Somebody answers, says 'wrong number,' and hangs up."
+            }
+          }
+        },
+        "tie": {
+          "to": "secretary_office",
+          "recap": "You both do research and end up at the ministry gate at the same time, with the same information, arguing about who called Musa first."
+        }
+      }
+    },
+    "driver_bust": {
+      "title": "Wrong Information",
+      "text": "The old oga's driver played you. The new oga is very much in office - you can see his car, a black Prado with Kano plates, parked in the VIP spot. Your lie is already traveling. Somebody in that ministry now thinks you're a fraud. You need to fix this before it reaches the new oga's ear.",
+      "stakes": {
+        "default": "Your name is getting dirty, and the job goes to a clean name. Fix it fast.",
+        "coop": "Your name is getting dirty. Clean it fast."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Call the driver back, laugh it off: 'Oga, you catch me! I just need the real information'",
+          "dc": 12
+        },
+        {
+          "approach": "hustle",
+          "label": "Go to the ministry, find the new oga's real secretary, explain you were given wrong info",
+          "dc": 11
+        },
+        {
+          "approach": "gragra",
+          "label": "Double down: say the driver is confused, you spoke to the new oga personally yesterday",
+          "dc": 15,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 3,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Forget the driver. Go to the ministry gate and start fresh with security",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "driver_shed",
+            "recap": {
+              "default": "{winner} calls the driver back and laughs. The driver laughs too. 'You get liver. Okay, the new oga dey office. His name na Dr. Sule. Room 402.' {loser} is still believing the wrong info.",
+              "coop": "You call the driver back and laugh. The driver laughs too. 'You get liver. Okay, the new oga dey office. His name na Dr. Sule. Room 402.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} finds Grace and explains. She listens, then says: 'At least you're honest. 2pm, Room 402. Don't mention that driver again.' {loser} is still spreading the wrong name.",
+              "coop": "You find Grace and explain. She listens, then says: 'At least you're honest. 2pm, Room 402. Don't mention that driver again.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "secretary_owe"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} says 'I spoke to him yesterday.' Security calls upstairs. 'Dr. Sule say he never hear your name.' The story spreads. {loser} is already inside.",
+              "coop": "You say 'I spoke to him yesterday.' Security calls upstairs. 'Dr. Sule say he never hear your name.' The story spreads."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} goes to the gate fresh. Baba Nuru, the gateman, has seen this before. 'You be the third person today with wrong information. Wait, I go help you.' {loser} is still arguing with the driver.",
+              "coop": "You go to the gate fresh. Baba Nuru, the gateman, has seen this before. 'You be the third person today with wrong information. Wait, I go help you.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "gateman_friend"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "driver_shed",
+            "recap": {
+              "default": "{winner} calls back but the driver doesn't pick again. The line is dead. {loser} got the right info from somebody else.",
+              "coop": "You call back but the driver doesn't pick again. The line is dead."
+            }
+          },
+          "hustle": {
+            "to": "secretary_office",
+            "recap": {
+              "default": "{winner} finds Grace but she is busy. 'Come back by 12.' You wait in the sun. {loser} is already inside drinking cold water.",
+              "coop": "You find Grace but she is busy. 'Come back by 12.' You wait in the sun."
+            }
+          },
+          "gragra": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} doubles down and security writes your name in the suspicious visitors book. 'We go monitor you.' {loser} walks past with a smile.",
+              "coop": "You double down and security writes your name in the suspicious visitors book. 'We go monitor you.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} goes to the gate but Baba Nuru is on break. The replacement doesn't know anything. {loser} gets the real gateman.",
+              "coop": "You go to the gate but Baba Nuru is on break. The replacement doesn't know anything."
+            }
+          }
+        },
+        "tie": {
+          "to": "ministry_gate",
+          "recap": "You both have wrong information and end up at the gate together, confused and arguing."
+        }
+      }
+    },
+    "ministry_gate": {
+      "title": "Baba Nuru at the Gate",
+      "text": {
+        "default": "The ministry gate. Baba Nuru has been gateman here for twenty years. He has seen every trick. He watches you approach. \"Yes? You get appointment?\" The building is big, white, and slow. Every minute at this gate is a minute closer to 2pm.",
+        "coop": "The ministry gate. Baba Nuru has been gateman here for twenty years. He has seen every trick. He watches you approach. \"Yes? You get appointment?\" The building is big, white, and slow. Every minute at this gate is a minute closer to 2pm.",
+        "solo": "The ministry gate. Baba Nuru has been gateman here for twenty years. He has seen every trick. He watches you approach. \"Yes? You get appointment?\" The building is big, white, and slow. Every minute at this gate is a minute closer to 2pm."
+      },
+      "stakes": {
+        "default": "Baba Nuru can wave you through or make you wait. Every minute here is a minute the other candidate gains.",
+        "coop": "Baba Nuru can make you wait ten minutes or wave you through. Choose carefully."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Greet him like an old friend: \"Baba Nuru! You still dey here? My father used to say you're the real oga of this ministry\"",
+          "dc": 12,
+          "mods": [
+            {
+              "mark": "gateman_friend",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Slide ₦500 into his hand with your ID: \"For your morning, Baba\"",
+          "dc": 11,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "Your pocket is empty.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Show him the old oga's letter and say it's still valid",
+          "dc": 13,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Ask him which room is Dr. Sule's, confirm the floor and the staircase",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} greets Baba Nuru like family and he smiles for the first time in hours. 'Your father? That man get sense. Go, Room 402. But wait for me downstairs, I get gist for you.' {loser} is still showing ID.",
+              "coop": "You greet Baba Nuru like family and he smiles for the first time in hours. 'Your father? That man get sense. Go, Room 402. But wait for me downstairs, I get gist for you.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "gateman_friend"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} gives Baba Nuru ₦500 and he doesn't even look at it. 'I no dey take money from strangers. But you get respect. Room 402.' {loser} is still arguing.",
+              "coop": "You give Baba Nuru ₦500 and he doesn't even look at it. 'I no dey take money from strangers. But you get respect. Room 402.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "gateman_friend"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} shows the old letter and Baba Nuru shakes his head. 'That oga don go. New oga, new letter.' He writes something in his book. {loser} is already inside.",
+              "coop": "You show the old letter and Baba Nuru shakes his head. 'That oga don go. New oga, new letter.' He writes something in his book."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} asks directions and Baba Nuru is impressed. 'Room 402, fourth floor, staircase B. Elevator don spoil since last week.' {loser} is waiting for the broken elevator.",
+              "coop": "You ask directions and Baba Nuru is impressed. 'Room 402, fourth floor, staircase B. Elevator don spoil since last week.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} greets Baba Nuru but says the wrong name. 'My name no be Nuru. Go and learn name before you greet person.' {loser} gets waved through.",
+              "coop": "You greet Baba Nuru but say the wrong name. 'My name no be Nuru. Go and learn name before you greet person.'"
+            }
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} tries to give money but Baba Nuru steps back. 'You think this is market?' He makes you fill the long form. {loser} walks past.",
+              "coop": "You try to give money but Baba Nuru steps back. 'You think this is market?' He makes you fill the long form."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              },
+              {
+                "to": "all",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} shows the old letter and insists. Baba Nuru calls his supervisor. 'Oga, come see this one.' {loser} is already at the staircase.",
+              "coop": "You show the old letter and insist. Baba Nuru calls his supervisor. 'Oga, come see this one.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} asks directions but Baba Nuru is suspicious. 'Why you no know? You sure say you get appointment?' He makes you wait while he calls upstairs.",
+              "coop": "You ask directions but Baba Nuru is suspicious. 'Why you no know? You sure say you get appointment?' He makes you wait while he calls upstairs."
+            }
+          }
+        },
+        "tie": {
+          "to": "lobby_wait",
+          "recap": "Baba Nuru gets tired of both of you and waves you through. 'Go before I change my mind.'"
+        }
+      }
+    },
+    "secretary_office": {
+      "title": "Madam Grace's Desk",
+      "text": "Room 402 outer office. Madam Grace is typing. She doesn't look up when you enter. The room smells of old paper and perfume. Three other people are waiting - two men in suits, one woman with a folder. All here for the same job. Grace points at a chair without speaking. \"Sit. He'll call when he's ready.\" It's 11am. The interview is 2pm. But you can see the inner door. It's open a crack.",
+      "stakes": {
+        "default": "Grace controls the door. When the oga asks who is next, you want your name in her mouth.",
+        "coop": "Grace controls the door. Make her remember you when the oga asks 'who is next?'"
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Compliment her workspace: \"Madam, this office smells like success. You arrange am well\"",
+          "dc": 11,
+          "mods": [
+            {
+              "mark": "secretary_owe",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Quietly ask if you can 'drop something for her lunch' to move your file up",
+          "dc": 12,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You have nothing to drop.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Tell her Dr. Sule is expecting you personally, you're not here to queue",
+          "dc": 13,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Sit quietly, watch who goes in and out, learn the oga's mood from their faces",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} compliments Grace and she finally looks up. 'You sabi talk. Sit there. I go call you first.' The others shift in their seats. {loser} is still waiting.",
+              "coop": "You compliment Grace and she finally looks up. 'You sabi talk. Sit there. I go call you first.' The others shift in their seats."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "secretary_owe"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} offers lunch money and Grace takes it without smiling. 'I go see wetin I fit do.' She doesn't promise anything. {loser} sees the exchange.",
+              "coop": "You offer lunch money and Grace takes it without smiling. 'I go see wetin I fit do.' She doesn't promise anything."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} says 'the oga is expecting me.' Grace picks up the phone. 'Sir, somebody say you dey expect am.' She listens, then looks at you. 'He say he no know you. Wait your turn.' The room hears everything. {loser} is trying not to laugh.",
+              "coop": "You say 'the oga is expecting me.' Grace picks up the phone. 'Sir, somebody say you dey expect am.' She listens, then looks at you. 'He say he no know you. Wait your turn.' The room hears everything."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} sits quiet and watches. The first man comes out sweating. The woman comes out smiling. Grace notices you watching. 'You get patience. I like that.' {loser} is playing with phone.",
+              "coop": "You sit quiet and watch. The first man comes out sweating. The woman comes out smiling. Grace notices you watching. 'You get patience. I like that.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} compliments Grace but she is not in the mood. 'Thank you. Sit down.' {loser} gets a smile from her instead.",
+              "coop": "You compliment Grace but she is not in the mood. 'Thank you. Sit down.'"
+            }
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} offers money but Grace pushes it back. 'I no dey do that one here. This is federal ministry, not Oshodi market.' {loser} is embarrassed for you.",
+              "coop": "You offer money but Grace pushes it back. 'I no dey do that one here. This is federal ministry, not Oshodi market.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              },
+              {
+                "to": "all",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} says 'the oga knows me' and Grace says 'Everybody here say the same thing. Queue there.' She points at the back. {loser} is already near the front.",
+              "coop": "You say 'the oga knows me' and Grace says 'Everybody here say the same thing. Queue there.' She points at the back."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} sits quiet but learns nothing. Everybody comes out with the same face - tired. Grace doesn't notice you at all. {loser} is chatting with another candidate.",
+              "coop": "You sit quiet but learn nothing. Everybody comes out with the same face - tired. Grace doesn't notice you at all."
+            }
+          }
+        },
+        "tie": {
+          "to": "lobby_wait",
+          "recap": "You both sit in the waiting room, ignored by Grace, watching the clock tick toward 2pm."
+        }
+      }
+    },
+    "wrong_office": {
+      "title": "Room 205",
+      "text": {
+        "default": "You followed the wrong information and ended up at the old oga's office. Room 205. The nameplate still says 'Director' but the room is empty, chairs stacked, one broken computer on the desk. A cleaner is sweeping. \"Oga don go. New oga dey upstairs.\" You wasted thirty minutes.",
+        "coop": "You followed the wrong information and ended up at the old oga's office. Room 205. The nameplate still says 'Director' but the room is empty, chairs stacked, one broken computer on the desk. A cleaner is sweeping. \"Oga don go. New oga dey upstairs.\" You wasted thirty minutes.",
+        "solo": "You followed the wrong information and ended up at the old oga's office. Room 205. The nameplate still says 'Director' but the room is empty, chairs stacked, one broken computer on the desk. A cleaner is sweeping. \"Oga don go. New oga dey upstairs.\" You wasted thirty minutes."
+      },
+      "stakes": {
+        "default": "You're lost and late, and the other candidate is moving. Find Room 402 fast.",
+        "coop": "You're lost and late. Find Room 402 fast."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Ask the cleaner nicely: \"Abeg, help me. I go appreciate you. Which way to Room 402?\"",
+          "dc": 11
+        },
+        {
+          "approach": "hustle",
+          "label": "Run up the stairs, check every floor until you find it",
+          "dc": 12
+        },
+        {
+          "approach": "gragra",
+          "label": "Knock on the nearest occupied office and say you're from the new oga's office, checking files",
+          "dc": 14,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Go back to the lobby, find the building directory, check the floor plan",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} asks the cleaner and he drops his broom. 'Room 402? Why you no talk since?' He walks you to the staircase. 'Fourth floor, turn left.' {loser} is still looking for the elevator.",
+              "coop": "You ask the cleaner and he drops his broom. 'Room 402? Why you no talk since?' He walks you to the staircase. 'Fourth floor, turn left.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "gateman_friend"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} runs up the stairs, checks every floor, finds Room 402 sweating and breathing hard. Grace looks up: 'You be the one wey dey run? Sit down, catch your breath.' {loser} is already seated, calm.",
+              "coop": "You run up the stairs, check every floor, find Room 402 sweating and breathing hard. Grace looks up: 'You be the one wey dey run? Sit down, catch your breath.'"
+            }
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} knocks on an office and says 'from new oga's office.' The woman inside says 'I'm from new oga's office. I don't know you.' She calls security. {loser} is already in the waiting room.",
+              "coop": "You knock on an office and say 'from new oga's office.' The woman inside says 'I'm from new oga's office. I don't know you.' She calls security."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} finds the directory and sees Room 402 is Personnel, fourth floor. You walk there calmly, no stress. {loser} is still running around.",
+              "coop": "You find the directory and see Room 402 is Personnel, fourth floor. You walk there calmly, no stress."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} asks the cleaner but he doesn't know. 'I just dey sweep. Ask reception.' Reception has a queue. {loser} is already upstairs.",
+              "coop": "You ask the cleaner but he doesn't know. 'I just dey sweep. Ask reception.' Reception has a queue."
+            }
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} runs up the wrong staircase and ends up on the roof. By the time you find the right floor, Grace has already called two names. {loser} is sitting comfortably.",
+              "coop": "You run up the wrong staircase and end up on the roof. By the time you find the right floor, Grace has already called two names."
+            }
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} knocks on an office and the man inside is a director. 'You say what?' He calls your name into his phone. {loser} is already talking to Grace.",
+              "coop": "You knock on an office and the man inside is a director. 'You say what?' He calls your name into his phone."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} finds the directory but it's outdated. Room 402 was moved last month. You waste another twenty minutes finding the new location. {loser} is already inside.",
+              "coop": "You find the directory but it's outdated. Room 402 was moved last month. You waste another twenty minutes finding the new location."
+            }
+          }
+        },
+        "tie": {
+          "to": "lobby_wait",
+          "recap": "You both wander the ministry lost, and end up at Room 402 at the same time, both late and both sweating."
+        }
+      }
+    },
+    "driver_shed": {
+      "title": "Musa the Driver",
+      "text": "The driver's shed behind the ministry. Five men in uniforms playing cards on a bench. Musa is the youngest, still wearing his driver's cap. He stands when he sees you. 'You be the one from Lagos?' The others look up. One of them is the old oga's driver - the one who played you. He smirks into his cards.",
+      "stakes": {
+        "default": "Musa can get you to the oga, but the old driver is here and can poison the well.",
+        "coop": "Musa can get you to the oga. But the old driver is here, and he can poison the well."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Greet Musa like a brother, ignore the old driver completely",
+          "dc": 11,
+          "mods": [
+            {
+              "mark": "connection_verified",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Give Musa ₦3,000 to drive you directly to the oga's house instead",
+          "dc": 12,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You can't pay for a ride.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Confront the old driver: \"Oga, you play me this morning. But God dey.\"",
+          "dc": 14,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Ask Musa about Dr. Sule's mood today, what kind of mood he is in",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} greets Musa like family and the old driver fades into his cards. Musa walks you to the back elevator. 'Oga dey in good mood today. Go.' {loser} is still at the gate.",
+              "coop": "You greet Musa like family and the old driver fades into his cards. Musa walks you to the back elevator. 'Oga dey in good mood today. Go.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "oga_house",
+            "recap": {
+              "default": "{winner} pays Musa and he drives you to Maitama. Dr. Sule is surprised to see you at his house, but he listens. 'You get liver. Come to my office by 3pm.' {loser} is still waiting at the ministry.",
+              "coop": "You pay Musa and he drives you to Maitama. Dr. Sule is surprised to see you at his house, but he listens. 'You get liver. Come to my office by 3pm.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} confronts the old driver and he stands up. 'You wan make I call security?' Musa steps between you. 'Abeg, no wahala for here.' But the damage is done. {loser} slips past during the argument.",
+              "coop": "You confront the old driver and he stands up. 'You wan make I call security?' Musa steps between you. 'Abeg, no wahala for here.' But the damage is done."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} asks about Dr. Sule's mood and Musa opens up. 'He no like people wey dey talk too much. Answer direct. No long story.' {loser} is still preparing long speeches.",
+              "coop": "You ask about Dr. Sule's mood and Musa opens up. 'He no like people wey dey talk too much. Answer direct. No long story.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} greets Musa but the old driver whispers something. Musa goes cold. 'I go see wetin I fit do.' He doesn't do anything. {loser} is already upstairs.",
+              "coop": "You greet Musa but the old driver whispers something. Musa goes cold. 'I go see wetin I fit do.' He doesn't do anything."
+            }
+          },
+          "hustle": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} offers money but Musa refuses. 'I no dey do that one. Oga go hear.' {loser} gets a free ride from another driver.",
+              "coop": "You offer money but Musa refuses. 'I no dey do that one. Oga go hear.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              },
+              {
+                "to": "all",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "security_wahala",
+            "recap": {
+              "default": "{winner} confronts the old driver and he calls the shed captain. 'Remove this one from here.' {loser} is already in the building.",
+              "coop": "You confront the old driver and he calls the shed captain. 'Remove this one from here.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "lobby_wait",
+            "recap": {
+              "default": "{winner} asks about Dr. Sule but Musa doesn't know much. 'He just dey drive am. He no dey talk for car.' {loser} gets better information from Grace.",
+              "coop": "You ask about Dr. Sule but Musa doesn't know much. 'He just dey drive am. He no dey talk for car.'"
+            }
+          }
+        },
+        "tie": {
+          "to": "lobby_wait",
+          "recap": "You both stand at the driver shed, ignored by Musa, while the old driver laughs into his cards."
+        }
+      }
+    },
+    "security_wahala": {
+      "title": "Oga Security",
+      "text": {
+        "default": "The security office. Fluorescent light, one fan, three plastic chairs. The supervisor is a big man with a moustache. He has your name written down. 'You don cause wahala today. Wrong office, wrong name, wrong oga. Who send you?' You are alone with men who can make you disappear into paperwork.",
+        "coop": "The security office. Fluorescent light, one fan, three plastic chairs. The supervisor is a big man with a moustache. He has your name written down. 'You don cause wahala today. Wrong office, wrong name, wrong oga. Who send you?' You are alone with men who can make you disappear into paperwork.",
+        "solo": "The security office. Fluorescent light, one fan, three plastic chairs. The supervisor is a big man with a moustache. He has your name written down. 'You don cause wahala today. Wrong office, wrong name, wrong oga. Who send you?' You are alone with men who can make you disappear into paperwork."
+      },
+      "stakes": {
+        "default": "This is bad. Get out of this office fast or miss the interview, and your sister's ₦50,000 with it.",
+        "coop": "This is bad. Get out of this office fast or miss the interview entirely."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Apologise with full humility: \"Oga, abeg. Na confusion. My sister nearly die to get this interview.\"",
+          "dc": 13,
+          "mods": [
+            {
+              "mark": "sister_pride",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Offer to 'settle the boys' for their trouble: ₦5,000 to forget your name",
+          "dc": 12,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You have nothing to settle with.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Say you're connected to the Permanent Secretary and they'll hear about this harassment",
+          "dc": 15,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 3,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Stay quiet, let him finish shouting, then ask calmly what you need to do to fix it",
+          "dc": 11
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} apologises and the supervisor softens. 'Your sister? Pele. Go, but behave yourself.' He tears the paper. {loser} is already at Room 402.",
+              "coop": "You apologise and the supervisor softens. 'Your sister? Pele. Go, but behave yourself.' He tears the paper."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "sister_pride"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} offers ₦5,000 and the supervisor looks at it long. 'I no dey take bribe. But you get respect. Go.' He doesn't tear the paper. {loser} is already inside.",
+              "coop": "You offer ₦5,000 and the supervisor looks at it long. 'I no dey take bribe. But you get respect. Go.' He doesn't tear the paper."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              },
+              {
+                "to": "winner",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} mentions the Permanent Secretary and the supervisor laughs. 'I be him cousin. You wan make I call am?' He writes your name in the big book and sends you up anyway. {loser} is already being interviewed.",
+              "coop": "You mention the Permanent Secretary and the supervisor laughs. 'I be him cousin. You wan make I call am?' He writes your name in the big book and sends you up anyway."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} stays quiet until the supervisor finishes. Then asks 'What I fit do?' The supervisor is surprised. 'Just sign here say you no go cause wahala again. Go.' {loser} is already waiting.",
+              "coop": "You stay quiet until the supervisor finishes. Then ask 'What I fit do?' He is surprised. 'Just sign here say you no go cause wahala again. Go.'"
+            }
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} apologises but the supervisor is not moved. 'Everyday people dey sorry. Sit down.' You lose an hour and reach Room 402 at the last minute. {loser} is already shaking hands with Dr. Sule.",
+              "coop": "You apologise but the supervisor is not moved. 'Everyday people dey sorry. Sit down.' You lose an hour and reach Room 402 at the last minute."
+            }
+          },
+          "hustle": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} offers money and the supervisor calls two officers. 'Escort this one up. Make sure he sign the book.' {loser} is already inside.",
+              "coop": "You offer money and the supervisor calls two officers. 'Escort this one up. Make sure he sign the book.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              },
+              {
+                "to": "all",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} drops big names and the supervisor picks up his phone. 'Hello? Yes, one person dey here wey say he know you.' He sends you up with a guard beside you. {loser} is already getting the job.",
+              "coop": "You drop big names and the supervisor picks up his phone. 'Hello? Yes, one person dey here wey say he know you.' He sends you up with a guard beside you."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} stays quiet but the supervisor takes it as disrespect. 'You dey form quiet? Sit down there.' You lose thirty minutes. {loser} is already seated in Room 402.",
+              "coop": "You stay quiet but the supervisor takes it as disrespect. 'You dey form quiet? Sit down there.' You lose thirty minutes."
+            }
+          }
+        },
+        "tie": {
+          "to": "interview_room",
+          "recap": "You both end up in the security office and reach Room 402 with minutes to spare."
+        }
+      }
+    },
+    "lobby_wait": {
+      "title": "The Waiting Room",
+      "text": "Room 402 outer office. 1:45pm. Three candidates left. Grace is arranging files. You can hear Dr. Sule's voice through the door - deep, calm, asking short questions. The woman before you comes out smiling. Then Grace looks up and points. 'You. Go inside.' This is it. Your sister's ₦50,000. Your future. One room away.",
+      "stakes": {
+        "default": "Everything you did today leads to this door. One slot, one card. Walk in right.",
+        "coop": "This is the moment. Everything you've done today leads to this door."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Walk in smiling, greet Dr. Sule like you already work for him: \"Good afternoon sir. Thank you for seeing me\"",
+          "dc": 11,
+          "mods": [
+            {
+              "mark": "connection_verified",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Slip Grace one last envelope before you enter: \"For your trouble, Madam\"",
+          "dc": 12,
+          "lock": {
+            "mark": "short_cash",
+            "reason": "You have nothing left to give.",
+            "who": "self"
+          }
+        },
+        {
+          "approach": "gragra",
+          "label": "Walk in and say 'Sir, I believe you already know why I'm here. Let's not waste time'",
+          "dc": 14,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 3,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Take a deep breath, remember what Musa said, walk in calm and ready",
+          "dc": 10,
+          "mods": [
+            {
+              "mark": "connection_verified",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} walks in smiling and Dr. Sule looks up. 'You be the one Grace talk about? Sit.' {loser} is still outside, sweating.",
+              "coop": "You walk in smiling and Dr. Sule looks up. 'You be the one Grace talk about? Sit.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} gives Grace one last envelope and she actually smiles. 'Good luck.' You walk in with her blessing. {loser} is still trying to catch Grace's eye.",
+              "coop": "You give Grace one last envelope and she actually smiles. 'Good luck.' You walk in with her blessing."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} walks in with confidence and Dr. Sule raises an eyebrow. 'You know why you're here? Tell me.' {loser} is still rehearsing outside.",
+              "coop": "You walk in with confidence and Dr. Sule raises an eyebrow. 'You know why you're here? Tell me.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} walks in calm, takes the chair, and waits. Dr. Sule notices. 'You no dey shake. Good.' {loser} is still pacing outside.",
+              "coop": "You walk in calm, take the chair, and wait. Dr. Sule notices. 'You no dey shake. Good.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} walks in smiling but says the wrong name. 'I'm here to see Dr. Sulaimon.' Dr. Sule says 'That is not my name.' {loser} is cringing outside.",
+              "coop": "You walk in smiling but say the wrong name. 'I'm here to see Dr. Sulaimon.' Dr. Sule says 'That is not my name.'"
+            }
+          },
+          "hustle": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} tries to give Grace money but she pushes it back loud. 'Not here!' Dr. Sule hears. {loser} is embarrassed for you.",
+              "coop": "You try to give Grace money but she pushes it back loud. 'Not here!' Dr. Sule hears."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              },
+              {
+                "to": "all",
+                "mark": "family_shame"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} walks in with too much confidence and Dr. Sule goes quiet. 'You think this is your father's house?' {loser} is still rehearsing outside.",
+              "coop": "You walk in with too much confidence and Dr. Sule goes quiet. 'You think this is your father's house?'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} walks in calm but forgets everything Musa said. Dr. Sule asks a question and you freeze. {loser} is still breathing outside.",
+              "coop": "You walk in calm but forget everything Musa said. Dr. Sule asks a question and you freeze."
+            }
+          }
+        },
+        "tie": {
+          "to": "interview_room",
+          "recap": "You both walk in at the same time, bumping into each other at the door. Dr. Sule watches without expression."
+        }
+      }
+    },
+    "interview_room": {
+      "title": "Room 402",
+      "text": {
+        "default": "Dr. Ibrahim Sule sits behind a wooden desk piled with files. He is younger than you expected, maybe fifty, with reading glasses and a white shirt that looks ironed this morning. He doesn't smile. He points at the chair. 'Sit. You have five minutes. Why should I give you this job?' On his desk, you can see two files: yours and another candidate's.",
+        "coop": "Dr. Ibrahim Sule sits behind a wooden desk piled with files. He is younger than you expected, maybe fifty, with reading glasses and a white shirt that looks ironed this morning. He doesn't smile. He points at the chair. 'Sit. You have five minutes. Why should I give you this job?'",
+        "solo": "Dr. Ibrahim Sule sits behind a wooden desk piled with files. He is younger than you expected, maybe fifty, with reading glasses and a white shirt that looks ironed this morning. He doesn't smile. He points at the chair. 'Sit. You have five minutes. Why should I give you this job?'"
+      },
+      "stakes": {
+        "default": "This is the interview. Everything your sister paid for. Everything you chased today. Five minutes to make a man who doesn't smile believe in you.",
+        "coop": "This is the interview. Everything your sister paid for. Everything you chased today. Five minutes to make a man who doesn't smile believe in you."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Tell him about your sister's sacrifice, how she believed in you when nobody else did",
+          "dc": 11,
+          "mods": [
+            {
+              "mark": "sister_pride",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Show him your qualifications, your hustle, how you've worked three jobs to get here",
+          "dc": 12
+        },
+        {
+          "approach": "gragra",
+          "label": "Say 'Sir, I know this ministry needs someone who gets things done. I am that person.'",
+          "dc": 13,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Ask him what he needs in this role, then show him you have exactly that",
+          "dc": 10,
+          "mods": [
+            {
+              "mark": "connection_verified",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "interview_success",
+            "recap": {
+              "default": "{winner} tells Dr. Sule about your sister and he removes his glasses. 'Family. That is why we do this work.' He closes the other file. {loser} is still waiting outside.",
+              "coop": "You tell Dr. Sule about your sister and he removes his glasses. 'Family. That is why we do this work.' He closes the other file."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "sister_pride"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "interview_success",
+            "recap": {
+              "default": "{winner} shows qualifications and Dr. Sule nods slowly. 'Three jobs? You know what hard work means.' He makes a note. {loser} is still holding one file.",
+              "coop": "You show qualifications and Dr. Sule nods slowly. 'Three jobs? You know what hard work means.' He makes a note."
+            }
+          },
+          "gragra": {
+            "to": "interview_waitlist",
+            "recap": {
+              "default": "{winner} says 'I get things done' and Dr. Sule leans back. 'Getting things done is not the same as doing things right.' He opens the other file. {loser} is already smiling.",
+              "coop": "You say 'I get things done' and Dr. Sule leans back. 'Getting things done is not the same as doing things right.' He opens the other file."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_success",
+            "recap": {
+              "default": "{winner} asks what he needs and Dr. Sule actually smiles. 'Somebody who listens first. That is rare.' He puts down his pen. {loser} is still talking about themselves.",
+              "coop": "You ask what he needs and Dr. Sule actually smiles. 'Somebody who listens first. That is rare.' He puts down his pen."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "interview_fail",
+            "recap": {
+              "default": "{winner} talks about sister but cries too much. Dr. Sule hands you tissue. 'Control your emotions first. Then come back.' {loser} is already shaking his hand.",
+              "coop": "You talk about sister but cry too much. Dr. Sule hands you tissue. 'Control your emotions first. Then come back.'"
+            }
+          },
+          "hustle": {
+            "to": "interview_waitlist",
+            "recap": {
+              "default": "{winner} lists three jobs but Dr. Sule says 'I asked why you want this job, not your CV.' {loser} has the better answer.",
+              "coop": "You list three jobs but Dr. Sule says 'I asked why you want this job, not your CV.'"
+            }
+          },
+          "gragra": {
+            "to": "interview_fail",
+            "recap": {
+              "default": "{winner} says 'I get things done' and Dr. Sule says 'So does everybody in this building. What makes you different?' You have no answer. {loser} does.",
+              "coop": "You say 'I get things done' and Dr. Sule says 'So does everybody in this building. What makes you different?' You have no answer."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_fail",
+            "recap": {
+              "default": "{winner} asks what he needs but then argues with his answer. 'No, sir, I think you're wrong about that.' Dr. Sule closes your file. {loser} agrees with everything.",
+              "coop": "You ask what he needs but then argue with his answer. 'No, sir, I think you're wrong about that.' Dr. Sule closes your file."
+            }
+          }
+        },
+        "tie": {
+          "to": "interview_waitlist",
+          "recap": "You both give the same safe answer and Dr. Sule looks bored. 'We will be in touch.'"
+        }
+      }
+    },
+    "oga_house": {
+      "title": "Maitama",
+      "text": {
+        "default": "Dr. Sule's house. Quiet street, high fence, one security man at the gate. Musa drives you there at 11am. The oga is surprised to see you. 'You followed me home?' But he doesn't send you away. He sits on his veranda, drinks tea, and listens. 'You have liver. Tell me why I should not be angry.'",
+        "coop": "Dr. Sule's house. Quiet street, high fence, one security man at the gate. Musa drives you there at 11am. The oga is surprised to see you. 'You followed me home?' But he doesn't send you away. He sits on his veranda, drinks tea, and listens. 'You have liver. Tell me why I should not be angry.'",
+        "solo": "Dr. Sule's house. Quiet street, high fence, one security man at the gate. Musa drives you there at 11am. The oga is surprised to see you. 'You followed me home?' But he doesn't send you away. He sits on his veranda, drinks tea, and listens. 'You have liver. Tell me why I should not be angry.'"
+      },
+      "stakes": {
+        "default": "This is not the interview. It is a test of nerve, and the card is on the table. Don't waste it.",
+        "coop": "This is not the interview. This is something else. A test of nerve. Don't waste it."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Apologise for the intrusion, then tell him about your sister's faith in you",
+          "dc": 11,
+          "mods": [
+            {
+              "mark": "sister_pride",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "hustle",
+          "label": "Explain that you couldn't risk missing the interview, so you made your own opportunity",
+          "dc": 12
+        },
+        {
+          "approach": "gragra",
+          "label": "Say 'Sir, if you send me away, you'll never know what you missed. I'm worth the risk.'",
+          "dc": 14,
+          "mods": [
+            {
+              "mark": "on_list",
+              "dc": 2,
+              "who": "self"
+            }
+          ]
+        },
+        {
+          "approach": "wisdom",
+          "label": "Ask him about Kano first, show you did your research, then explain why you need this job",
+          "dc": 10,
+          "mods": [
+            {
+              "mark": "connection_verified",
+              "dc": -2,
+              "who": "self"
+            }
+          ]
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} apologises and talks about sister. Dr. Sule puts down his tea. 'My own sister did the same for me, thirty years ago.' He stands up. 'Come to my office at 2pm. Sit in the front.' {loser} is still waiting at the ministry.",
+              "coop": "You apologise and talk about sister. Dr. Sule puts down his tea. 'My own sister did the same for me, thirty years ago.' He stands up. 'Come to my office at 2pm. Sit in the front.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "sister_pride"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} explains the hustle and Dr. Sule laughs. 'You created your own door when the first one closed. I need that energy.' He writes an address. '2pm, my office. Don't be late.' {loser} is still in the waiting room.",
+              "coop": "You explain the hustle and Dr. Sule laughs. 'You created your own door when the first one closed. I need that energy.' He writes an address. '2pm, my office. Don't be late.'"
+            }
+          },
+          "gragra": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} says 'I'm worth the risk' and Dr. Sule stands up. 'Risk is for the market, not my veranda. See me at the ministry like everybody else.' The gate closes. {loser} is still inside the ministry.",
+              "coop": "You say 'I'm worth the risk' and Dr. Sule stands up. 'Risk is for the market, not my veranda. See me at the ministry like everybody else.' The gate closes."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} asks about Kano and Dr. Sule talks for twenty minutes. Then you explain. He nods. 'You listen. That is rare.' He gives you his direct line. 'Come to the interview. We'll see.' {loser} is still guessing his mood.",
+              "coop": "You ask about Kano and Dr. Sule talks for twenty minutes. Then you explain. He nods. 'You listen. That is rare.' He gives you his direct line. 'Come to the interview. We'll see.'"
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} apologises too much. Dr. Sule gets annoyed. 'If you're sorry, why did you come?' He goes inside. {loser} never left the ministry.",
+              "coop": "You apologise too much. Dr. Sule gets annoyed. 'If you're sorry, why did you come?' He goes inside. You head back to the ministry with your tail between your legs."
+            }
+          },
+          "hustle": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} explains hustle but sounds desperate. 'You chased me to my house because you're scared of queue?' Dr. Sule is not impressed. {loser} waited patiently.",
+              "coop": "You explain hustle but sound desperate. 'You chased me to my house because you're scared of queue?' Dr. Sule is not impressed."
+            }
+          },
+          "gragra": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} says 'I'm worth the risk' and Dr. Sule calls his security man. 'Escort this one out. And Musa - you're on notice.' {loser} is safe at the ministry.",
+              "coop": "You say 'I'm worth the risk' and Dr. Sule calls his security man. 'Escort this one out. And Musa - you're on notice.'"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_list"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "interview_room",
+            "recap": {
+              "default": "{winner} asks about Kano but gets the facts wrong. 'I was in Sokoto, not Kano. You didn't do your research.' Dr. Sule goes inside. {loser} got it right.",
+              "coop": "You ask about Kano but get the facts wrong. 'I was in Sokoto, not Kano. You didn't do your research.' Dr. Sule goes inside."
+            }
+          }
+        },
+        "tie": {
+          "to": "interview_room",
+          "recap": "You both somehow end up at his house at the same time, arguing on his veranda. He sends you both back to the ministry."
+        }
+      }
+    },
+    "interview_fail": {
+      "title": "The Long Walk Home",
+      "text": {
+        "default": "You didn't get the job. Dr. Sule shook your hand, said 'We'll be in touch,' but you saw him open another file before you reached the door. The ministry corridors are long and white. Your phone buzzes. It's your sister: 'How did it go?'",
+        "coop": "You didn't get the job. Dr. Sule shook your hand, said 'We'll be in touch,' but you saw him open another file before you reached the door. The ministry corridors are long and white. Your phone buzzes. It's your sister: 'How did it go?'",
+        "solo": "You didn't get the job. Dr. Sule shook your hand, said 'We'll be in touch,' but you saw him open another file before you reached the door. The ministry corridors are long and white. Your phone buzzes. It's your sister: 'How did it go?'"
+      },
+      "stakes": {
+        "default": "You failed, but you came this far. Tell your sister the truth, or find another way to carry it.",
+        "coop": "You failed. But you came this far. You found the building, you made it past the gate, you sat in that chair. Next time, you will know the corridors. Next time, you will not be the one walking away."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Tell your sister the truth. She will find a way to be proud anyway.",
+          "dc": 8
+        },
+        {
+          "approach": "hustle",
+          "label": "Tell her you'll try again tomorrow. There are other ministries.",
+          "dc": 10
+        },
+        {
+          "approach": "gragra",
+          "label": "Lie. Say you got it. Deal with the truth later.",
+          "dc": 12
+        },
+        {
+          "approach": "wisdom",
+          "label": "Say nothing yet. Walk to the bus park. Think.",
+          "dc": 6
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": null,
+            "recap": {
+              "default": "{winner} tells sister the truth. She is quiet for a long time. Then: 'Come home. I made jollof.' {loser} is still at the ministry, wondering what to say.",
+              "coop": "You tell your sister the truth. She is quiet for a long time. Then: 'Come home. I made jollof.'"
+            }
+          },
+          "hustle": {
+            "to": null,
+            "recap": {
+              "default": "{winner} says 'I'll try again.' Sister: 'I know you will. That is why I am not worried.' {loser} is already looking for another gate.",
+              "coop": "You say 'I'll try again.' Sister: 'I know you will. That is why I am not worried.'"
+            }
+          },
+          "gragra": {
+            "to": null,
+            "recap": {
+              "default": "{winner} lies. Sister celebrates on the phone. You will carry this lie until it breaks you, or until you make it true. {loser} never lies to family.",
+              "coop": "You lie. Sister celebrates on the phone. You will carry this lie until it breaks you, or until you make it true."
+            }
+          },
+          "wisdom": {
+            "to": null,
+            "recap": {
+              "default": "{winner} walks in silence. The city is loud but you hear your own steps. Tomorrow, you will try again. Smarter. {loser} is still on the phone, making excuses.",
+              "coop": "You walk in silence. The city is loud but you hear your own steps. Tomorrow, you will try again. Smarter."
+            }
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": null,
+            "recap": {
+              "default": "{winner} tries to tell the truth but breaks down. Sister hears everything without you speaking. 'Come home,' she says. {loser} managed to speak clearly.",
+              "coop": "You try to tell the truth but break down. Sister hears everything without you speaking. 'Come home,' she says."
+            }
+          },
+          "hustle": {
+            "to": null,
+            "recap": {
+              "default": "{winner} says 'other ministries' but sounds like you're reading from a script. Sister knows. She always knows. {loser} sounded like they believed it.",
+              "coop": "You say 'other ministries' but sound like you're reading from a script. Sister knows. She always knows."
+            }
+          },
+          "gragra": {
+            "to": null,
+            "recap": {
+              "default": "{winner} lies but forgets the details. 'Which ministry?' Sister asks. You panic. The lie unravels before you reach the bus. {loser} keeps their stories straight.",
+              "coop": "You lie but forget the details. 'Which ministry?' Sister asks. You panic. The lie unravels before you reach the bus."
+            }
+          },
+          "wisdom": {
+            "to": null,
+            "recap": {
+              "default": "{winner} walks too long. Misses the last bus. Spends the night on a bench near the ministry, watching the gate. {loser} went home.",
+              "coop": "You walk too long. Miss the last bus. Spend the night on a bench near the ministry, watching the gate."
+            }
+          }
+        },
+        "tie": {
+          "to": null,
+          "recap": "You both call your sisters at the same time, on opposite sides of the ministry gate. Neither of you tells the whole truth."
+        }
+      },
+      "finish": 0,
+      "endings": {
+        "win": "You fumble the interview, but {loser}'s day collapsed harder. Dr. Sule rubs his eyes, closes both files and picks the one who at least stayed in the room. You get a card, and a very long Monday.",
+        "loss": "Dr. Sule shakes your hand and says \"We'll be in touch,\" but he has already opened {winner}'s file. Your sister says come home, she made jollof.",
+        "success": {
+          "default": "It is not the offer you wanted, but you both walk out with Dr. Sule's direct line and a second interview next month.",
+          "solo": "It is not the offer you wanted, but you walk out with Dr. Sule's direct line and a second interview next month."
+        },
+        "fail": "You didn't get the job. Your sister says come home, she made jollof, and the ministry gate closes behind you at 4pm."
+      }
+    },
+    "interview_success": {
+      "title": "The Offer",
+      "text": {
+        "default": "Dr. Sule stands up. He extends his hand. 'Welcome to the ministry. Report Monday. Eight o'clock sharp.' He writes something on a card. 'Give this to HR. They will process your clearance.' You take the card. It is heavier than paper. In the corridor, the other candidates see your face. They know. You walk past them without speaking. You don't need to.",
+        "coop": "Dr. Sule stands up. He extends his hand. 'Welcome to the ministry. Report Monday. Eight o'clock sharp.' He writes something on a card. 'Give this to HR. They will process your clearance.' You take the card. It is heavier than paper.",
+        "solo": "Dr. Sule stands up. He extends his hand. 'Welcome to the ministry. Report Monday. Eight o'clock sharp.' He writes something on a card. 'Give this to HR. They will process your clearance.' You take the card. It is heavier than paper. Behind you, the door opens. {rival} is in the corridor, still holding their file. They see your face. They know. You walk past them without speaking. You don't need to."
+      },
+      "stakes": {
+        "default": "You did it. Not with connections. Not with money. With your own words, your own nerve. Now you have to become the person you promised him you were.",
+        "coop": "You did it. Not with connections. Not with money. With your own words, your own nerve. Now you have to become the person you promised him you were."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Call your sister first. She paid for this moment. She should hear it first.",
+          "dc": 6
+        },
+        {
+          "approach": "hustle",
+          "label": "Walk to HR now. Don't let anything delay the paperwork.",
+          "dc": 8
+        },
+        {
+          "approach": "gragra",
+          "label": "Walk out slowly past the other candidates and let them see the card up close",
+          "dc": 12
+        },
+        {
+          "approach": "wisdom",
+          "label": "Sit down outside for five minutes. Breathe. Let it be real before you move.",
+          "dc": 5
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": null,
+            "recap": {
+              "default": "{winner} calls sister. She screams so loud the security man hears. 'I knew it,' she keeps saying. 'I knew it.' {loser} is still looking for their own proof.",
+              "coop": "You call your sister. She screams so loud the security man hears. 'I knew it,' she keeps saying. 'I knew it.'"
+            }
+          },
+          "hustle": {
+            "to": null,
+            "recap": {
+              "default": "{winner} runs to HR. The clerk is slow, asks for documents you don't have. But Dr. Sule's card opens doors. Literally. {loser} is still in the corridor, rehearsing.",
+              "coop": "You run to HR. The clerk is slow, asks for documents you don't have. But Dr. Sule's card opens doors. Literally."
+            }
+          },
+          "gragra": {
+            "to": null,
+            "recap": {
+              "default": "{winner} finds {rival} and shows the card. They look at it, then at you. No words. Just a nod. Respect, even in loss. {loser} would have rubbed it in.",
+              "coop": "You find your rival and show the card. They look at it, then at you. No words. Just a nod. Respect, even in loss."
+            }
+          },
+          "wisdom": {
+            "to": null,
+            "recap": {
+              "default": "{winner} sits on the ministry steps. The sun is hot. You don't feel it. You feel the card in your pocket, and the weight of Monday. {loser} is already celebrating too early.",
+              "coop": "You sit on the ministry steps. The sun is hot. You don't feel it. You feel the card in your pocket, and the weight of Monday."
+            }
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": null,
+            "recap": {
+              "default": "{winner} calls sister but she's not home. You leave a message that sounds like you're begging her to believe you. She will. But you wish you'd said it better. {loser} got through on the first try.",
+              "coop": "You call your sister but she's not home. You leave a message that sounds like you're begging her to believe you. She will. But you wish you'd said it better."
+            }
+          },
+          "hustle": {
+            "to": null,
+            "recap": {
+              "default": "{winner} rushes to HR but forgets the card on Dr. Sule's desk. You run back. He is holding it, smiling. 'Almost,' he says. {loser} checked their pockets twice.",
+              "coop": "You rush to HR but forget the card on Dr. Sule's desk. You run back. He is holding it, smiling. 'Almost,' he says."
+            }
+          },
+          "gragra": {
+            "to": null,
+            "recap": {
+              "default": "{winner} shows the card to {rival} but drops it. They pick it up, hand it back. 'Congratulations,' they say. You feel smaller than when you lost. {loser} kept their dignity.",
+              "coop": "You show the card to your rival but drop it. They pick it up, hand it back. 'Congratulations,' they say. You feel smaller than when you lost."
+            }
+          },
+          "wisdom": {
+            "to": null,
+            "recap": {
+              "default": "{winner} sits too long. The sun moves. You miss the HR window. Have to come back tomorrow. But you still have the card. You still have Monday. {loser} already finished everything.",
+              "coop": "You sit too long. The sun moves. You miss the HR window. Have to come back tomorrow. But you still have the card. You still have Monday."
+            }
+          }
+        },
+        "tie": {
+          "to": null,
+          "recap": "You both say the same thing at once. Dr. Sule raises an eyebrow, amused. \"Only one of you gets the card.\""
+        }
+      },
+      "finish": 3,
+      "endings": {
+        "win": "Dr. Sule closes the other file and slides the card across. Report Monday, eight o'clock sharp. {loser} leaves with a handshake. Your sister's ₦50,000 just came back with interest.",
+        "loss": "You earn the card, but {winner} was in the room first and Dr. Sule had only one slot. Your sister says there will be other ministries.",
+        "success": {
+          "default": "Dr. Sule hires you both. Now you share an office, a desk, and a long silence about who called whom first.",
+          "solo": "Dr. Sule slides the card across. Report Monday, eight o'clock sharp. Your sister screams so loud the whole street hears."
+        },
+        "fail": "You land the job, barely, after a rough day. Dr. Sule tells you he will be watching, and that your sister's name is the only reason he is not worried."
+      }
+    },
+    "taxi_park": {
+      "title": "Taxi Park",
+      "text": "8am. The taxi drops you at the park behind the ministry. Okada men are shouting, touts are fighting over passengers, and somebody is frying akara next to an open gutter. The ministry's white building is right there, but the front gate has a queue already and nobody knows where the staff gate is. \"Oga, where you dey go?\" three people shout at once. Two hours ago you were in bed.",
+      "stakes": {
+        "default": "Only one candidate gets the card, and the other candidate is already in this crowd. Find the door that opens first.",
+        "coop": "The ministry is right there but nobody can tell you the way. Find the door that opens first."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Buy akara from the woman and ask her which gate the staff use",
+          "dc": 11
+        },
+        {
+          "approach": "hustle",
+          "label": "Push through the touts and join the queue at the front gate before it gets longer",
+          "dc": 12
+        },
+        {
+          "approach": "gragra",
+          "label": "Tell an okada man you work in the ministry and need the staff entrance",
+          "dc": 13
+        },
+        {
+          "approach": "wisdom",
+          "label": "Stand to one side and watch which door the drivers and cleaners are using",
+          "dc": 10
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} buys akara and the woman points with her spoon. \"Back gate, ask for Baba Nuru.\" {loser} is still being pulled in three directions.",
+              "coop": "You buy akara and the woman points with her spoon. \"Back gate, ask for Baba Nuru.\""
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "gateman_friend"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} shoulders through the touts and reaches the front queue early. A guard says \"Wait there\" and does not look up. {loser} is still arguing with an okada man.",
+              "coop": "You shoulder through the touts and reach the front queue early. A guard says \"Wait there\" and does not look up."
+            }
+          },
+          "gragra": {
+            "to": "wrong_office",
+            "recap": {
+              "default": "{winner} tells the okada man you work in the ministry and he takes you to the nearest government building. It is the wrong one. {loser} watches you ride away.",
+              "coop": "You tell the okada man you work in the ministry and he takes you to the nearest government building. It is the wrong one."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "wrong_floor"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "driver_shed",
+            "recap": {
+              "default": "{winner} watches and sees a line of drivers walking round the side of the building with flasks. You follow them to a shed with a card game going. {loser} is still in the queue.",
+              "coop": "You watch and see a line of drivers walking round the side of the building with flasks. You follow them to a shed with a card game going."
+            },
+            "set": [
+              {
+                "to": "winner",
+                "mark": "connection_verified"
+              }
+            ]
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} buys the akara and forgets to ask. The woman says, \"Na only akara you wan buy?\" You end up in the front queue by default.",
+              "coop": "You buy the akara and forget to ask. The woman says, \"Na only akara you wan buy?\" You end up in the front queue by default."
+            }
+          },
+          "hustle": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} pushes through and steps on somebody's foot. A fight starts. By the time it ends, the queue is twice as long.",
+              "coop": "You push through and step on somebody's foot. A fight starts. By the time it ends, the queue is twice as long."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "wrong_office",
+            "recap": {
+              "default": "{winner} says you work in the ministry and the okada man laughs. \"Then why you no get ID?\" He drops you at the wrong building anyway.",
+              "coop": "You say you work in the ministry and the okada man laughs. \"Then why you no get ID?\" He drops you at the wrong building anyway."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "wrong_floor"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "ministry_gate",
+            "recap": {
+              "default": "{winner} watches for ten minutes and learns that every door looks the same. The queue at the front has grown.",
+              "coop": "You watch for ten minutes and learn that every door looks the same. The queue at the front has grown."
+            }
+          }
+        },
+        "tie": {
+          "to": "ministry_gate",
+          "recap": "Nobody moves. A tout grabs your bag and shouts \"Oga, make we go!\" You follow the crowd to the gate."
+        }
+      }
+    },
+    "interview_waitlist": {
+      "title": "The Waiting List",
+      "text": {
+        "default": "Dr. Sule closes your file but does not throw it away. \"We will keep your name. There may be a second round next month.\" Not a yes, not a no. The corridor feels even longer than before. Your phone buzzes. It is your sister: \"How did it go?\"",
+        "coop": "Dr. Sule closes your file but does not throw it away. \"We will keep your name. There may be a second round next month.\" Not a yes, not a no. The corridor feels even longer than before. Your phone buzzes. It is your sister: \"How did it go?\""
+      },
+      "stakes": {
+        "default": "Not a yes and not a no. Tell your sister what it is without making it smaller or bigger.",
+        "coop": "Not a yes and not a no. Tell your sister what it is without making it smaller or bigger."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Tell your sister the truth: they kept your name. She will find a way to be proud anyway.",
+          "dc": 8
+        },
+        {
+          "approach": "hustle",
+          "label": "Tell her you will be back at the ministry on Monday to make sure they do not forget you.",
+          "dc": 10
+        },
+        {
+          "approach": "gragra",
+          "label": "Tell her you got it, just to hear her scream. Deal with it later.",
+          "dc": 12
+        },
+        {
+          "approach": "wisdom",
+          "label": "Say nothing yet. Walk to the bus park and think about what the second round needs.",
+          "dc": 6
+        }
+      ],
+      "next": {
+        "decisive": {
+          "charm": {
+            "to": null,
+            "recap": {
+              "default": "{winner} tells sister the truth. She is quiet, then: \"They kept your name. That is not nothing. Come home, I made jollof.\" {loser} is still deciding what to say.",
+              "coop": "You tell your sister the truth. She is quiet, then: \"They kept your name. That is not nothing. Come home, I made jollof.\""
+            }
+          },
+          "hustle": {
+            "to": null,
+            "recap": {
+              "default": "{winner} says \"I'll be back Monday.\" Sister: \"That is why I am not worried.\" {loser} is already planning another gate.",
+              "coop": "You say \"I'll be back Monday.\" Sister: \"That is why I am not worried.\""
+            }
+          },
+          "gragra": {
+            "to": null,
+            "recap": {
+              "default": "{winner} lies. Sister screams on the phone. You will carry this lie until it breaks you, or until you make it true. {loser} never lies to family.",
+              "coop": "You lie. Sister screams on the phone. You will carry this lie until it breaks you, or until you make it true."
+            }
+          },
+          "wisdom": {
+            "to": null,
+            "recap": {
+              "default": "{winner} walks in silence. The city is loud but you hear your own steps. The second round needs you smarter. {loser} is still on the phone making excuses.",
+              "coop": "You walk in silence. The city is loud but you hear your own steps. The second round needs you smarter."
+            }
+          }
+        },
+        "both_fail": {
+          "charm": {
+            "to": null,
+            "recap": {
+              "default": "{winner} tries to tell the truth but the words come out wrong. Sister hears everything anyway. \"Come home,\" she says.",
+              "coop": "You try to tell the truth but the words come out wrong. Sister hears everything anyway. \"Come home,\" she says."
+            }
+          },
+          "hustle": {
+            "to": null,
+            "recap": {
+              "default": "{winner} says \"Monday\" but sounds like you are reading from a script. Sister knows. She always knows.",
+              "coop": "You say \"Monday\" but sound like you are reading from a script. Sister knows. She always knows."
+            }
+          },
+          "gragra": {
+            "to": null,
+            "recap": {
+              "default": "{winner} lies but forgets the details. \"Which office?\" Sister asks. The lie unravels before you reach the bus.",
+              "coop": "You lie but forget the details. \"Which office?\" Sister asks. The lie unravels before you reach the bus."
+            }
+          },
+          "wisdom": {
+            "to": null,
+            "recap": {
+              "default": "{winner} walks too long and misses the last bus. You spend the night on a bench near the ministry, watching the gate.",
+              "coop": "You walk too long and miss the last bus. You spend the night on a bench near the ministry, watching the gate."
+            }
+          }
+        },
+        "tie": {
+          "to": null,
+          "recap": "You both call your sisters at the same time, on opposite sides of the ministry gate. Neither of you tells the whole truth."
+        }
+      },
+      "finish": 1,
+      "endings": {
+        "win": "Dr. Sule keeps both names on the list, but he reads yours twice. A week later the call comes: second round, Monday, eight o'clock. {loser} is still waiting for theirs.",
+        "loss": "Dr. Sule keeps your name on the list, but {winner}'s file stays on top of the pile. Your sister says come home, she made jollof.",
+        "success": {
+          "default": "You both walk out with Dr. Sule's direct line and a second interview next month. Neither of you says who was better.",
+          "solo": "You walk out with Dr. Sule's direct line and a second interview next month. Not a yes, but not a no."
+        },
+        "fail": "They keep your name, but the list is long and the ministry is slow. Your sister says come home, she made jollof."
+      }
+    }
+  },
+  "endings": {
+    "win": "You are still in the corridor when the ministry closes, but the other candidate stumbled worse. Dr. Sule picks the one who stayed in the room. The card is yours.",
+    "loss": "The ministry closes at 4pm and {winner} is already walking out with the offer card. Your sister says there will be other ministries.",
+    "success": {
+      "default": "You both make it through the ministry with your names clean. Whatever happens Monday, your sister will hear that you stood up straight.",
+      "solo": "You make it through the ministry with your name clean. Whatever happens Monday, your sister will hear that you stood up straight."
+    },
+    "fail": {
+      "default": "The ministry closes at 4pm and you are still in the corridor. Your sister says come home, she made jollof.",
+      "solo": "The ministry closes at 4pm and you are still in the corridor. Your sister says come home, she made jollof."
+    }
+  },
+  "epilogues": [
+    {
+      "if": "sister_pride",
+      "text": "Your sister tells the whole village about the day her brother stood in that office and spoke up. Nobody asks about the ₦50,000."
+    },
+    {
+      "if": "gateman_friend",
+      "text": "Baba Nuru now waves you through the ministry gate before you even reach it."
+    },
+    {
+      "if": "connection_verified",
+      "text": "Musa saves your number and tells the shed you are the one from Lagos who listens."
+    },
+    {
+      "if": "secretary_owe",
+      "text": "Madam Grace puts your name in her notebook, the one she only opens for people she trusts."
+    },
+    {
+      "if": "wrong_floor",
+      "text": "You never again trust a driver's directions, and you never forget Room 205."
+    },
+    {
+      "if": "short_cash",
+      "text": "You count your pocket on the bus home and decide that next time you will carry a second envelope."
+    },
+    {
+      "if": "on_list",
+      "text": "Security still has your name in the big book. Use the front gate for a while."
+    },
+    {
+      "if": "family_shame",
+      "text": "Your sister hears about the envelopes and the lies before you reach home, and she does not say a word about either."
+    }
+  ]
+}
