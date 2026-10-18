@@ -58,13 +58,15 @@ export type Room = {
   isDaily: boolean;
   solo: boolean; // one player against the story (stored as co-op with a single seat)
   players: Player[];
-  sceneKey: string;
+  sceneKey: string; // co-op / solo: the shared scene
+  track: Record<number, { key: string; recap: string | null }>; // race modes: each side walks its own road
+  arrived: Record<number, { score: number; sceneKey: string; round: number }>; // race modes: sides that reached the end
   round: number;
     held: Map<string, Map<string, number>>; // userId -> mark -> last round it is active
   world: Map<string, number>; // shared marks
   history: Map<string, Set<string>>; // every mark earned this game -> who earned it
   bonusLost: Set<string>; // players who have lost the story bonus
-  log: string[]; // one story line per round
+  log: Record<number, string[]>; // one story line per round, per road (co-op uses road 0)
   teamWins: Record<number, number>;
   coopPoints: number;
   recap: string | null;
@@ -83,6 +85,9 @@ type SceneChoice = Scene['choices'][number];
 const alive = (m: Map<string, number> | undefined, round: number, mark: string) => (m?.get(mark) ?? 0) >= round;
 const activeIds = (room: Room, m: Map<string, number> | undefined) =>
   [...(m ?? [])].filter(([, until]) => until >= room.round).map(([id]) => id);
+/** The scene a player is currently on: shared in co-op, their own road in race modes */
+const sceneKeyOf = (room: Room, p: Player) => (room.mode === 'coop' ? room.sceneKey : room.track[p.team].key);
+const sceneOf = (room: Room, p: Player) => room.scenario.scenes[sceneKeyOf(room, p)];
 const markInfo = (room: Room, id: string) => ({
   id,
   label: room.scenario.marks[id]?.label ?? id,
@@ -103,10 +108,11 @@ const openChoices = (room: Room, p: Player, scene: Scene) => {
   const open = scene.choices.filter((c) => !lockReason(room, p, c));
   return open.length ? open : scene.choices;
 };
-function twistsFor(room: Room, scene: Scene): string[] {
+function twistsFor(room: Room, scene: Scene, viewer?: Player): string[] {
   const out: string[] = [];
+  const crew = room.mode === 'coop' || !viewer ? room.players : room.players.filter((p) => p.team === viewer.team);
   for (const t of scene.twists ?? []) {
-    const names = room.players.filter((p) => alive(room.held.get(p.userId), room.round, t.if)).map((p) => p.username);
+    const names = crew.filter((p) => alive(room.held.get(p.userId), room.round, t.if)).map((p) => p.username);
     if (!names.length && !alive(room.world, room.round, t.if)) continue;
     out.push(pickVariant(t.text, textMode(room), room.format).replaceAll('{holder}', joinNames(names)));
     break; // one story note per scene is enough; more just clutters the screen
@@ -151,11 +157,13 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
     world: new Map(),
     history: new Map(),
     bonusLost: new Set(),
-    log: [],
+    log: {},
     isDaily: !!o.daily,
     solo: !!o.solo,
     players: [],
     sceneKey: scenario.start,
+    track: { 0: { key: scenario.start, recap: null }, 1: { key: scenario.start, recap: null } },
+    arrived: {},
     round: 1,
     teamWins: {},
     coopPoints: 0,
@@ -171,8 +179,11 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
   return room;
 }
 
-export function publicState(room: Room) {
-  const scene = room.status === 'active' ? room.scenario.scenes[room.sceneKey] : null;
+export function publicState(room: Room, viewerId?: string) {
+  const viewer = room.players.find((p) => p.userId === viewerId) ?? (room.mode === 'coop' ? undefined : room.players[0]);
+  const scene = room.status === 'active' ? (viewer ? sceneOf(room, viewer) : room.scenario.scenes[room.sceneKey]) : null;
+  const sceneKey = viewer ? sceneKeyOf(room, viewer) : room.sceneKey;
+  const recap = room.mode === 'coop' || !viewer ? room.recap : room.track[viewer.team].recap;
   const m = textMode(room);
   const f = room.format;
   return {
@@ -189,7 +200,7 @@ export function publicState(room: Room) {
     roundSeconds: BALANCE.roundSeconds,
     edgeSeconds: BALANCE.edgeSeconds,
     remainingMs: room.deadline ? Math.max(0, room.deadline - Date.now()) : null,
-    recap: room.status === 'active' ? room.recap : null,
+    recap: room.status === 'active' ? recap : null,
     scenario: { id: room.scenario.id, title: room.scenario.title, tagline: room.scenario.tagline },
     world: activeIds(room, room.world).map((id) => markInfo(room, id)),
     win: room.solo
@@ -201,11 +212,11 @@ export function publicState(room: Room) {
       : null,
     scene:
       scene && {
-        key: room.sceneKey,
+        key: sceneKey,
         title: pickVariant(scene.title, m, f),
         text: pickVariant(scene.text, m, f),
         stakes: scene.stakes ? pickVariant(scene.stakes, m, f) : null,
-        twists: twistsFor(room, scene),
+        twists: twistsFor(room, scene, viewer),
         choices: scene.choices.map((c) => ({
           approach: c.approach,
           label: pickVariant(c.label, m, f),
@@ -231,7 +242,12 @@ export function publicState(room: Room) {
   };
 }
 
-export const emitState = (room: Room) => getIo().to(`room:${room.id}`).emit('room:state', publicState(room));
+/** Race modes: every player gets the state of their own road. Co-op shares one state. */
+export const emitState = (room: Room) => {
+  const io = getIo();
+  if (room.mode === 'coop' || room.status !== 'active') return void io.to(`room:${room.id}`).emit('room:state', publicState(room));
+  room.players.forEach((p) => io.to(`user:${p.userId}`).emit('room:state', publicState(room, p.userId)));
+};
 
 /** Builds a player's private roll payload, or null if they have nothing to show right now. */
 function privateRoll(room: Room, userId: string) {
@@ -358,7 +374,7 @@ export function submitAction(userId: string, approach: Approach) {
   if (!room || room.status !== 'active' || room.phase !== 'choose' || room.resolving) throw new AppError(409, 'not_accepting_actions');
   const p = room.players.find((x) => x.userId === userId)!;
   if (p.action) throw new AppError(409, 'already_chose');
-    const scene = room.scenario.scenes[room.sceneKey];
+  const scene = sceneOf(room, p);
   const picked = scene.choices.find((c) => c.approach === approach);
   if (!picked) throw new AppError(400, 'invalid_approach');
   if (!openChoices(room, p, scene).includes(picked)) throw new AppError(409, 'move_locked');
@@ -371,21 +387,16 @@ export function submitAction(userId: string, approach: Approach) {
 function startRolls(room: Room) {
   if (room.phase !== 'choose' || room.status !== 'active' || room.resolving) return;
   if (room.timer) clearTimeout(room.timer);
-  const scene = room.scenario.scenes[room.sceneKey];
 
   for (const p of room.players) {
+    const scene = sceneOf(room, p);
     p.afk = !p.action; // AFK players get a random approach and never see a bonus prompt
         const open = openChoices(room, p, scene);
     const approach = p.action?.approach ?? open[Math.floor(Math.random() * open.length)].approach;
     const choice = scene.choices.find((c) => c.approach === approach)!;
     const base = BALANCE.useStats ? Math.min(p.stats[approach] ?? 0, BALANCE.maxModifier) : 0;
-    if (room.mode === 'coop') {
-      p.roll = { approach, ...rollBase({ modifier: base, dc: choiceDc(room, p, choice) }) };
-    } else {
-      // Duel: the highest total wins, so an "easier"/"harder" tag becomes a plain + or - on your roll
-      const shift = choice.dc - choiceDc(room, p, choice);
-      p.roll = { approach, ...rollBase({ modifier: base + shift, dc: choice.dc }) };
-    }
+    // everyone rolls against their own road's difficulty; marks make it easier or harder
+    p.roll = { approach, ...rollBase({ modifier: base, dc: choiceDc(room, p, choice) }) };
     // nothing to decide if you're AFK or can't afford the cheapest bonus
     p.edgeDone = p.afk || p.stars < MIN_EDGE;
   }
@@ -439,6 +450,8 @@ export async function playEdge(userId: string, choice: StarPlay | 'skip') {
 }
 
 // ---------- Step 3: reveal ----------
+// Co-op: one group (the crew) walks one road. Race modes: each side is its own group on its own road.
+// Every group is routed by ITS OWN move and ITS OWN pass or fail, so nobody's choice is thrown away.
 async function settle(room: Room) {
   if (room.resolving || room.status !== 'active') return;
   room.resolving = true;
@@ -449,14 +462,14 @@ async function settle(room: Room) {
   for (let i = 0; i < 40 && room.players.some((p) => p.edgeBusy); i++) await sleep(50);
 
   const io = getIo();
-  const scene = room.scenario.scenes[room.sceneKey];
+  const race = room.mode !== 'coop';
   const rows: RollRow[] = room.players.map((p) => {
     const r = p.roll!;
     return {
       userId: p.userId,
       team: p.team,
       round: room.round,
-      sceneKey: room.sceneKey,
+      sceneKey: sceneKeyOf(room, p),
       approach: r.approach,
       starPlay: p.edge,
       die: r.die,
@@ -470,153 +483,170 @@ async function settle(room: Room) {
       shielded: r.shielded,
     };
   });
-
   room.rolls.push(...rows);
-  const roundRolls = rows.map((r) => ({
-    userId: r.userId,
-    team: r.team,
-    approach: r.approach,
-    tier: r.tier,
-    margin: r.margin,
-    total: r.total,
-    dc: r.dc,
-  }));
-
-  // Duels: level on the top roll means everybody tied rolls again, until one side is higher
-  const tieRounds: { userId: string; die: number }[][] = [];
-  let tiebreakTeam: number | null = null;
-  if (room.mode !== 'coop') {
-    const teamOf = (id: string) => rows.find((r) => r.userId === id)!.team;
-    let contenders = duelTie(roundRolls);
-    for (let i = 0; contenders.length && i < 25; i++) {
-      const dice = contenders.map((userId) => ({ userId, die: d20() }));
-      tieRounds.push(dice);
-      const top = new Map<number, number>();
-      for (const t of dice) top.set(teamOf(t.userId), Math.max(top.get(teamOf(t.userId)) ?? 0, t.die));
-      const [first, second] = [...top.entries()];
-      if (first && second && first[1] !== second[1]) {
-        tiebreakTeam = first[1] > second[1] ? first[0] : second[0];
-        contenders = [];
-      } else {
-        contenders = dice.filter((t) => t.die === top.get(teamOf(t.userId))).map((t) => t.userId);
-      }
-    }
-    if (contenders.length) tiebreakTeam = teamOf(contenders[Math.floor(Math.random() * contenders.length)]); // safety net
-  }
-  const revealMs = BALANCE.resultDelayMs + tieRounds.length * BALANCE.tieRerollMs;
-  const outcome = resolveRound(room.mode, roundRolls, tiebreakTeam);
-    const lead = outcome.lead;
-  const route = pickEdge(scene, outcome.kind, outcome.same, lead?.approach ?? null);
 
   const namesOf = (ids: string[]) => ids.map((id) => room.players.find((p) => p.userId === id)?.username ?? 'Player');
-  const winnerNames = namesOf(outcome.winnerIds);
-  const loserNames = namesOf(outcome.loserIds);
-  const move = lead ? APPROACH_LABEL[lead.approach] : undefined;
-
-  const headlineCore = resultLine({
-    mode: room.mode,
-    kind: outcome.kind,
-    same: outcome.same,
-    approach: outcome.sameApproach,
-    winner: winnerNames,
-    loser: loserNames,
-    passers: namesOf(outcome.passers),
-    failers: namesOf(outcome.failers),
-    move,
-    solo: room.solo,
-  });
-  const headline = tieRounds.length ? `Level on the dice, so they rolled again. ${headlineCore}` : headlineCore;
-  const flavor = route.recap
-    ? fillTokens(pickVariant(route.recap, textMode(room), room.format), {
-        winner: winnerNames,
-        loser: loserNames,
-        crew: room.players.map((p) => p.username),
-        move,
-      })
-    : '';
-  const recap = flavor ? `${headline} ${flavor}` : headline;
-  room.log.push(recap);
-
-  // marks earned this round: they apply from the next round on
+  const bonusDef = room.scenario.bonus;
   const gained: { userId: string | null; mark: string; label: string; tip: string }[] = [];
   const bonusLostNow = new Set<string>();
-  const bonusDef = room.scenario.bonus;
-  for (const g of route.set ?? []) {
-    const def = room.scenario.marks[g.mark];
-    if (!def) continue;
-    const until = room.round + def.rounds;
-    const targets: (string | null)[] =
-      g.to === 'world'
-        ? [null]
-        : g.to === 'all'
-          ? room.players.map((p) => p.userId)
-          : g.to === 'winner'
-            ? outcome.winnerIds
-            : g.to === 'loser'
-              ? outcome.loserIds
-              : lead
-                ? [lead.userId]
-                : [];
-    for (const t of targets) {
-      const holder = t === null ? room.world : (room.held.get(t) ?? room.held.set(t, new Map()).get(t)!);
-      holder.set(g.mark, until);
-      const names = room.history.get(g.mark) ?? new Set<string>();
-      if (t) names.add(room.players.find((p) => p.userId === t)?.username ?? 'Player');
-      room.history.set(g.mark, names);
-      gained.push({ userId: t, mark: g.mark, label: def.label, tip: def.tip });
-      if (bonusDef?.lostBy.includes(g.mark)) {
-        // Link Up shares the bonus: one slip loses it for the whole crew
-        const hit = t === null || room.mode === 'coop' ? room.players.map((p) => p.userId) : [t];
-        for (const id of hit) if (!room.bonusLost.has(id)) (room.bonusLost.add(id), bonusLostNow.add(id));
-      }
-    }
-  }
 
-  if (room.mode === 'coop') room.coopPoints += COOP_POINTS[outcome.kind] ?? 0;
-  else if (outcome.winnerTeam !== null) room.teamWins[outcome.winnerTeam] = (room.teamWins[outcome.winnerTeam] ?? 0) + 1;
-
-  const next = route.to;
-  const ends = next === null || !room.scenario.scenes[next] || room.round >= BALANCE.maxRounds;
-
-  io.to(`room:${room.id}`).emit('round:result', {
-    round: room.round,
-    rolls: rows.map((r) => ({
-      userId: r.userId,
-      team: r.team,
-      round: r.round,
-      sceneKey: r.sceneKey,
-      approach: r.approach,
-      starPlay: r.starPlay,
-      die: r.die,
-      dice: r.dice,
-      modifier: r.modifier,
-      starBonus: r.starBonus,
-      total: r.total,
-      tier: r.tier,
-      shielded: r.shielded,
-      standing:
-        room.mode === 'coop' ? 'crew' : outcome.winnerTeam === null ? 'level' : r.team === outcome.winnerTeam ? 'won' : 'lost',
-    })),
-    kind: outcome.kind,
-    same: outcome.same,
-    winnerTeam: outcome.winnerTeam,
-    headline,
-        gained,
-    lead: lead ?? null,
-    bonusLost: [...bonusLostNow],
-    bonusLostMessage: bonusLostNow.size && bonusDef ? bonusDef.lostMessage : null,
-    ends,
-    tieRounds,
-    revealMs,
+  type Group = {
+    g: number; // 0 for co-op, the team number in race modes
+    ids: string[];
+    scene: Scene;
+    outcome: ReturnType<typeof resolveRound>;
+    route: ReturnType<typeof pickEdge>;
+    headline: string;
+    flavor: string;
+    best: number; // best margin this round (who is ahead on the road)
+    arrives: boolean;
+  };
+  const groups: Group[] = (race ? [0, 1] : [0]).map((g) => {
+    const crew = race ? room.players.filter((p) => p.team === g) : room.players;
+    const scene = sceneOf(room, crew[0]);
+    const rr = rows.filter((r) => crew.some((p) => p.userId === r.userId));
+    const outcome = resolveRound(
+      'coop',
+      rr.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin, total: r.total, dc: r.dc })),
+    );
+    const route = pickEdge(scene, outcome.kind, outcome.same, outcome.lead?.approach ?? null);
+    const move = outcome.lead ? APPROACH_LABEL[outcome.lead.approach] : undefined;
+    const headline = resultLine({
+      mode: 'coop',
+      kind: outcome.kind,
+      same: outcome.same,
+      approach: outcome.sameApproach,
+      winner: namesOf(outcome.winnerIds),
+      loser: namesOf(outcome.loserIds),
+      passers: namesOf(outcome.passers),
+      failers: namesOf(outcome.failers),
+      move,
+      solo: room.solo || crew.length === 1,
+    });
+    // race roads read the "you" (co-op) wording of each story line
+    const flavor = route.recap
+      ? fillTokens(pickVariant(route.recap, race ? 'coop' : textMode(room), room.format), {
+          winner: namesOf(outcome.winnerIds),
+          loser: namesOf(outcome.loserIds),
+          crew: crew.map((p) => p.username),
+          move,
+        })
+      : '';
+    const to = route.to;
+    const arrives = to === null || !room.scenario.scenes[to];
+    return { g, ids: crew.map((p) => p.userId), scene, outcome, route, headline, flavor, best: Math.max(...rr.map((r) => r.margin)), arrives };
   });
 
+  // who is ahead on the road this round (race modes): the cleaner roll takes the lead point
+  let leadTeam: number | null = null;
+  if (race && groups[0].best !== groups[1].best) {
+    leadTeam = groups[0].best > groups[1].best ? 0 : 1;
+    room.teamWins[leadTeam] = (room.teamWins[leadTeam] ?? 0) + 1;
+  }
+
+  for (const grp of groups) {
+    const { outcome, route } = grp;
+    const lead = outcome.lead;
+    for (const gr of route.set ?? []) {
+      const def = room.scenario.marks[gr.mark];
+      if (!def) continue;
+      const until = room.round + def.rounds;
+      const targets: (string | null)[] =
+        gr.to === 'world'
+          ? [null]
+          : gr.to === 'all'
+            ? grp.ids
+            : gr.to === 'winner'
+              ? outcome.winnerIds
+              : gr.to === 'loser'
+                ? outcome.loserIds
+                : lead
+                  ? [lead.userId]
+                  : [];
+      for (const t of targets) {
+        const holder = t === null ? room.world : (room.held.get(t) ?? room.held.set(t, new Map()).get(t)!);
+        holder.set(gr.mark, until);
+        const names = room.history.get(gr.mark) ?? new Set<string>();
+        if (t) names.add(room.players.find((p) => p.userId === t)?.username ?? 'Player');
+        room.history.set(gr.mark, names);
+        gained.push({ userId: t, mark: gr.mark, label: def.label, tip: def.tip });
+        if (bonusDef?.lostBy.includes(gr.mark)) {
+          // Link Up shares the bonus: one slip loses it for the whole crew
+          const hit = t === null || room.mode === 'coop' ? room.players.map((p) => p.userId) : [t];
+          for (const id of hit) if (!room.bonusLost.has(id)) (room.bonusLost.add(id), bonusLostNow.add(id));
+        }
+      }
+    }
+    if (race) {
+      // reaching the end of the road: how well it ended (authored per final scene) plus how cleanly the last move landed
+      if (grp.arrives) {
+        const tail = outcome.kind === 'all_pass' ? 2 : outcome.kind === 'mixed' ? 1 : 0;
+        room.arrived[grp.g] = { score: (grp.scene.finish ?? 1) * 2 + tail, sceneKey: sceneKeyOf(room, room.players.find((p) => p.team === grp.g)!), round: room.round };
+      }
+    } else room.coopPoints += COOP_POINTS[outcome.kind] ?? 0;
+  }
+
+  // what each viewer reads: their own road, plus one line on how the other road is going
+  const raceLine = (me: Group) => {
+    if (!race) return '';
+    const other = groups[1 - me.g];
+    const rival = joinNames(namesOf(other.ids));
+    const doing = other.outcome.kind === 'all_pass' ? 'got it done' : other.outcome.kind === 'all_fail' ? 'ran into trouble' : 'scraped through';
+    const pos = leadTeam === null ? 'Neck and neck.' : leadTeam === me.g ? 'You edge ahead.' : `${rival} pulls ahead.`;
+    return `Meanwhile ${rival} ${doing}. ${pos}`;
+  };
+  const recapFor = (grp: Group) => [grp.headline, grp.flavor, raceLine(grp)].filter(Boolean).join(' ');
+  for (const grp of groups) (room.log[grp.g] ??= []).push(recapFor(grp));
+
+  const anyArrived = groups.some((x) => x.arrives);
+  const ends = anyArrived || room.round >= BALANCE.maxRounds || (!race && groups[0].arrives);
+
+  const send = (userId: string, grp: Group) =>
+    io.to(`user:${userId}`).emit('round:result', {
+      round: room.round,
+      rolls: rows.map((r) => ({
+        userId: r.userId,
+        team: r.team,
+        round: r.round,
+        sceneKey: r.sceneKey,
+        approach: r.approach,
+        starPlay: r.starPlay,
+        die: r.die,
+        dice: r.dice,
+        modifier: r.modifier,
+        starBonus: r.starBonus,
+        total: r.total,
+        tier: r.tier,
+        shielded: r.shielded,
+        standing: !race ? 'crew' : leadTeam === null ? 'level' : r.team === leadTeam ? 'won' : 'lost',
+      })),
+      kind: grp.outcome.kind,
+      same: grp.outcome.same,
+      winnerTeam: race ? leadTeam : null,
+      headline: recapFor(grp),
+      gained,
+      lead: grp.outcome.lead ?? null,
+      bonusLost: [...bonusLostNow],
+      bonusLostMessage: bonusLostNow.size && bonusDef ? bonusDef.lostMessage : null,
+      ends,
+      tieRounds: [],
+      revealMs: BALANCE.resultDelayMs,
+    });
+  room.players.forEach((p) => send(p.userId, groups[race ? p.team : 0]));
+
   room.timer = setTimeout(() => {
-    if (ends || next === null) return void finish(room);
-    room.sceneKey = next;
-    room.recap = recap; // shown at the top of the next scene
+    if (ends) return void finish(room);
+    for (const grp of groups) {
+      const to = grp.route.to as string;
+      if (race) room.track[grp.g] = { key: to, recap: recapFor(grp) };
+      else {
+        room.sceneKey = to;
+        room.recap = recapFor(grp); // shown at the top of the next scene
+      }
+    }
     room.round += 1;
     beginRound(room);
-  }, revealMs);
+  }, BALANCE.resultDelayMs);
 }
 
 /** How many more stars a player may earn from games today (wins and bonuses share one daily cap). */
@@ -641,10 +671,16 @@ async function finish(room: Room) {
   let decider: { team: number; die: number }[][] = [];
   if (room.mode === 'coop') success = room.coopPoints >= rounds * BALANCE.coopPassAvg;
   else {
+    // The race: whoever reached home first wins. If both got there in the same round, the better ending wins
+    // (what you lost on the road counts), then the lead points. Still level: one die each decides it.
     const w0 = room.teamWins[0] ?? 0;
     const w1 = room.teamWins[1] ?? 0;
-    winnerTeam = w0 === w1 ? null : w0 > w1 ? 0 : 1;
-    // Level after the last scene: one die each decides it, and a tie rolls again. No game ends as a draw.
+    const rank = (t: number) => (room.arrived[t] ? [-room.arrived[t].round, room.arrived[t].score, t === 0 ? w0 : w1] : [-99, 0, t === 0 ? w0 : w1]);
+    const [ra, rb] = [rank(0), rank(1)];
+    // arriving in an earlier round beats everything; otherwise compare ending score, then lead points
+    winnerTeam = null;
+    for (let i = 0; i < 3 && winnerTeam === null; i++) if (ra[i] !== rb[i]) winnerTeam = ra[i] > rb[i] ? 0 : 1;
+    // Level after all that: one die each decides it, and a tie rolls again. No game ends as a draw.
     for (let i = 0; winnerTeam === null && i < 25; i++) {
       const throwN = [0, 1].map((team) => ({ team, die: d20() }));
       decider.push(throwN);
@@ -695,34 +731,41 @@ async function finish(room: Room) {
     }),
   );
 
-  // closing paragraph for each possible outcome; the web app shows the one that matches the player
-  const names = {
-    winner: winnerTeam === null ? [] : room.players.filter((p) => p.team === winnerTeam).map((p) => p.username),
-    loser: winnerTeam === null ? [] : room.players.filter((p) => p.team !== winnerTeam).map((p) => p.username),
-    crew: room.players.map((p) => p.username),
-  };
-  const endings: Record<string, string> = {};
-  const e = room.scenario.endings;
-  if (e) {
+  // closing paragraph: in race modes it comes from the road YOU ended on, so a robbed player never reads the "intact" ending
+  const bonusInfo = bonusDef ? { label: bonusDef.label, earnedLine: bonusDef.earnedLine, lostMessage: bonusDef.lostMessage } : null;
+  for (const p of room.players) {
+    const crewNames = room.players.filter((x) => x.team === p.team).map((x) => x.username);
+    const names = {
+      winner: winnerTeam === null ? [] : room.players.filter((x) => x.team === winnerTeam).map((x) => x.username),
+      loser: winnerTeam === null ? [] : room.players.filter((x) => x.team !== winnerTeam).map((x) => x.username),
+      crew: room.mode === 'coop' ? room.players.map((x) => x.username) : crewNames,
+    };
+    const endKey = room.mode === 'coop' ? room.sceneKey : (room.arrived[p.team]?.sceneKey ?? room.track[p.team].key);
+    const own = room.scenario.scenes[endKey]?.endings;
+    const endings: Record<string, string> = {};
     for (const k of ['win', 'loss', 'success', 'fail'] as const) {
-      const v = e[k];
+      const v = own?.[k] ?? room.scenario.endings?.[k];
       if (v) endings[k] = fillTokens(pickVariant(v, textMode(room), room.format), names);
     }
+    // only the marks this player's side (or the whole scene) earned belong in their epilogue
+    const mine = (mark: string) => {
+      const who = room.history.get(mark);
+      return !!who && (room.mode === 'coop' || who.size === 0 || crewNames.some((n) => who.has(n)));
+    };
+    const epilogue = (room.scenario.epilogues ?? [])
+      .filter((x) => mine(x.if))
+      .map((x) => fillTokens(pickVariant(x.text, textMode(room), room.format), { ...names, holder: [...(room.history.get(x.if) ?? [])].filter((n) => room.mode === 'coop' || crewNames.includes(n)) }));
+    getIo().to(`user:${p.userId}`).emit('encounter:finished', {
+      roomId: room.id,
+      mode: room.mode,
+      results,
+      endings,
+      story: room.log[room.mode === 'coop' ? 0 : p.team] ?? [],
+      epilogue,
+      decider,
+      bonus: bonusInfo,
+    });
   }
-  const epilogue = (room.scenario.epilogues ?? [])
-    .filter((x) => room.history.has(x.if))
-    .map((x) => fillTokens(pickVariant(x.text, textMode(room), room.format), { ...names, holder: [...(room.history.get(x.if) ?? [])] }));
-
-  getIo().to(`room:${room.id}`).emit('encounter:finished', {
-    roomId: room.id,
-    mode: room.mode,
-    results,
-    endings,
-    story: room.log,
-    epilogue,
-    decider,
-    bonus: bonusDef ? { label: bonusDef.label, earnedLine: bonusDef.earnedLine, lostMessage: bonusDef.lostMessage } : null,
-  });
   room.players.forEach((p) => roomOfUser.delete(p.userId)); // free to queue again immediately
 
   try {

@@ -93,6 +93,12 @@ const scene = z.object({
   twists: z.array(z.object({ if: z.string(), text: variants })).optional(), // shown when someone holds the mark; {holder} = their name
   choices: z.array(choice).min(2),
   next,
+  // Race games, final scenes only: how well this road ends (0 = worst, 3 = best). Decides who got home better.
+  finish: z.number().int().min(0).max(3).optional(),
+  // Race games, final scenes only: the closing paragraph for a player who ENDS on this scene (falls back to scenario endings)
+  endings: z
+    .object({ win: variants.optional(), loss: variants.optional(), success: variants.optional(), fail: variants.optional() })
+    .optional(),
 });
 
 // One optional story bonus per scenario. You keep it until you earn one of the "lostBy" marks.

@@ -61,12 +61,12 @@
     "knock": {
       "title": "Knock Knock",
       "text": {
-        "default": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You're in the back seat. So is {rival}. Whoever reaches him first carries his bags, picks gifts first, and earns the right to tell the family they were the one who came through. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\"",
+        "default": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You're in the back seat. So is {rival}. Uncle Chuks has exactly one opening to give this year, a school-fees sponsorship or a job referral, and he is choosing between you and {rival}. He will hear how each of you handled the road, and whoever he trusts walks away with it. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\"",
         "coop": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You and {partner} are in this together. If you miss him, you'll both hear about it for ten years. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\"",
         "solo": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. If you miss him, you'll hear about it for ten years. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\""
       },
       "stakes": {
-        "default": "{rival} is watching. Pay too much and you're broke later. Pay nothing and this boy might remember your face.",
+        "default": "{rival} is on this road too, and Uncle Chuks' opening goes to only one of you. Pay too much and you're broke later. Pay nothing and this boy remembers your face.",
         "coop": "Don't let this boy waste your time. Uncle Chuks lands at 8."
       },
       "choices": [
@@ -222,7 +222,7 @@
       "title": "Kayode Wants To Be Your Friend",
       "text": "The boy, Kayode, has leaned halfway through your window. He's telling you his life story. He sold phone accessories at Computer Village until the task force scattered his shop. Now he \"manages traffic.\" The hold-up, he says, is a broken trailer under the bridge. Another hour minimum. Then he drops his voice: \"But my guy, I know a back road through Ajao Estate. Twenty minutes to the airport. The gate people will want something small, though.\"",
       "stakes": {
-        "default": "He's offering you an exit. But {rival} heard everything too.",
+        "default": "He's offering you an exit, and Uncle Chuks will hear how you take it.",
         "coop": "He's offering you an exit. Be careful how you take it."
       },
       "choices": [
@@ -388,7 +388,10 @@
     "second_boy": {
       "title": "Boy Number Two",
       "text": "Another boy appears at the passenger window. Bigger than Kayode, and he's not smiling. \"Oga, what you gave was for Kayode. I'm holding this side.\" Behind him, two more boys are walking toward your boot. Mr. Femi grips the steering wheel. \"Oga, this is my own car o.\"",
-      "stakes": "Your money is the problem now. One wrong move and this becomes a scene.",
+      "stakes": {
+        "default": "Your money is the problem now, and Uncle Chuks' opening is the one thing cash can't buy. One wrong move and this becomes a scene.",
+        "coop": "Your money is the problem now. One wrong move and this becomes a scene."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -553,11 +556,14 @@
     "viral": {
       "title": "Everybody Is Watching",
       "text": {
-        "default": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. {rival} is recording.",
+        "default": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. Somebody is recording, and it will reach Uncle Chuks' phone before you do.",
         "coop": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. {partner} is staring at you, wide-eyed.",
         "solo": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. Nobody is looking away."
       },
-      "stakes": "This has escaped you. Get out of it before it hits WhatsApp status.",
+      "stakes": {
+        "default": "This has escaped you. If it hits WhatsApp status first, Uncle Chuks sees it before he sees you.",
+        "coop": "This has escaped you. Get out of it before it hits WhatsApp status."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -708,7 +714,10 @@
     "femi_gist": {
       "title": "Mr. Femi Knows a Guy",
       "text": "Mr. Femi finally speaks. \"That one is Kayode. Small boy. The real owner of this road is Chairman, and he doesn't like noise. But I know the Ajao Estate back road, I can take it. Only thing, the gate people will ask for ₦1,000 and a good story.\" He looks at you in the rearview mirror. \"Your call, oga.\"",
-      "stakes": "The driver knows the roads. What you say next decides how he feels about you.",
+      "stakes": {
+        "default": "The driver knows the roads, and Uncle Chuks' opening goes to whoever arrives in good shape. Get him on your side.",
+        "coop": "The driver knows the roads. What you say next decides how he feels about you."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -875,7 +884,10 @@
     "banging": {
       "title": "Banging",
       "text": "The knocking has turned to banging. Two more boys have appeared. Mr. Femi turns to the back: \"Oga, if you people don't settle this now, I'll drop you here.\" A trailer horn blares somewhere ahead. Nobody knows if the road has moved or not.",
-      "stakes": "Everything is slipping. Fix it fast before the driver abandons you.",
+      "stakes": {
+        "default": "Everything is slipping and Uncle Chuks lands at 8. Fix it before the driver abandons you.",
+        "coop": "Everything is slipping. Fix it fast before the driver abandons you."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -1033,7 +1045,10 @@
     "estate_gate": {
       "title": "Ajao Estate Gate",
       "text": "Ajao Estate. Two security men and one boy with a long stick. The gate is chained and nobody is hurrying. \"Who are you going to see?\" You can see the airport road on the other side of the fence.",
-      "stakes": "This gate is the only thing between you and a faster road. Use your head.",
+      "stakes": {
+        "default": "This gate is a faster road to Uncle Chuks. Use your head and beat the other car there.",
+        "coop": "This gate is the only thing between you and a faster road. Use your head."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -1194,7 +1209,10 @@
     "service_lane": {
       "title": "LASTMA",
       "text": "You're on the service lane, moving past everybody, until a man in a green LASTMA vest jumps in front of the car. \"Oga, you're driving against traffic. Park there. Park!\" He's already writing in his small booklet.",
-      "stakes": "He has your number plate. Make sure this ticket doesn't become a bigger problem.",
+      "stakes": {
+        "default": "He has your number plate. A ticket now costs time and cash you need for Uncle Chuks.",
+        "coop": "He has your number plate. Make sure this ticket doesn't become a bigger problem."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -1343,11 +1361,14 @@
     "chairman": {
       "title": "The Chairman Himself",
       "text": {
-        "default": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. {rival} is still in the car, watching to see if you sink or swim.",
+        "default": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. Uncle Chuks will hear how this goes before you reach him.",
         "coop": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. {partner} grips your sleeve, watching to see if you sink or swim.",
         "solo": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. Mr. Femi stays in the driver's seat, watching to see if you sink or swim."
       },
-      "stakes": "Everyone on this road is watching. Handle this with respect.",
+      "stakes": {
+        "default": "Everyone on this road is watching, and the story will reach Uncle Chuks. Handle this with respect.",
+        "coop": "Everyone on this road is watching. Handle this with respect."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -1506,7 +1527,10 @@
     "okada": {
       "title": "Come Down Here",
       "text": "Mr. Femi drops you at a bus stop near the airport and drives off. Okada men surround you immediately. \"Oga, airport? ₦3,000!\" You have fifteen minutes to find a ride and look presentable when you see your uncle.",
-      "stakes": "You're on your own now. Choose your ride carefully, don't waste time.",
+      "stakes": {
+        "default": "You're on your own now. Choose your ride carefully, because the other road is moving too.",
+        "coop": "You're on your own now. Choose your ride carefully, don't waste time."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -1648,7 +1672,10 @@
     "uncle_call": {
       "title": "Where Una Dey?",
       "text": "Your phone rings. It's Uncle Chuks. He's landed. \"I'm here o! Where are you people? I bought new phones for you and you're not here yet!\" You can hear the airport behind his voice, and he's not happy.",
-      "stakes": "How you answer this call decides what mood he's in when you see him.",
+      "stakes": {
+        "default": "How you answer decides what mood Uncle Chuks is in when he picks his favourite.",
+        "coop": "How you answer this call decides what mood he's in when you see him."
+      },
       "choices": [
         {
           "approach": "charm",
@@ -1766,7 +1793,7 @@
       "title": "Arrivals: He Is Smiling",
       "text": "You push through the sliding doors. Uncle Chuks is by a pillar, trolley full, big smile, arms already open. He shouts your name loud enough for everybody to hear. Now the real test: how you greet him.",
       "stakes": {
-        "default": "Hug him first and you pick gifts first.",
+        "default": "He's smiling and the opening is on the table. Hug him right.",
         "coop": "Make Uncle Chuks happy."
       },
       "choices": [
@@ -1795,13 +1822,23 @@
         "decisive": null,
         "both_fail": null,
         "tie": null
+      },
+      "finish": 3,
+      "endings": {
+        "win": "You reach Uncle Chuks first and he hugs you in front of everybody. He hears how calmly you handled the road, and the opening is yours. {loser} carries the small bag. At Christmas, the family will hear your name.",
+        "loss": "You reach him smiling, but {winner} got there first and Uncle Chuks has already heard their version of the road. The opening goes to them. You carry the small bag.",
+        "success": {
+          "default": "You reach him together, tired and sweating, and he hugs you both. He says he's never seen two people so happy to see an airport.",
+          "solo": "You reach him tired and sweating, and he hugs you tight. He says he's never seen someone so happy to see an airport."
+        },
+        "fail": "You reach him on time but with the whole road written on your face. He hugs you anyway and asks, slowly, what happened."
       }
     },
     "arrivals_late": {
       "title": "Arrivals: He Is Annoyed",
       "text": "You arrive late. Uncle Chuks is sitting on his box, arms crossed, phone in hand. \"You people have tired me o. Two hours I've been waiting.\" People around you are already looking. You need to fix this fast.",
       "stakes": {
-        "default": "Hug him first, but pay for the delay.",
+        "default": "He's annoyed, and he's choosing between you. Fix this fast.",
         "coop": "He's angry. Calm him down."
       },
       "choices": [
@@ -1835,13 +1872,23 @@
         "decisive": null,
         "both_fail": null,
         "tie": null
+      },
+      "finish": 1,
+      "endings": {
+        "win": "You reach him late, but {loser} reached him later. Uncle Chuks sighs and picks the lesser disappointment: the opening is yours, with a lecture about time attached.",
+        "loss": "You reach him late and {winner} is already pushing the trolley. The opening is gone, and so is the drive home's good mood. You carry the small bag.",
+        "success": {
+          "default": "You reach him late and sweating, and he sighs, hugs you both and says nothing about the two hours.",
+          "solo": "You reach him late and sweating, and he sighs, hugs you and says nothing about the two hours."
+        },
+        "fail": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you every Christmas."
       }
     },
     "arrivals_wahala": {
       "title": "Arrivals: Trouble Followed You",
       "text": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\" You have seconds to explain.",
       "stakes": {
-        "default": "Hug him first and keep this trouble away from him.",
+        "default": "He has seen the trouble. Explain before he picks the other one.",
         "coop": "Keep Uncle Chuks out of this mess."
       },
       "choices": [
@@ -1870,12 +1917,22 @@
         "decisive": null,
         "both_fail": null,
         "tie": null
+      },
+      "finish": 2,
+      "endings": {
+        "win": "You reach Uncle Chuks first, but trouble followed you and he noticed. You explain fast enough that he still hands you the opening, with a warning. {loser} carries the small bag and the gossip.",
+        "loss": "You reach him, but trouble followed you and {winner} is already telling him the clean version. The opening goes to them. You carry the small bag.",
+        "success": {
+          "default": "You reach him together, trouble trailing a little behind. He asks questions all the way to the car, and the drive home is long.",
+          "solo": "You reach him with trouble trailing behind you. He asks questions all the way to the car, and the drive home is long."
+        },
+        "fail": "Trouble followed you to arrivals and Uncle Chuks saw all of it. He will bring it up at Christmas."
       }
     }
   },
   "endings": {
-    "win": "You reach Uncle Chuks first. He hugs you, hands you a shopping bag, and tells everyone within shouting distance that you're his \"good pikin.\" {loser} carries the small bag. At Christmas, the family will hear your name.",
-    "loss": "By the time you arrive, {winner} is already hugging Uncle Chuks and pushing the trolley. You carry the small bag. The drive home is silent.",
+    "win": "You reach Uncle Chuks first, and he gives you the opening. {loser} carries the small bag. At Christmas, the family will hear your name.",
+    "loss": "{winner} reaches Uncle Chuks first, and the opening goes to them. You carry the small bag. The drive home is silent.",
     "success": {
       "default": "You reach him together, tired and sweating, and he hugs you both. He says he's never seen two people so happy to see an airport.",
       "solo": "You reach him tired and sweating, and he hugs you tight. He says he's never seen someone so happy to see an airport."
