@@ -61,33 +61,33 @@
     "knock": {
       "title": "Knock Knock",
       "text": {
-        "default": "Ikeja, 6:30pm. Go-slow don turn Airport Road to a car park. Your Bolt has not moved in twenty minutes, and Uncle Chuks lands from London at 8. You and {rival} are in the same car, and whoever reaches him first carries his bags and picks gifts first. Then somebody knocks on the window. Agbero. Faded vest, hand stretched out. 'Oga, anything for the boys?'",
-        "coop": "Ikeja, 6:30pm. Go-slow don turn Airport Road to a car park. Your Bolt has not moved in twenty minutes, and Uncle Chuks lands from London at 8. You and {partner} are going to pick him up together. If you miss him, you will hear it for ten years. Then somebody knocks on the window. Agbero. Faded vest, hand stretched out. 'Oga, anything for the boys?'",
-        "solo": "Ikeja, 6:30pm. Go-slow don turn Airport Road to a car park. Your Bolt has not moved in twenty minutes, and Uncle Chuks lands from London at 8. If you miss him, you will hear it for ten years. Then somebody knocks on the window. Agbero. Faded vest, hand stretched out. 'Oga, anything for the boys?'"
+        "default": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You're in the back seat. So is {rival}. Whoever reaches him first carries his bags, picks gifts first, and earns the right to tell the family they were the one who came through. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\"",
+        "coop": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You and {partner} are in this together. If you miss him, you'll both hear about it for ten years. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\"",
+        "solo": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. If you miss him, you'll hear about it for ten years. Then, knock knock. A young man in a faded vest taps the window. Hand out. \"Oga, anything for the boys?\""
       },
       "stakes": {
-        "default": "Stay cool. The one who looks relaxed gets respect.",
-        "coop": "Don't let him delay you. Uncle Chuks lands at 8."
+        "default": "{rival} is watching. Pay too much and you're broke later. Pay nothing and this boy might remember your face.",
+        "coop": "Don't let this boy waste your time. Uncle Chuks lands at 8."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Wind down and greet him like family: 'Chairman! How work?'",
+          "label": "Wind down slightly, greet him like an old friend: \"Chairman! How work?\"",
           "dc": 12
         },
         {
           "approach": "hustle",
-          "label": "Put ₦500 in his hand and tell him to go and rest",
+          "label": "Slip him ₦500, tell him to keep the boys off your car",
           "dc": 12
         },
         {
           "approach": "gragra",
-          "label": "Tell him you work for government: 'Oga, I be civil servant o!'",
+          "label": "Wave your hand dismissively: \"I'm a civil servant, I don't have money for this\"",
           "dc": 13
         },
         {
           "approach": "wisdom",
-          "label": "Keep the window up and quietly ask Mr. Femi who this man is",
+          "label": "Keep the window up, quietly ask Mr. Femi who this man is",
           "dc": 11
         }
       ],
@@ -176,12 +176,15 @@
     },
     "kayode_talk": {
       "title": "Kayode Wants To Be Your Friend",
-      "text": "Kayode is now half inside your window, telling you his life story. He used to sell phone accessories at Computer Village until the task force scattered his shop. Now he 'manages traffic'. The go-slow, he says, is a broken-down trailer under the bridge, and it will take another hour. Then he drops his voice: 'But my guy, I know one back road. Ajao Estate. You go reach airport in twenty minutes. The gate people go want small something sha.'",
-      "stakes": "He is offering you a way out. Be careful how you take it.",
+      "text": "The boy, Kayode, has leaned halfway through your window. He's telling you his life story. He sold phone accessories at Computer Village until the task force scattered his shop. Now he \"manages traffic.\" The hold-up, he says, is a broken trailer under the bridge. Another hour minimum. Then he drops his voice: \"But my guy, I know a back road through Ajao Estate. Twenty minutes to the airport. The gate people will want something small, though.\"",
+      "stakes": {
+        "default": "He's offering you an exit. But {rival} heard everything too.",
+        "coop": "He's offering you an exit. Be careful how you take it."
+      },
       "choices": [
         {
           "approach": "charm",
-          "label": "Laugh with him and promise to 'settle him' when you come back",
+          "label": "Laugh with him, promise you'll \"settle him proper\" when you get back",
           "dc": 11,
           "mods": [
             {
@@ -193,7 +196,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Give him ₦2,000 for the road and the gate people",
+          "label": "Give him ₦2,000 for the road and gate access",
           "dc": 12,
           "lock": {
             "mark": "short_cash",
@@ -203,7 +206,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Tell him your uncle is a big man at the airport who will 'hear about this help'",
+          "label": "Tell him your uncle is a big man at the airport who will \"hear about this help\"",
           "dc": 13,
           "mods": [
             {
@@ -215,7 +218,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Ask for details: which gate, how many boys, how much exactly",
+          "label": "Ask specifics: which gate, how many boys, how much exactly",
           "dc": 11
         }
       ],
@@ -296,12 +299,12 @@
     },
     "second_boy": {
       "title": "Boy Number Two",
-      "text": "Another boy shows up at the passenger side. Bigger than Kayode, and in a hurry. 'Oga, the one wey you give na for Kayode. Na me dey hold this side.' Behind him, two more boys are drifting towards your boot. Mr. Femi grips the steering wheel: 'Oga, my own car o.'",
-      "stakes": "Your money is the problem now. One more wrong move and the whole road will line up.",
+      "text": "Another boy appears at the passenger window. Bigger than Kayode, and he's not smiling. \"Oga, what you gave was for Kayode. I'm holding this side.\" Behind him, two more boys are walking toward your boot. Mr. Femi grips the steering wheel. \"Oga, this is my own car o.\"",
+      "stakes": "Your money is the problem now. One wrong move and this becomes a scene.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Tell him you respect his work too: 'My guy, no vex, I don pay already'",
+          "label": "Tell him you respect his work too: \"My guy, no vex, I've already paid\"",
           "dc": 11,
           "mods": [
             {
@@ -323,12 +326,12 @@
         },
         {
           "approach": "gragra",
-          "label": "Call Kayode's name loudly like he is your guy: 'KAYODE! Your boy dey disturb me!'",
+          "label": "Call Kayode's name loud, like he's your guy: \"KAYODE! Your boy is disturbing me!\"",
           "dc": 13
         },
         {
           "approach": "wisdom",
-          "label": "Tell Mr. Femi to creep forward slowly and keep the doors locked",
+          "label": "Tell Mr. Femi to inch forward slowly, keep the doors locked",
           "dc": 11
         }
       ],
@@ -417,17 +420,21 @@
     },
     "viral": {
       "title": "Everybody Is Watching",
-      "text": "Gist is already moving. A hawker shouts 'Government! Government!' A man in a white shirt squeezes to your window: 'Which ministry? Show me your ID.' Phones are up everywhere. Kayode is smiling like a man who just won a bet.",
-      "stakes": "This is getting bigger than you. Get out of it before it reaches WhatsApp.",
+      "text": {
+        "default": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. {rival} is recording.",
+        "coop": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. {partner} is staring at you, wide-eyed.",
+        "solo": "News travels fast. A hawker is shouting \"Government! Government!\" A man in a white shirt pushes to your window: \"Which ministry? Show me your ID.\" Phones are up everywhere. Kayode is smiling like he just won a bet. Nobody is looking away."
+      },
+      "stakes": "This has escaped you. Get out of it before it hits WhatsApp status.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Laugh it off: 'Oga, na joke! I dey enjoy myself!'",
+          "label": "Laugh it off: \"Oga, it's a joke! I'm just enjoying myself!\"",
           "dc": 12
         },
         {
           "approach": "hustle",
-          "label": "Quietly pay Kayode ₦1,000 to tell them you were joking",
+          "label": "Quietly pay Kayode ₦1,000 to tell them it was a misunderstanding",
           "dc": 12,
           "lock": {
             "mark": "short_cash",
@@ -449,7 +456,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Say calmly: 'I'm not government. My uncle is landing and I'm just in a hurry.'",
+          "label": "Speak calmly: \"I'm not government. My uncle is landing and I'm just in a hurry.\"",
           "dc": 11
         }
       ],
@@ -534,12 +541,12 @@
     },
     "femi_gist": {
       "title": "Mr. Femi Knows a Guy",
-      "text": "Mr. Femi finally speaks. 'That one na Kayode. Small boy. The real owner of this road na Chairman, and he no like noise. But I know Ajao Estate back road, I fit enter. Only thing, the gate people go ask for ₦1,000 and a good story.' He looks at you through the rear-view mirror. 'Your call, oga.'",
-      "stakes": "The driver knows the roads. Whatever you say next decides how he feels about you.",
+      "text": "Mr. Femi finally speaks. \"That one is Kayode. Small boy. The real owner of this road is Chairman, and he doesn't like noise. But I know the Ajao Estate back road, I can take it. Only thing, the gate people will ask for ₦1,000 and a good story.\" He looks at you in the rearview mirror. \"Your call, oga.\"",
+      "stakes": "The driver knows the roads. What you say next decides how he feels about you.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Tell him to go for it, and promise him a good tip for the stress",
+          "label": "Tell him to take it, promise a good tip for the stress",
           "dc": 11,
           "mods": [
             {
@@ -556,7 +563,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Offer to carry the gate money and a little extra for him",
+          "label": "Offer to cover the gate money and something extra for him",
           "dc": 12,
           "lock": {
             "mark": "short_cash",
@@ -566,12 +573,12 @@
         },
         {
           "approach": "gragra",
-          "label": "Tell him to take it and say you're a doctor if the gate asks",
+          "label": "Tell him to take it, say you're a doctor if anyone asks",
           "dc": 13
         },
         {
           "approach": "wisdom",
-          "label": "Ask which roads he knows and whether the road ahead is worse than here",
+          "label": "Ask which other roads he knows, whether the main road ahead is worse than here",
           "dc": 11,
           "mods": [
             {
@@ -663,12 +670,12 @@
     },
     "banging": {
       "title": "Banging",
-      "text": "The knocking turns into banging. Two more boys appear. Mr. Femi turns to the back: 'Oga, if una no settle this thing now, I go drop una for here.' A trailer horn blares somewhere ahead and nobody knows if the road has moved or not.",
-      "stakes": "Everything is slipping. Fix it quickly before the driver drops you.",
+      "text": "The knocking has turned to banging. Two more boys have appeared. Mr. Femi turns to the back: \"Oga, if you people don't settle this now, I'll drop you here.\" A trailer horn blares somewhere ahead. Nobody knows if the road has moved or not.",
+      "stakes": "Everything is slipping. Fix it fast before the driver abandons you.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Wind down and apologise: 'Chairman, no vex, we dey rush o!'",
+          "label": "Wind down and apologise: \"Chairman, no vex, we're rushing o!\"",
           "dc": 13,
           "mods": [
             {
@@ -690,7 +697,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Shout back: 'Do you know who you are disturbing?'",
+          "label": "Shout back: \"Do you know who you're disturbing?\"",
           "dc": 14,
           "mods": [
             {
@@ -702,7 +709,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Tell Mr. Femi to drive onto the shoulder while the boys are arguing",
+          "label": "Tell Mr. Femi to drive onto the shoulder while the boys argue",
           "dc": 12
         }
       ],
@@ -783,12 +790,12 @@
     },
     "estate_gate": {
       "title": "Ajao Estate Gate",
-      "text": "Ajao Estate. Two security men and a boy with a long stick. The gate is chained and nobody is in a hurry. 'Who you dey go see?' You can see the airport road on the other side through the fence.",
+      "text": "Ajao Estate. Two security men and one boy with a long stick. The gate is chained and nobody is hurrying. \"Who are you going to see?\" You can see the airport road on the other side of the fence.",
       "stakes": "This gate is the only thing between you and a faster road. Use your head.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Greet them in Yoruba and say you are visiting 'Aunty on Block C'",
+          "label": "Greet them in Yoruba, say you're visiting \"Aunty in Block C\"",
           "dc": 12,
           "mods": [
             {
@@ -805,7 +812,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Give them ₦1,000 gate fee and no story",
+          "label": "Give them ₦1,000 gate fee, no story",
           "dc": 11,
           "mods": [
             {
@@ -834,7 +841,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Ask politely for the visitor register and write a real name in it",
+          "label": "Ask for the visitor register, write a real name inside",
           "dc": 11,
           "mods": [
             {
@@ -900,12 +907,12 @@
     },
     "service_lane": {
       "title": "LASTMA",
-      "text": "You are on the service lane, moving faster than everyone, until a man in a green LASTMA vest jumps in front of the car. 'Oga, you dey drive against the flow. Park there. Park!' He is already writing in his small booklet.",
-      "stakes": "He has your number plate. Make sure the ticket doesn't become a bigger problem.",
+      "text": "You're on the service lane, moving past everybody, until a man in a green LASTMA vest jumps in front of the car. \"Oga, you're driving against traffic. Park there. Park!\" He's already writing in his small booklet.",
+      "stakes": "He has your number plate. Make sure this ticket doesn't become a bigger problem.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Beg him with respect: 'Oga, my uncle dey land, na emergency'",
+          "label": "Beg with respect: \"Oga, my uncle is landing, it's an emergency\"",
           "dc": 12,
           "mods": [
             {
@@ -917,7 +924,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Slide ₦2,000 under the booklet: 'For your water, sir'",
+          "label": "Slide ₦2,000 under the booklet: \"For your water, sir\"",
           "dc": 11,
           "mods": [
             {
@@ -934,7 +941,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Say you are a doctor rushing to a patient",
+          "label": "Say you're a doctor rushing to see a patient",
           "dc": 13,
           "mods": [
             {
@@ -946,7 +953,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Admit the mistake and ask for the fastest legal way out",
+          "label": "Admit the mistake, ask for the fastest legal way out",
           "dc": 10
         }
       ],
@@ -1005,12 +1012,16 @@
     },
     "chairman": {
       "title": "The Chairman Himself",
-      "text": "An SUV blocks the road. A man steps out in a clean agbada, because the boys called him. 'Who be the one wey dey disrespect my boys?' The go-slow is quiet now. Everybody wants to see what happens next.",
-      "stakes": "Everyone on the road is watching. Handle this one with a lot of respect.",
+      "text": {
+        "default": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. {rival} is still in the car, watching to see if you sink or swim.",
+        "coop": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. {partner} grips your sleeve, watching to see if you sink or swim.",
+        "solo": "An SUV blocks the road. A man steps out in a clean agbada: the boys called him. \"Who is the one disrespecting my boys?\" The go-slow goes quiet. Everybody wants to see what happens next. Mr. Femi stays in the driver's seat, watching to see if you sink or swim."
+      },
+      "stakes": "Everyone on this road is watching. Handle this with respect.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Greet him with both hands, call him 'Chairman', and bend small",
+          "label": "Greet him with both hands, call him \"Chairman,\" bend slightly",
           "dc": 13,
           "mods": [
             {
@@ -1022,7 +1033,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Settle him with ₦5,000 'for the boys' drinks'",
+          "label": "Settle him with ₦5,000 \"for the boys' drinks\"",
           "dc": 12,
           "lock": {
             "mark": "short_cash",
@@ -1032,7 +1043,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Drop big names: 'I know the Commissioner, ask anybody!'",
+          "label": "Drop big names: \"I know the Commissioner, ask anybody!\"",
           "dc": 15,
           "mods": [
             {
@@ -1049,7 +1060,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Say very little and let Mr. Femi talk, since he knows the Chairman's elders",
+          "label": "Speak very little, let Mr. Femi talk since he knows Chairman's people",
           "dc": 12,
           "mods": [
             {
@@ -1126,17 +1137,17 @@
     },
     "okada": {
       "title": "Come Down Here",
-      "text": "Mr. Femi drops you at a bus stop by the airport road and drives off. Okada men crowd around you immediately. 'Oga, airport? ₦3,000!' You have fifteen minutes to find a ride and look presentable when you see your uncle.",
-      "stakes": "You are on your own now. Choose a ride carefully and don't waste time.",
+      "text": "Mr. Femi drops you at a bus stop near the airport and drives off. Okada men surround you immediately. \"Oga, airport? ₦3,000!\" You have fifteen minutes to find a ride and look presentable when you see your uncle.",
+      "stakes": "You're on your own now. Choose your ride carefully, don't waste time.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Bargain with the okada man: 'Oga, ₦1,500 and I go give you tip if you fast'",
+          "label": "Bargain: \"Oga, ₦1,500 and I'll tip you if you're fast\"",
           "dc": 12
         },
         {
           "approach": "hustle",
-          "label": "Pay ₦3,000 flat, no arguments",
+          "label": "Pay ₦3,000 flat, no argument",
           "dc": 11,
           "lock": {
             "mark": "short_cash",
@@ -1146,7 +1157,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Tell him you are a big man's brother and it is an emergency",
+          "label": "Tell him you're a big man's brother and it's an emergency",
           "dc": 13,
           "mods": [
             {
@@ -1158,7 +1169,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Look around for the rider who knows the quiet side streets, and ask him straight",
+          "label": "Look for a rider who knows quiet side streets, ask him directly",
           "dc": 11,
           "mods": [
             {
@@ -1224,12 +1235,12 @@
     },
     "uncle_call": {
       "title": "Where Una Dey?",
-      "text": "Your phone rings. It is Uncle Chuks, already landed. 'I don land o! Where una dey? I don buy the new phone for una and una never reach!' You can hear the airport behind his voice, and he is not happy.",
-      "stakes": "How you answer this call decides what mood he is in when you see him.",
+      "text": "Your phone rings. It's Uncle Chuks. He's landed. \"I'm here o! Where are you people? I bought new phones for you and you're not here yet!\" You can hear the airport behind his voice, and he's not happy.",
+      "stakes": "How you answer this call decides what mood he's in when you see him.",
       "choices": [
         {
           "approach": "charm",
-          "label": "Sweet-talk him: 'Uncle, my Uncle! The London glow don show for your voice!'",
+          "label": "Sweet-talk him: \"Uncle, my Uncle! The London glow is in your voice!\"",
           "dc": 11,
           "mods": [
             {
@@ -1241,7 +1252,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Offer to book him a Bolt right now: 'Uncle, I go send car for you'",
+          "label": "Offer to book him a Bolt right now: \"Uncle, I'll send a car for you\"",
           "dc": 12,
           "lock": {
             "mark": "short_cash",
@@ -1251,12 +1262,12 @@
         },
         {
           "approach": "gragra",
-          "label": "Tell him you are at the gate already, 'just two minutes'",
+          "label": "Tell him you're at the gate already, \"just two minutes\"",
           "dc": 13
         },
         {
           "approach": "wisdom",
-          "label": "Tell him the truth: go-slow, thirty minutes, wait at the cafe and buy something",
+          "label": "Tell him the truth: go-slow, thirty minutes, wait at a cafe and buy something",
           "dc": 10
         }
       ],
@@ -1309,30 +1320,30 @@
     },
     "arrivals_clean": {
       "title": "Arrivals: He Is Smiling",
-      "text": "You push through the sliding doors. Uncle Chuks is by the pillar, trolley full, big smile, arms already open. He shouts your name loud enough for everybody to hear. Now comes the real test: how you greet him.",
+      "text": "You push through the sliding doors. Uncle Chuks is by a pillar, trolley full, big smile, arms already open. He shouts your name loud enough for everybody to hear. Now the real test: how you greet him.",
       "stakes": {
-        "default": "Hug him first and you pick the gifts first.",
+        "default": "Hug him first and you pick gifts first.",
         "coop": "Make Uncle Chuks happy."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Run to him and hug him with joy: 'Uncle! Welcome home!'",
+          "label": "Run to hug him: \"Uncle! Welcome home!\"",
           "dc": 10
         },
         {
           "approach": "hustle",
-          "label": "Grab the trolley handle and start pushing it for him",
+          "label": "Grab the trolley handle and start pushing for him",
           "dc": 9
         },
         {
           "approach": "gragra",
-          "label": "Tell him he has not changed at all, 'You even look younger!'",
+          "label": "Tell him he hasn't changed, \"You even look younger!\"",
           "dc": 11
         },
         {
           "approach": "wisdom",
-          "label": "Ask about his flight, his health and his bags, like a mature person",
+          "label": "Ask about his flight, his health, and his bags, like a grown person",
           "dc": 9
         }
       ],
@@ -1344,15 +1355,15 @@
     },
     "arrivals_late": {
       "title": "Arrivals: He Is Annoyed",
-      "text": "You arrive late. Uncle Chuks is sitting on his box, arms crossed, phone in hand. 'Una don tire me o. Two hours I dey wait.' The people around you are already looking. You need to fix this fast.",
+      "text": "You arrive late. Uncle Chuks is sitting on his box, arms crossed, phone in hand. \"You people have tired me o. Two hours I've been waiting.\" People around you are already looking. You need to fix this fast.",
       "stakes": {
         "default": "Hug him first, but pay for the delay.",
-        "coop": "He is vex. Calm him down."
+        "coop": "He's angry. Calm him down."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Apologise sweetly: 'Uncle, abeg no vex, the traffic na wahala'",
+          "label": "Apologise sweetly: \"Uncle, abeg no vex, traffic was a problem\"",
           "dc": 12
         },
         {
@@ -1367,12 +1378,12 @@
         },
         {
           "approach": "gragra",
-          "label": "Say your car had a breakdown and you ran the last part",
+          "label": "Say your car broke down and you ran the last part",
           "dc": 13
         },
         {
           "approach": "wisdom",
-          "label": "Say sorry and mean it, then take his heavy bag without being asked",
+          "label": "Say sorry and mean it, then carry his heavy bag without being asked",
           "dc": 11
         }
       ],
@@ -1384,30 +1395,30 @@
     },
     "arrivals_wahala": {
       "title": "Arrivals: Trouble Followed You",
-      "text": "You made it in time, but the trouble came along. Somebody from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. 'Who be that one? Why he dey look you like that?' You have a few seconds to explain.",
+      "text": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\" You have seconds to explain.",
       "stakes": {
-        "default": "Hug him first and keep this wahala away from him.",
+        "default": "Hug him first and keep this trouble away from him.",
         "coop": "Keep Uncle Chuks out of this mess."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Laugh it off: 'Uncle, na old friend. Let's go, I dey hungry!'",
+          "label": "Laugh it off: \"Uncle, that's an old friend. Let's go, I'm hungry!\"",
           "dc": 13
         },
         {
           "approach": "hustle",
-          "label": "Quickly steer him and the trolley towards the car park",
+          "label": "Quickly steer him and the trolley toward the car park",
           "dc": 12
         },
         {
           "approach": "gragra",
-          "label": "Say the man is a friend from church who is just surprised to see you",
+          "label": "Say the man is a church friend who was just surprised to see you",
           "dc": 14
         },
         {
           "approach": "wisdom",
-          "label": "Tell him a short, honest version: 'Small road wahala. All good. Let's go.'",
+          "label": "Give him the short honest version: \"Small road trouble. All good. Let's go.\"",
           "dc": 12
         }
       ],
@@ -1419,21 +1430,21 @@
     }
   },
   "endings": {
-    "win": "You get to Uncle Chuks first. He hugs you, hands you the shopping bag and tells everybody within shouting distance that this is his 'good child'. {loser} carries the small bag.",
-    "loss": "By the time you reach him, {winner} is already hugging Uncle Chuks and pushing the trolley. You carry the small bag.",
+    "win": "You reach Uncle Chuks first. He hugs you, hands you a shopping bag, and tells everyone within shouting distance that you're his \"good pikin.\" {loser} carries the small bag. At Christmas, the family will hear your name.",
+    "loss": "By the time you arrive, {winner} is already hugging Uncle Chuks and pushing the trolley. You carry the small bag. The drive home is silent.",
     "success": {
-      "default": "You reach him together, tired and sweating, and he hugs you both. He says he has never seen two people so happy to see an airport.",
-      "solo": "You reach him tired and sweating, and he hugs you tight. He says he has never seen somebody so happy to see an airport."
+      "default": "You reach him together, tired and sweating, and he hugs you both. He says he's never seen two people so happy to see an airport.",
+      "solo": "You reach him tired and sweating, and he hugs you tight. He says he's never seen someone so happy to see an airport."
     },
     "fail": {
-      "default": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you about it every Christmas.",
-      "solo": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you about it every Christmas."
+      "default": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you every Christmas.",
+      "solo": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you every Christmas."
     }
   },
   "epilogues": [
     {
       "if": "agbero_friend",
-      "text": "Kayode called Mr. Femi the next day to ask if you reached safe. You now have a friend on Airport Road."
+      "text": "Kayode calls Mr. Femi the next day to ask if you reached safely. You have a friend on Airport Road now."
     },
     {
       "if": "agbero_grudge",
@@ -1441,27 +1452,27 @@
     },
     {
       "if": "paid_levy",
-      "text": "Your ₦500 has gone round the boys' WhatsApp group. Everybody knows you pay."
+      "text": "Your ₦500 has circulated the boys' WhatsApp group. Everyone knows you pay."
     },
     {
       "if": "short_cash",
-      "text": "You checked your pocket that night and almost cried."
+      "text": "You check your pocket that night and almost cry."
     },
     {
       "if": "on_camera",
-      "text": "The video of you shouting 'government' on Airport Road was still going round two days later."
+      "text": "The video of you shouting \"government\" on Airport Road is still circulating two days later."
     },
     {
       "if": "driver_ally",
-      "text": "Mr. Femi saved your number. Next time he will come for you himself."
+      "text": "Mr. Femi saves your number. Next time he'll come for you himself."
     },
     {
       "if": "driver_annoyed",
-      "text": "Mr. Femi gave you one star and a very long comment."
+      "text": "Mr. Femi gives you one star and a very long comment."
     },
     {
       "if": "shortcut",
-      "text": "You now know the Ajao Estate back road, and you will not tell anybody."
+      "text": "You know the Ajao Estate back road now, and you're not telling anybody."
     }
   ]
 }
