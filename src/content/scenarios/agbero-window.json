@@ -12,23 +12,23 @@
     "lostBy": [
       "short_cash"
     ],
-    "lostMessage": "Your pocket is empty. The bonus is gone.",
-    "earnedLine": "You still have your cash at the end."
+    "lostMessage": "Your pocket is empty. You've lost the bonus.",
+    "earnedLine": "You still have your cash. You get the bonus."
   },
   "marks": {
     "agbero_friend": {
       "label": "Kayode likes you",
-      "tip": "Charm gets easier.",
+      "tip": "Charm is easier.",
       "rounds": 3
     },
     "agbero_grudge": {
-      "label": "Kayode is vexed with you",
-      "tip": "Hustle and lie get harder.",
+      "label": "Kayode is angry with you",
+      "tip": "Hustle and lying is harder.",
       "rounds": 3
     },
     "paid_levy": {
       "label": "You don pay small",
-      "tip": "Hustle gets easier.",
+      "tip": "Hustle is easier.",
       "rounds": 3
     },
     "short_cash": {
@@ -38,22 +38,22 @@
     },
     "on_camera": {
       "label": "Somebody is filming",
-      "tip": "Lie gets harder.",
+      "tip": "Lying is harder.",
       "rounds": 3
     },
     "driver_ally": {
-      "label": "Mr. Femi is with you",
-      "tip": "Charm and wisdom get easier.",
+      "label": "Mr. Femi likes you",
+      "tip": "Charm and wisdom is easier.",
       "rounds": 3
     },
     "driver_annoyed": {
-      "label": "Mr. Femi is vex",
-      "tip": "Charm gets harder.",
+      "label": "Mr. Femi is angry",
+      "tip": "Charm is harder.",
       "rounds": 3
     },
     "shortcut": {
       "label": "You know the road now",
-      "tip": "Wisdom gets easier.",
+      "tip": "Wisdom is easier.",
       "rounds": 3
     }
   },
@@ -61,33 +61,33 @@
     "knock": {
       "title": "Knock Knock",
       "text": {
-        "default": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You're in the back seat. So is {rival}. Uncle Chuks has exactly one opening this year - school fees or a job referral - and he's choosing between you two. Whoever looks like they have their life together gets it. Then, knock knock. A young man in a faded vest taps the window. Hand already out. \"Oga, anything for the boys?\"",
-        "coop": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. You and {partner} are in this together. If you miss him, you'll both hear about it. Then, knock knock. A young man in a faded vest taps the window. Hand already out. \"Oga, anything for the boys?\"",
-        "solo": "Ikeja, 6:30pm. The go-slow has turned Airport Road into a parking lot. Your Bolt hasn't moved in twenty minutes, and Uncle Chuks lands from London at 8. If you miss him, you'll hear about it. Then, knock knock. A young man in a faded vest taps the window. Hand already out. \"Oga, anything for the boys?\""
+        "default": "You are in Ikeja, 6:30pm. There is serious holdup. Your Bolt hasn't moved in twenty minutes, and your Uncle Chuks is landing from London at 8. You're in the back seat. So is {rival}. Uncle Chuks has a surprise when he lands and he's choosing between you two. Whoever gets to him first gets it. Then, knock knock. An agbero in a faded vest taps the window. His hand is out begging. \"Oga, anything for the boys?\"",
+        "coop": "You are in Ikeja, 6:30pm. There is serious holdup. Your Bolt hasn't moved in twenty minutes, and your Uncle Chuks is landing from London at 8. You and {partner} are in the car. If you miss him, he'll be very angry. Then, knock knock. An agbero in a faded vest taps the window. His hand is out begging. \"Oga, anything for the boys?\"",
+        "solo": "You are in Ikeja, 6:30pm. There is serious holdup. Your Bolt hasn't moved in twenty minutes, and your Uncle Chuks is landing from London at 8. If you miss him, he'll be very upset. Then, knock knock. An agbero in a faded vest taps the window. His hand is out begging. \"Oga, anything for the boys?\""
       },
       "stakes": {
-        "default": "{rival} is right here. Uncle Chuks' opening goes to one of you. Pay too much and you're broke. Pay nothing and this boy remembers your face.",
-        "coop": "Don't let this boy waste your time. Uncle Chuks lands at 8."
+        "default": "Pay too much and you lose the bonus. Pay nothing and this boy remembers your face.",
+        "coop": "Don't let this boy waste your time. Uncle Chuks will soon land."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Wind down slightly, greet him like an old friend: \"Chairman! How work?\"",
+          "label": "Wind down small, greet him: \"Chairman! How work?\"",
           "dc": 12
         },
         {
           "approach": "hustle",
-          "label": "Slip him ₦500, tell him to keep the boys off your car",
+          "label": "Give him ₦500, tell him to keep the other boys off your car",
           "dc": 12
         },
         {
           "approach": "gragra",
-          "label": "Wave your hand dismissively: \"I'm a civil servant, I don't have money for this\"",
+          "label": "Tell him to go away: \"I'm a civil servant, I don't have money for this\"",
           "dc": 13
         },
         {
           "approach": "wisdom",
-          "label": "Keep the window up, quietly ask Mr. Femi who this man is",
+          "label": "Don't wind down, quietly ask Mr. Femi the driver who this man is",
           "dc": 11
         }
       ],
@@ -96,8 +96,8 @@
           "charm": {
             "to": "kayode_talk",
             "recap": {
-              "default": "{winner} winds down and greets him like a friend. The boy smiles, shows a chipped front tooth. \"Chairman? You sabi talk am.\" He leans on the door, ready to chat. {loser} is already checking their phone.",
-              "coop": "You wind down and greet him like a friend. The boy smiles, shows a chipped front tooth. \"Chairman? You sabi talk am.\" He leans on the door, ready to chat."
+              "default": "{winner} winds down and greets him. The boy smiles. \"Chairman? You sabi talk am.\" He leans on the door, he wants to chat.",
+              "coop": "You wind down and greet him. The boy smiles.. \"Chairman? You sabi talk am.\" He leans on the door, he wants to chat."
             },
             "set": [
               {
@@ -109,8 +109,8 @@
           "hustle": {
             "to": "kayode_talk",
             "recap": {
-              "default": "{winner} slips him ₦500. He doesn't even count it, just pockets it smooth. \"You get sense.\" The other boys see the exchange and move to the next car. {loser} watches the money go.",
-              "coop": "You slip him ₦500. He doesn't even count it, just pockets it smooth. \"You get sense.\" The other boys see the exchange and move to the next car."
+              "default": "{winner} gives him ₦500. He doesn't even count it, he just pockets it quickly. \"You get sense.\" The other boys see what happened and move to the next car.",
+              "coop": "You give him ₦500. He doesn't even count it, he just pockets it quickly. \"You get sense.\" The other boys see what happened and move to the next car."
             },
             "set": [
               {
@@ -122,7 +122,7 @@
           "gragra": {
             "to": "viral",
             "recap": {
-              "default": "{winner} waves him off like a beggar. The boy's face changes. He doesn't shout, he just steps back and looks at the car like he's memorising it. {loser} sinks into their seat.",
+              "default": "{winner} waves him off like a beggar. The boy's face changes. He doesn't shout, he just steps back and looks at the car like he's memorising it.",
               "coop": "You wave him off like a beggar. The boy's face changes. He doesn't shout, he just steps back and looks at the car like he's memorising it."
             },
             "set": [
@@ -135,7 +135,7 @@
           "wisdom": {
             "to": "kayode_talk",
             "recap": {
-              "default": "{winner} asks Mr. Femi quietly. Mr. Femi hisses. \"Na Kayode. He dey here every evening. Just give him something small.\" {loser} is watching the window.",
+              "default": "{winner} asks Mr. Femi quietly. He hisses. \"Na Kayode. He dey here every evening. Just give him something small.\"",
               "coop": "You ask Mr. Femi quietly. Mr. Femi hisses. \"Na Kayode. He dey here every evening. Just give him something small.\""
             },
             "set": [
@@ -150,15 +150,15 @@
           "charm": {
             "to": "kayode_talk",
             "recap": {
-              "default": "{winner} tries the greeting but the window is only open a crack. Kayode has to bend down to hear. \"You dey fear me?\" He laughs, but it's not friendly. {loser} looks away.",
-              "coop": "You try the greeting but the window is only open a crack. Kayode has to bend down to hear. \"You dey fear me?\" He laughs, but it's not friendly."
+              "default": "{winner} tries the greeting but the window is only open a bit. Kayode has to bend down to hear. \"You dey fear me?\" He laughs, but it's not friendly.",
+              "coop": "You try the greeting but the window is only open a bit. Kayode has to bend down to hear. \"You dey fear me?\" He laughs, but it's not friendly."
             }
           },
           "hustle": {
             "to": "kayode_talk",
             "recap": {
-              "default": "{winner} fumbles for cash and drops a ₦200 note. Kayode looks at it like it's dirty. \"Oga, this one no fit buy pure water.\" {loser} sees {winner}'s empty hand.",
-              "coop": "You fumble for cash and drop a ₦200 note. Kayode looks at it like it's dirty. \"Oga, this one no fit buy pure water.\""
+              "default": "{winner} fumbles for cash and gives him ₦200. Kayode looks at it like it's dirty. \"Oga, this one no fit buy pure water.\"",
+              "coop": "You fumble for cash and gibe him ₦200. Kayode looks at it like it's dirty. \"Oga, this one no fit buy pure water.\""
             },
             "set": [
               {
@@ -170,8 +170,8 @@
           "gragra": {
             "to": "viral",
             "recap": {
-              "default": "{winner} waves him off too hard. The back of their hand hits the glass. Kayode doesn't blink. He just pulls out his phone and starts recording the car. {loser} wants to disappear.",
-              "coop": "You wave him off too hard. The back of your hand hits the glass. Kayode doesn't blink. He just pulls out his phone and starts recording the car."
+              "default": "{winner} shouts at him to go. Kayode doesn't blink. He just pulls out his phone and starts recording the car.",
+              "coop": "You shout at him to go. Kayode doesn't blink. He just pulls out his phone and starts recording the car."
             },
             "set": [
               {
@@ -183,7 +183,7 @@
           "wisdom": {
             "to": "kayode_talk",
             "recap": {
-              "default": "{winner} asks Mr. Femi, but Mr. Femi is already arguing with a bike man who scratched his mirror. \"Oga, I no know the boy name. Just settle am.\" {loser} is watching the clock.",
+              "default": "{winner} asks Mr. Femi, but Mr. Femi is already arguing with a bike man who scratched his mirror. \"Oga, I no know the boy. Just settle am.\"",
               "coop": "You ask Mr. Femi, but Mr. Femi is already arguing with a bike man who scratched his mirror. \"Oga, I no know the boy name. Just settle am.\""
             }
           }
@@ -197,18 +197,18 @@
     "kayode_talk": {
       "title": "Kayode's Offer",
       "text": {
-        "default": "Kayode has leaned halfway through your window. He smells like sweat and the kind of perfume they sell in sachets. His vest has a stain that might be engine oil. \"Computer Village,\" he's saying. \"I dey sell accessories. Then task force come scatter everything.\" He shrugs like it was weather. \"Now I dey manage traffic.\" He points ahead. \"Trailer don break down under the bridge. Another hour minimum.\" Then he drops his voice: \"But my guy, I know back road through Ajao Estate. Twenty minutes to airport. The gate people go want something small, though.\" Behind you, {rival} is watching your phone. The screen just lit up - Uncle Chuks is calling.",
-        "coop": "Kayode has leaned halfway through your window. He smells like sweat and the kind of perfume they sell in sachets. His vest has a stain that might be engine oil. \"Computer Village,\" he's saying. \"I dey sell accessories. Then task force come scatter everything.\" He shrugs like it was weather. \"Now I dey manage traffic.\" He points ahead. \"Trailer don break down under the bridge. Another hour minimum.\" Then he drops his voice: \"But my guy, I know back road through Ajao Estate. Twenty minutes to airport. The gate people go want something small, though.\" Behind you, {partner} is watching your phone. The screen just lit up - Uncle Chuks is calling.",
-        "solo": "Kayode has leaned halfway through your window. He smells like sweat and the kind of perfume they sell in sachets. His vest has a stain that might be engine oil. \"Computer Village,\" he's saying. \"I dey sell accessories. Then task force come scatter everything.\" He shrugs like it was weather. \"Now I dey manage traffic.\" He points ahead. \"Trailer don break down under the bridge. Another hour minimum.\" Then he drops his voice: \"But my guy, I know back road through Ajao Estate. Twenty minutes to airport. The gate people go want something small, though.\" Your phone screen just lit up - Uncle Chuks is calling."
+        "default": "Kayode has leaned halfway through your window. He smells like sweat and alchohol. His vest has a stain that might be engine oil. \"I dey sell accessories for Computer Village. Then task force come scatter everything.\" \"Now I dey manage traffic.\" He points to the front. \"Trailer don spoil for under bridge.\" Then he drops his voice: \"But my guy, I know back road through Ajao Estate. Twenty minutes to airport you go reach airport. The gate people go want something small, sha.\" Your phone just lit up - Uncle Chuks is calling.",
+        "coop": "Kayode has leaned halfway through your window. He smells like sweat and alchohol. His vest has a stain that might be engine oil. \"I dey sell accessories for Computer Village. Then task force come scatter everything.\" \"Now I dey manage traffic.\" He points to the front. \"Trailer don spoil for under bridge.\" Then he drops his voice: \"But my guy, I know back road through Ajao Estate. Twenty minutes to airport you go reach airport. The gate people go want something small, sha.\" Your phone just lit up - Uncle Chuks is calling.",
+        "solo": "Kayode has leaned halfway through your window. He smells like sweat and alchohol. His vest has a stain that might be engine oil. \"I dey sell accessories for Computer Village. Then task force come scatter everything.\" \"Now I dey manage traffic.\" He points to the front. \"Trailer don spoil for under bridge.\" Then he drops his voice: \"But my guy, I know back road through Ajao Estate. Twenty minutes to airport you go reach airport. The gate people go want something small, sha.\" Your phone just lit up - Uncle Chuks is calling."
       },
       "stakes": {
         "default": "Kayode knows the road. {rival} is watching to see what you do. The wrong move and you're stuck here while they take the shortcut.",
-        "coop": "Kayode knows the road. But his help costs something - money, pride, or both."
+        "coop": "Kayode knows the road. But his help is not for free."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Laugh, call him by name: \"Kayode, you be sharp guy. How much to make this happen?\"",
+          "label": "Laugh, call him by name: \"Kayode, you be sharp guy. How much you want?\"",
           "dc": 11,
           "mods": [
             {
@@ -244,7 +244,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Ask him exactly which gate, which road, and whether LASTMA dey there",
+          "label": "Ask him exactly which gate, which road, and if LASTMA is there",
           "dc": 10,
           "mods": [
             {
@@ -260,7 +260,7 @@
           "charm": {
             "to": "estate_gate",
             "recap": {
-              "default": "{winner} calls him by name and Kayode's whole face changes. \"You sabi my name?\" He opens the service lane himself, waving the car through like a VIP. {loser} is still trying to get their window down.",
+              "default": "{winner} calls him by name and Kayode's whole face changes. \"You sabi my name?\" He opens the service lane himself, waving the car through like a VIP.",
               "coop": "You call him by name and Kayode's whole face changes. \"You sabi my name?\" He opens the service lane himself, waving you through like a VIP."
             },
             "set": [
@@ -273,7 +273,7 @@
           "hustle": {
             "to": "service_lane",
             "recap": {
-              "default": "{winner} gives him ₦1,000 and the boys immediately open the service lane. That is the last of {winner}'s small money. {loser} sees it.",
+              "default": "{winner} gives him ₦1,000 and the boys immediately open the service lane. That is the last of {winner}'s small money.",
               "coop": "You give him ₦1,000 and the boys immediately open the service lane. That is the last of your small money."
             },
             "set": [
@@ -290,8 +290,8 @@
           "gragra": {
             "to": "chairman",
             "recap": {
-              "default": "{winner} shouts Kayode's name, and Kayode comes running with two more boys. It becomes a small argument, then a big one. Somebody calls the Chairman. {loser} wants to disappear.",
-              "coop": "You shout Kayode's name, and Kayode comes running with two more boys. It becomes a small argument, then a big one. Somebody calls the Chairman."
+              "default": "Kayode calls two more boys. One of them calls their Chairman.",
+              "coop": "Kayode calls two more boys. Somebody calls their Chairman."
             },
             "set": [
               {
@@ -307,7 +307,7 @@
           "wisdom": {
             "to": "estate_gate",
             "recap": {
-              "default": "{winner} asks the right questions. Kayode nods slowly. \"You sabi road.\" He gives exact directions, warns about the gate fee, and points to the turn. {loser} is still arguing with their own agbero.",
+              "default": "{winner} asks the right questions. Kayode nods slowly. \"You sabi road.\" He gives exact directions, warns you about the gate fee, and points to the turn. {loser} is still arguing with their own agbero.",
               "coop": "You ask the right questions. Kayode nods slowly. \"You sabi road.\" He gives exact directions, warns about the gate fee, and points to the turn."
             },
             "set": [
@@ -326,8 +326,8 @@
           "charm": {
             "to": "okada",
             "recap": {
-              "default": "{winner} tells the second boy \"no vex, I've paid.\" He says, \"Na Kayode he pay, not me,\" and starts knocking on every window. Mr. Femi: \"Enough. Come down.\"",
-              "coop": "You tell the second boy \"no vex, I've paid.\" He says, \"Na Kayode he pay, not me,\" and starts knocking on every window. Mr. Femi: \"Enough. Come down.\""
+              "default": "{winner} tells the second boy \"no vex, I've paid.\" He says, \"Na Kayode he pay, he never pay me,\" and starts knocking on every window. Mr. Femi shouts: \"Oya!. Come down.\"",
+              "coop": "You tell the second boy \"no vex, I've paid.\" He says, \"Na Kayode he pay,  he never pay me,\" and starts knocking on every window. Mr. Femi shouts: \"Oya!. Come down.\""
             },
             "set": [
               {
@@ -339,8 +339,8 @@
           "hustle": {
             "to": "service_lane",
             "recap": {
-              "default": "{winner} gives him ₦1,000 but the boys just look at it. \"Oga, this one na for one person. Two people, two thousand.\" {winner} has to dig deeper. {loser} watches the last of their cash disappear.",
-              "coop": "You give him ₦1,000 but the boys just look at it. \"Oga, this one na for one person. Two people, two thousand.\" You have to dig deeper."
+              "default": "{winner} gives him ₦1,000 but the boys just look at it. \"Oga, this one na for one person. Two person na two thousand.\" {winner} has to dig deeper.",
+              "coop": "You give him ₦1,000 but the boys just look at it. \"Oga, this one na for one person. Two person na two thousand.\" You have to dig deeper."
             },
             "set": [
               {
@@ -352,8 +352,8 @@
           "gragra": {
             "to": "chairman",
             "recap": {
-              "default": "{winner} tries to bluff but Kayode has heard every lie on this road. He snaps his fingers and two boys block the car. \"Oga, you wan show yourself?\" {loser} is already filming in case things go bad.",
-              "coop": "You try to bluff but Kayode has heard every lie on this road. He snaps his fingers and two boys block the car. \"Oga, you wan show yourself?\""
+              "default": "{winner} tries to lie but Kayode has heard every lie on this road. He snaps his fingers and two boys block the car. \"Oga, you wan show yourself?\"",
+              "coop": "You try to lie but Kayode has heard every lie on this road. He snaps his fingers and two boys block the car. \"Oga, you wan show yourself?\""
             },
             "set": [
               {
@@ -365,7 +365,7 @@
           "wisdom": {
             "to": "okada",
             "recap": {
-              "default": "{winner} asks too many questions. Kayode's smile fades. \"You be police?\" He steps back and signals to a boy across the road. {loser} sees the boy start walking toward the car.",
+              "default": "{winner} asks too many questions. Kayode's smile fades. \"You be police?\" He steps back and signals to a boy across the road.",
               "coop": "You ask too many questions. Kayode's smile fades. \"You be police?\" He steps back and signals to a boy across the road."
             },
             "set": [
@@ -378,16 +378,16 @@
         },
         "tie": {
           "to": "service_lane",
-          "recap": "You both freeze. Kayode looks from one window to the other, then laughs. \"Two of una dey fear?\" He taps both windows. \"Make una decide quick. Traffic dey move.\""
+          "recap": "You both freeze. Kayode looks from one window to the other, then laughs. \"Two of una dey fear?\" He taps both windows. \"Make una answer me quick. Traffic dey move.\""
         }
       }
     },
     "service_lane": {
       "title": "Service Lane",
       "text": {
-        "default": "The boys have opened the service lane. Mr. Femi guns the engine and the car lurches forward, leaving the go-slow behind. But the lane is narrow, barely wide enough for one car, and it's filling with okadas and other desperate drivers. A danfo is trying to force its way in from the left. Mr. Femi's knuckles are white on the steering wheel. \"These people no get sense,\" he's muttering. Ahead, the lane splits - left goes toward the airport main road, right dips into a muddy stretch behind some shops. The danfo is still pushing in. Uncle Chuks just texted: \"Landed. Waiting.\"",
-        "coop": "The boys have opened the service lane. Mr. Femi guns the engine and the car lurches forward, leaving the go-slow behind. But the lane is narrow, barely wide enough for one car, and it's filling with okadas and other desperate drivers. A danfo is trying to force its way in from the left. Mr. Femi's knuckles are white on the steering wheel. \"These people no get sense,\" he's muttering. Ahead, the lane splits - left goes toward the airport main road, right dips into a muddy stretch behind some shops. The danfo is still pushing in. Uncle Chuks just texted: \"Landed. Waiting.\"",
-        "solo": "The boys have opened the service lane. Mr. Femi guns the engine and the car lurches forward, leaving the go-slow behind. But the lane is narrow, barely wide enough for one car, and it's filling with okadas and other desperate drivers. A danfo is trying to force its way in from the left. Mr. Femi's knuckles are white on the steering wheel. \"These people no get sense,\" he's muttering. Ahead, the lane splits - left goes toward the airport main road, right dips into a muddy stretch behind some shops. The danfo is still pushing in. Uncle Chuks just texted: \"Landed. Waiting.\""
+        "default": "The boys have opened the service lane. Mr. Femi speeds forward, leaving the go-slow behind. But the lane is narrow, barely wide enough for one car, and it's filling with okadas and other desperate drivers. A danfo is trying to force its way in from the left. \"These people no get sense,\"Ahead, the road divides - left goes toward the airport main road, right goes into a muddy stretch behind some shops. The danfo is still pushing in. Uncle Chuks just texted: \"I've landed. I'm waiting.\"",
+        "coop": "The boys have opened the service lane. Mr. Femi speeds forward, leaving the go-slow behind. But the lane is narrow, barely wide enough for one car, and it's filling with okadas and other desperate drivers. A danfo is trying to force its way in from the left. \"These people no get sense,\"Ahead, the road divides - left goes toward the airport main road, right goes into a muddy stretch behind some shops. The danfo is still pushing in. Uncle Chuks just texted: \"I've landed. I'm waiting.\"",
+        "solo": "The boys have opened the service lane. Mr. Femi speeds forward, leaving the go-slow behind. But the lane is narrow, barely wide enough for one car, and it's filling with okadas and other desperate drivers. A danfo is trying to force its way in from the left. \"These people no get sense,\"Ahead, the road divides - left goes toward the airport main road, right goes into a muddy stretch behind some shops. The danfo is still pushing in. Uncle Chuks just texted: \"I've landed. I'm waiting.\""
       },
       "stakes": {
         "default": "Every second counts now. {rival} is watching to see if you panic.",
@@ -396,12 +396,12 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Wind down and wave the danfo driver through: \"Bros, abeg go. We dey follow you.\"",
+          "label": "Wind down and tell the danfo driver to pass: \"Bros, abeg dey go.\"",
           "dc": 12
         },
         {
           "approach": "hustle",
-          "label": "Tell Mr. Femi to floor it and block the danfo",
+          "label": "Tell Mr. Femi to go fast and block the danfo",
           "dc": 11,
           "mods": [
             {
@@ -413,7 +413,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Shout at the danfo driver: \"You blind? You wan scratch car?\"",
+          "label": "Shout at the danfo driver: \"You dey blind? You wan scratch car?\"",
           "dc": 13,
           "mods": [
             {
@@ -425,7 +425,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Tell Mr. Femi to take the muddy right - less traffic, more risk",
+          "label": "Tell Mr. Femi to take the muddy road - There is less traffic, but more risk",
           "dc": 10,
           "mods": [
             {
@@ -441,8 +441,8 @@
           "charm": {
             "to": "estate_gate",
             "recap": {
-              "default": "{winner} waves the danfo through and the driver actually smiles. \"You get sense, oga.\" He lets you merge behind him. {loser} is still arguing with their own danfo.",
-              "coop": "You wave the danfo through and the driver actually smiles. \"You get sense, oga.\" He lets you merge behind him."
+              "default": "{winner} waves the danfo through and the driver actually smiles. \"You get sense, oga.\" He lets you enter behind him.",
+              "coop": "You wave the danfo through and the driver actually smiles. \"You get sense, oga.\" He lets you enter behind him."
             },
             "set": [
               {
@@ -454,8 +454,8 @@
           "hustle": {
             "to": "estate_gate",
             "recap": {
-              "default": "{winner} tells Mr. Femi to floor it and he does. The danfo brakes hard, horn blaring. Mr. Femi doesn't look back. \"Na so dem dey do,\" he says, but he's smiling. {loser} is stuck behind the danfo.",
-              "coop": "You tell Mr. Femi to floor it and he does. The danfo brakes hard, horn blaring. Mr. Femi doesn't look back. \"Na so dem dey do,\" he says, but he's smiling."
+              "default": "{winner} tells Mr. Femi to go fast and he does. The danfo brakes hard, horn blaring. Mr. Femi doesn't look back. \"Na so dem dey do,\" he says, but he's smiling.",
+              "coop": "You tell Mr. Femi to go fast and he does. The danfo brakes hard, horn blaring. Mr. Femi doesn't look back. \"Na so dem dey do,\" he says, but he's smiling."
             },
             "set": [
               {
@@ -467,8 +467,8 @@
           "gragra": {
             "to": "okada",
             "recap": {
-              "default": "{winner} shouts and the danfo driver shouts back. Then he's out of his car, slapping the bonnet. \"You dey mad?\" Other drivers are stopping to watch. {loser} slips past in the confusion.",
-              "coop": "You shout and the danfo driver shouts back. Then he's out of his car, slapping the bonnet. \"You dey mad?\" Other drivers are stopping to watch."
+              "default": "{winner} shouts and the danfo driver shouts back. Then he comes out of his car, slapping the bonnet. \"You dey mad?\" Other drivers are stopping to watch. {loser} comes out and slips past in the confusion.",
+              "coop": "You shout and the danfo driver shouts back. Then he comes out of his car, slapping the bonnet. \"You dey mad?\" Other drivers are stopping to watch."
             },
             "set": [
               {
@@ -495,8 +495,8 @@
           "charm": {
             "to": "okada",
             "recap": {
-              "default": "{winner} waves but the danfo driver misreads it and accelerates. Scrapes the side mirror. Mr. Femi: \"Omo.\" {loser} watches the damage happen.",
-              "coop": "You wave but the danfo driver misreads it and accelerates. Scrapes the side mirror. Mr. Femi: \"Omo.\""
+              "default": "{winner} waves but the danfo driver misreads it and accelerates. He scratches the side mirror. Mr. Femi: \"Which kind rubbish be this?.\"",
+              "coop": "You wave but the danfo driver misreads it and accelerates. He scratches the side mirror. Mr. Femi: \"Which kind rubbish be this?.\""
             },
             "set": [
               {
@@ -508,8 +508,8 @@
           "hustle": {
             "to": "okada",
             "recap": {
-              "default": "{winner} tells Mr. Femi to floor it but he hesitates. The danfo doesn't. Crunch. \"Oga, your mirror,\" someone shouts. {loser} drives past the damage.",
-              "coop": "You tell Mr. Femi to floor it but he hesitates. The danfo doesn't. Crunch. \"Oga, your mirror,\" someone shouts."
+              "default": "{winner} tells Mr. Femi to go fast but he hesitates. The danfo hits the car mirror. \"Oga, your mirror,\" someone shouts. {loser} drives past the damage.",
+              "coop": "You tell Mr. Femi to go fast but he hesitates. The danfo hits the car mirror. \"Oga, your mirror,\" someone shouts."
             },
             "set": [
               {
@@ -521,8 +521,8 @@
           "gragra": {
             "to": "okada",
             "recap": {
-              "default": "{winner} shouts and the danfo driver laughs. Then he deliberately scrapes past, close enough to rock the car. Mr. Femi says nothing. His jaw is set. {loser} is already ahead.",
-              "coop": "You shout and the danfo driver laughs. Then he deliberately scrapes past, close enough to rock the car. Mr. Femi says nothing. His jaw is set."
+              "default": "{winner} shouts but the danfo driver laughs. Then he deliberately drives past, close enough to rock the car. Mr. Femi says nothing but you can see he is angry. {loser} is already ahead.",
+              "coop": "You shout but the danfo driver laughs. Then he deliberately drives past, close enough to rock the car. Mr. Femi says nothing but you can see he is angry."
             },
             "set": [
               {
@@ -534,7 +534,7 @@
           "wisdom": {
             "to": "muddy_shortcut",
             "recap": {
-              "default": "{winner} points right but Mr. Femi shakes his head. \"That road don spoil.\" He takes the left instead. {loser} follows the muddy route and gets ahead.",
+              "default": "{winner} points right but Mr. Femi shakes his head. \"That road don spoil.\" He takes the left instead. {loser} follows the muddy road and gets ahead.",
               "coop": "You point right but Mr. Femi shakes his head. \"That road don spoil.\" He takes the left instead."
             }
           }
@@ -548,9 +548,9 @@
     "estate_gate": {
       "title": "Ajao Estate Gate",
       "text": {
-        "default": "The estate gate is just a metal bar across a potholed road. Two boys in matching vests sit on plastic chairs, collecting toll. One of them recognises Kayode's voice on Mr. Femi's phone - you called ahead like he said. \"Kayode people?\" He lifts the bar without asking for money. But the other one is looking at {rival}. \"This one na two people. Where the other one money?\" Behind you, another car is honking. The bar is still up, but the second boy's hand is on it.",
-        "coop": "The estate gate is just a metal bar across a potholed road. Two boys in matching vests sit on plastic chairs, collecting toll. One of them recognises Kayode's voice on Mr. Femi's phone - you called ahead like he said. \"Kayode people?\" He lifts the bar without asking for money. But the other one is looking at your group. \"This one na two people. Where the other one money?\" Behind you, another car is honking. The bar is still up, but the second boy's hand is on it.",
-        "solo": "The estate gate is just a metal bar across a potholed road. Two boys in matching vests sit on plastic chairs, collecting toll. One of them recognises Kayode's voice on Mr. Femi's phone - you called ahead like he said. \"Kayode people?\" He lifts the bar without asking for money. But the other one is squinting at you. \"This one, you don pay Kayode. But gate fee na separate.\" Behind you, another car is honking. The bar is still up, but the second boy's hand is on it."
+        "default": "The estate gate is just a metal bar across a potholed road. Two guards sit on plastic chairs, collecting toll. One of them recognises Kayode's voice on Mr. Femi's phone. \"Na you Kayode dey talk?\" He lifts the bar without asking for money. But the other one is looking at {rival}. \"This one na two people. Where the other one money?\" Behind you, another car is honking. The bar is still up, but the second boy's hand is on it.",
+        "coop": "The estate gate is just a metal bar across a potholed road. Two guards sit on plastic chairs, collecting toll. One of them recognises Kayode's voice on Mr. Femi's phone. \"Na you Kayode dey talk?\" He lifts the bar without asking for money. But the other one is looking at your group. \"This one na two people. Where the other one money?\" Behind you, another car is honking. The bar is still up, but the second boy's hand is on it.",
+        "solo": "The estate gate is just a metal bar across a potholed road. Two guards sit on plastic chairs, collecting toll. One of them recognises Kayode's voice on Mr. Femi's phone. \"Na you Kayode dey talk?\" He lifts the bar without asking for money. But the other one is looking at you. \"This one, you don pay Kayode. But gate fee na separate.\" Behind you, another car is honking. The bar is still up, but the second boy's hand is on it."
       },
       "stakes": {
         "default": "The gate is open but it can close. {rival} is watching to see if you negotiate or pay.",
@@ -559,7 +559,7 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Smile, call him boss: \"Oga, Kayode send us. You know how we dey do.\"",
+          "label": "Smile, call him boss: \"Oga, Kayode send us. How far na?.\"",
           "dc": 11,
           "mods": [
             {
@@ -604,8 +604,8 @@
           "charm": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} drops Kayode's name and the second boy's face changes. \"Why you no talk since?\" He lifts the bar and waves you through. {loser} is still fumbling for cash.",
-              "coop": "You drop Kayode's name and the second boy's face changes. \"Why you no talk since?\" He lifts the bar and waves you through."
+              "default": "{winner} mentions Kayode's name and the second boy's face changes. \"Why you no talk since?\" He lifts the bar and waves you through. {loser} is still fumbling for cash.",
+              "coop": "You mention Kayode's name and the second boy's face changes. \"Why you no talk since?\" He lifts the bar and waves you through."
             },
             "set": [
               {
@@ -617,7 +617,7 @@
           "hustle": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} pays fast and the bar stays up. But that's the last of their money. {loser} sees the empty wallet.",
+              "default": "{winner} pays fast and the bar stays up. But that's the last of their money.",
               "coop": "You pay fast and the bar stays up. But that's the last of your money."
             },
             "set": [
@@ -630,8 +630,8 @@
           "gragra": {
             "to": "chairman",
             "recap": {
-              "default": "{winner} bluffs and the second boy pulls out his phone. \"Make I call am.\" He dials. The bar comes down. {loser} watches the gate close.",
-              "coop": "You bluff and the second boy pulls out his phone. \"Make I call am.\" He dials. The bar comes down."
+              "default": "{winner} lies and the second boy pulls out his phone. \"Make I call am.\" He dials. The bar comes down.",
+              "coop": "You lie and the second boy pulls out his phone. \"Make I call am.\" He dials. The bar comes down."
             },
             "set": [
               {
@@ -643,8 +643,8 @@
           "wisdom": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} negotiates per car, not per person. The boys look at each other, then shrug. \"Oga sabi maths.\" The bar stays up. {loser} paid per person and has less left.",
-              "coop": "You negotiate per car, not per person. The boys look at each other, then shrug. \"Oga sabi maths.\" The bar stays up."
+              "default": "{winner} negotiates per car, not per person. The boys look at each other. \"Oga sabi maths.\" The bar stays up. {loser} paid per person and has less left.",
+              "coop": "You negotiate per car, not per person. The boys look at each other. \"Oga sabi maths.\" The bar stays up."
             },
             "set": [
               {
@@ -665,8 +665,8 @@
           "hustle": {
             "to": "okada",
             "recap": {
-              "default": "{winner} pays but it's ₦200 short. The boy counts it twice. \"Oga, you dey whine me?\" The bar stays down. {loser} adds the difference and gets through.",
-              "coop": "You pay but it's ₦200 short. The boy counts it twice. \"Oga, you dey whine me?\" The bar stays down."
+              "default": "{winner} pays but it's remaining ₦200. The boy counts it twice. \"Oga, you dey whine me?\" The bar stays down. {loser} adds the difference and gets through.",
+              "coop": "You pay but it's remaining ₦200. The boy counts it twice. \"Oga, you dey whine me?\" The bar stays down."
             },
             "set": [
               {
@@ -705,9 +705,9 @@
     "muddy_shortcut": {
       "title": "The Back Road",
       "text": {
-        "default": "The muddy track behind the shops is worse than it looked. The car slides and bumps through puddles that smell like refuse. Mr. Femi is cursing under his breath in Yoruba. Then the track ends at a low wall - someone has knocked it down to make a shortcut, but it's still a tight squeeze. Beyond it, you can see the airport perimeter fence. But there's a keke napep blocking the gap, driver asleep at the wheel. {rival} is already getting out of the car to push.",
-        "coop": "The muddy track behind the shops is worse than it looked. The car slides and bumps through puddles that smell like refuse. Mr. Femi is cursing under his breath in Yoruba. Then the track ends at a low wall - someone has knocked it down to make a shortcut, but it's still a tight squeeze. Beyond it, you can see the airport perimeter fence. But there's a keke napep blocking the gap, driver asleep at the wheel. {partner} is already getting out of the car to push.",
-        "solo": "The muddy track behind the shops is worse than it looked. The car slides and bumps through puddles that smell like refuse. Mr. Femi is cursing under his breath in Yoruba. Then the track ends at a low wall - someone has knocked it down to make a shortcut, but it's still a tight squeeze. Beyond it, you can see the airport perimeter fence. But there's a keke napep blocking the gap, driver asleep at the wheel. You're going to have to get out and push."
+        "default": "The muddy track behind the shops is worse than it looked. The car slides and bumps through puddles that smell like refuse. Mr. Femi is angry and talking quietly in Yoruba. Then the road ends at a low wall. Beyond it, you can see the airport perimeter fence. But there's a keke napep blocking the gap, the driver is asleep at the wheel. {rival} is already getting out of the car to push.",
+        "coop": "The muddy track behind the shops is worse than it looked. The car slides and bumps through puddles that smell like refuse. Mr. Femi is angry and talking quietly in Yoruba. Then the road ends at a low wall. Beyond it, you can see the airport perimeter fence. But there's a keke napep blocking the gap, the driver is asleep at the wheel. {partner} is already getting out of the car to push.",
+        "solo": "The muddy track behind the shops is worse than it looked. The car slides and bumps through puddles that smell like refuse. Mr. Femi is angry and talking quietly in Yoruba. Then the road ends at a low wall. Beyond it, you can see the airport perimeter fence. But there's a keke napep blocking the gap, the driver is asleep at the wheel. You're going to have to get out and push."
       },
       "stakes": {
         "default": "The shortcut is blocked and {rival} is already moving. Every second you wait, they get closer.",
@@ -716,7 +716,7 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Knock on the keke window, wake the driver gently: \"Bros, small space. We dey rush airport.\"",
+          "label": "Knock on the keke window, wake the driver gently: \"Bros, abeg move. We dey rush go airport.\"",
           "dc": 11
         },
         {
@@ -733,7 +733,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Honk continuously until the driver wakes up and moves",
+          "label": "Horn continuously until the driver wakes up and moves",
           "dc": 13,
           "mods": [
             {
@@ -761,8 +761,8 @@
           "charm": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} wakes the driver and he actually apologises. \"No vex, oga. I dey catch small sleep.\" He starts the keke and pulls aside. {loser} is still honking at a different keke.",
-              "coop": "You wake the driver and he actually apologises. \"No vex, oga. I dey catch small sleep.\" He starts the keke and pulls aside."
+              "default": "{winner} wakes the driver and he actually apologises. \"No vex, oga. I don tire.\" He starts the keke and pulls aside.",
+              "coop": "You wake the driver and he actually apologises. \"No vex, oga. I don tire.\" He starts the keke and pulls aside."
             },
             "set": [
               {
@@ -800,8 +800,8 @@
           "wisdom": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} guides Mr. Femi through the gap, inches at a time. The car scrapes the wall but makes it. {loser} tried to go right and got stuck.",
-              "coop": "You guide Mr. Femi through the gap, inches at a time. The car scrapes the wall but makes it."
+              "default": "{winner} guides Mr. Femi through the gap. The car scrapes the wall but makes it. {loser} tried to go right and got stuck.",
+              "coop": "You guide Mr. Femi through the gap. The car scrapes the wall but makes it."
             },
             "set": [
               {
@@ -815,8 +815,8 @@
           "charm": {
             "to": "okada",
             "recap": {
-              "default": "{winner} knocks but the driver is deep asleep. Doesn't move. {loser} pays a different keke driver and gets through.",
-              "coop": "You knock but the driver is deep asleep. Doesn't move."
+              "default": "{winner} knocks but the driver is in deep sleep and doesn't move. {loser} pays a different keke driver and gets through.",
+              "coop": "You knock but the driver is in deep sleep and doesn't move."
             }
           },
           "hustle": {
@@ -868,9 +868,9 @@
     "okada": {
       "title": "The Okada Option",
       "text": {
-        "default": "Mr. Femi pulls over. \"I no fit continue like this.\" He points to an okada rank across the road. \"Make una enter bike. I go park car come meet una.\" The okada boys are already watching. One of them has a helmet, the others don't. {rival} is already crossing the road. Uncle Chuks just called. His voice on the voicemail: \"Where una dey? I dey wait o.\"",
-        "coop": "Mr. Femi pulls over. \"I no fit continue like this.\" He points to an okada rank across the road. \"Make una enter bike. I go park car come meet una.\" The okada boys are already watching. One of them has a helmet, the others don't. {partner} is looking at you, waiting to see what you do. Uncle Chuks just called. His voice on the voicemail: \"Where una dey? I dey wait o.\"",
-        "solo": "Mr. Femi pulls over. \"I no fit continue like this.\" He points to an okada rank across the road. \"Enter bike. I go park car come meet you.\" The okada boys are already watching. One of them has a helmet, the others don't. Uncle Chuks just called. His voice on the voicemail: \"Where you dey? I dey wait o.\""
+        "default": "Mr. Femi pulls over. \"I no fit continue like this.\" He points to an okada rank across the road. \"Make una enter bike. I go park car come meet una.\" The okada boys are already watching. One of them has a helmet, the others don't. {rival} is already crossing the road. Uncle Chuks just called: \"Where una dey? I dey wait o.\"",
+        "coop": "Mr. Femi pulls over. \"I no fit continue like this.\" He points to an okada rank across the road. \"Make una enter bike. I go park car come meet una.\" The okada boys are already watching. One of them has a helmet, the others don't. {partner} is looking at you, waiting to see what you do. Uncle Chuks just called: \"Where una dey? I dey wait o.\"",
+        "solo": "Mr. Femi pulls over. \"I no fit continue like this.\" He points to an okada rank across the road. \"Enter bike. I go park car come meet you.\" The okada boys are already watching. One of them has a helmet, the others don't. Uncle Chuks just called: \"Where you dey? I dey wait o.\""
       },
       "stakes": {
         "default": "The okada is faster but riskier. {rival} is already moving. Pick the right rider or watch them disappear.",
