@@ -1,7 +1,7 @@
 {
   "id": "night-return",
   "title": "Night Don Fall",
-  "tagline": "The last danfo has dropped you. Your house is twenty minutes away, and agberos are somewhere ahead.",
+  "tagline": "The last danfo has dropped you. Your house is twenty minutes away, and the boys are somewhere ahead.",
   "modes": [
     "rival",
     "coop"
@@ -14,27 +14,27 @@
       "phone_taken"
     ],
     "lostMessage": "You lost your money or your phone, so the bonus is gone.",
-    "earnedLine": "You kept your phone and your money. You get the bonus."
+    "earnedLine": "You kept your phone and your money."
   },
   "marks": {
     "street_wise": {
       "label": "You read the street",
-      "tip": "Wisdom is easier.",
+      "tip": "Wisdom gets easier.",
       "rounds": 4
     },
     "boys_know_you": {
-      "label": "The agberos know you",
-      "tip": "Charm is easier.",
+      "label": "The boys know you",
+      "tip": "Charm gets easier.",
       "rounds": 3
     },
     "on_their_list": {
-      "label": "The agberos are watching you",
-      "tip": "Charm and lie is harder.",
+      "label": "The boys are watching you",
+      "tip": "Charm and lie get harder.",
       "rounds": 3
     },
     "paid_small": {
       "label": "You don pay small",
-      "tip": "Hustle is easier.",
+      "tip": "Hustle gets easier.",
       "rounds": 3
     },
     "cash_low": {
@@ -44,17 +44,17 @@
     },
     "light_dead": {
       "label": "Phone is dead",
-      "tip": "No torch. Wisdom is harder.",
+      "tip": "No torch. Wisdom gets harder.",
       "rounds": 3
     },
     "dropped_name": {
       "label": "You used a big name",
-      "tip": "Lie is easier, until somebody checks.",
+      "tip": "Lie gets easier, until somebody checks.",
       "rounds": 3
     },
     "vigilante_friend": {
       "label": "Vigilante men know you",
-      "tip": "Charm and wisdom is easier.",
+      "tip": "Charm and wisdom get easier.",
       "rounds": 3
     },
     "phone_taken": {
@@ -64,7 +64,7 @@
     },
     "keke_ally": {
       "label": "The keke man has your back",
-      "tip": "Charm is easier.",
+      "tip": "Charm gets easier.",
       "rounds": 3
     }
   },
@@ -72,9 +72,9 @@
     "junction": {
       "title": "Last Stop",
       "text": {
-        "default": "10:40pm. The danfo conductor shouts \"Last stop!\" Your street lights are off, again. Your house is twenty minutes away on foot, and you and {rival} are both walking home on your own roads. Mum is tracking your phone and has promised the rent transfer the second the dot stops at the house. Whoever gets home first tells it first. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows.",
-        "coop": "10:40pm. The danfo conductor shouts \"Last stop!\" Your street lights are off, again. Your house is twenty minutes away on foot, and you and {partner} are walking home together. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows.",
-        "solo": "10:40pm. The danfo conductor shouts \"Last stop!\" Your street lights are off, again. Your house is twenty minutes away on foot. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows."
+        "default": "10:40pm. The danfo conductor shouts \"Last stop!\" and everybody scatters. Street lights are off, again. Your house is twenty minutes away on foot, and you and {rival} are both walking home on your own roads. Mum is tracking your phone and has promised the rent transfer the second the dot stops at the house. Whoever gets home first tells it first. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows.",
+        "coop": "10:40pm. The danfo conductor shouts \"Last stop!\" and everybody scatters. Street lights are off, again. Your house is twenty minutes away on foot, and you and {partner} are walking home together. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows.",
+        "solo": "10:40pm. The danfo conductor shouts \"Last stop!\" and everybody scatters. Street lights are off, again. Your house is twenty minutes away on foot. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows."
       },
       "stakes": {
         "default": "Your mum is watching your dot. Get home first, with the phone alive and the money still on you.",

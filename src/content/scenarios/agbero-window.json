@@ -120,7 +120,7 @@
             ]
           },
           "gragra": {
-            "to": "viral",
+            "to": "chairman",
             "recap": {
               "default": "{winner} waves him off like a beggar. The boy's face changes. He doesn't shout, he just steps back and looks at the car like he's memorising it.",
               "coop": "You wave him off like a beggar. The boy's face changes. He doesn't shout, he just steps back and looks at the car like he's memorising it."
@@ -168,7 +168,7 @@
             ]
           },
           "gragra": {
-            "to": "viral",
+            "to": "chairman",
             "recap": {
               "default": "{winner} shouts at him to go. Kayode doesn't blink. He just pulls out his phone and starts recording the car.",
               "coop": "You shout at him to go. Kayode doesn't blink. He just pulls out his phone and starts recording the car."
@@ -1356,7 +1356,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Walk calmly, let Uncle Chuks see you looking composed while {rival} is sweating",
+          "label": "Walk calmly, let Uncle Chuks see you looking composed while everybody else is sweating",
           "dc": 10
         }
       ],

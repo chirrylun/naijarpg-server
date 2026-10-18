@@ -1,7 +1,7 @@
 {
   "id": "oga-at-the-top",
   "title": "Oga at the Top",
-  "tagline": "Your sister sacrificed her pride for this interview. The oga who signed your letter retired yesterday and the interview is by 2pm. It's 7am now.",
+  "tagline": "Your sister sacrificed her pride for this interview. The oga who signed your letter retired yesterday. Interview is 2pm. It's 7am now.",
   "modes": [
     "rival",
     "coop"
@@ -17,18 +17,18 @@
   },
   "marks": {
     "connection_verified": {
-      "label": "Old oga's driver likes you",
-      "tip": "Charm and wisdom is easier.",
+      "label": "Old oga's driver is with you",
+      "tip": "Charm and wisdom get easier.",
       "rounds": 3
     },
     "secretary_owe": {
       "label": "Madam Grace remembers you",
-      "tip": "Hustle is easier, gragra is harder.",
+      "tip": "Hustle gets easier, gragra gets harder.",
       "rounds": 3
     },
     "wrong_floor": {
       "label": "You went to the wrong office",
-      "tip": "Everything is harder.",
+      "tip": "Everything gets harder.",
       "rounds": 2
     },
     "short_cash": {
@@ -48,12 +48,12 @@
     },
     "sister_pride": {
       "label": "Your sister's name is still clean",
-      "tip": "All approaches are easier.",
+      "tip": "All approaches get easier.",
       "rounds": 3
     },
     "gateman_friend": {
       "label": "Baba Nuru likes you",
-      "tip": "Wisdom and hustle is easier.",
+      "tip": "Wisdom and hustle get easier.",
       "rounds": 3
     },
     "family_shame": {
