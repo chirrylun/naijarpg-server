@@ -77,7 +77,7 @@
         "solo": "10:40pm. The danfo conductor shouts \"Last stop!\" and everybody scatters. Street lights are off, again. Your house is twenty minutes away on foot. A last keke is idling at the junction. The main road is dark but empty. Past the bridge, the boys sit on the railings every night. Everybody knows."
       },
       "stakes": {
-        "default": "Mum is watching your dot. Get home first, phone alive, money still on you.",
+        "default": "Your mum is watching your dot. Get home first, with the phone alive and the money still on you.",
         "coop": "Stay close and stay smart. Whatever goes wrong now follows you down the road."
       },
       "choices": [
@@ -493,7 +493,7 @@
       "title": "Called It",
       "text": "The boys heard you. They are not sure what they heard, but they are quieter now. You are past the pole and the bridge is thirty metres ahead. The one who was smoking has stood up. He is not blocking the road yet, but he is looking at your pocket.",
       "stakes": {
-        "default": "The phone call bought you seconds, not safety. Cross now or talk again.",
+        "default": "Your lie is working and Mum's dot is still moving. It does not last.",
         "coop": "The phone call bought you seconds. Use them or lose them."
       },
       "choices": [
@@ -613,7 +613,7 @@
       "title": "Inner Street",
       "text": "The inner street is alive. A woman roasts corn over charcoal. Two men argue about football outside a shop. A generator hums behind a fence. You are not alone here, but you are not home yet. The path narrows past the corn smoke and turns left toward the bridge's underside.",
       "stakes": {
-        "default": "The corn aunty sees everybody. So do the boys who use this shortcut.",
+        "default": "The safest stretch of the road, and a shortcut if you play it right. Mum's dot is still moving.",
         "coop": "The corn aunty sees everybody. Stay visible and stay moving."
       },
       "choices": [
@@ -727,7 +727,7 @@
       "title": "Walking Now",
       "text": "The keke's tail light disappears around the corner. You are on the main road with nothing but your feet and your phone battery. The bridge is ten minutes ahead. The railings are visible now, little red dots in the dark.",
       "stakes": {
-        "default": "No ride, no shortcut. Just the road and the boys.",
+        "default": "You've lost time, and Mum is watching a dot that has stopped moving. Every road home is darker now.",
         "coop": "No ride, no shortcut. The road is what you have."
       },
       "choices": [
@@ -853,7 +853,7 @@
       "title": "No Light",
       "text": "Your phone is dead. The torch is gone. The street lamp is still dead. You can see the bridge by memory, not by light. The shapes on the railings are darker than the dark around them.",
       "stakes": {
-        "default": "No phone, no torch, no dot for Mum. Just your feet and your memory.",
+        "default": "No torch, and Mum's dot is about to go dark. Get across before somebody hears you.",
         "coop": "No phone, no torch. Stay together or lose each other."
       },
       "choices": [
@@ -980,7 +980,7 @@
       "title": "They Know",
       "text": "They know you were bluffing. One of them is walking toward you. He is not running. He does not need to. The others are still on the railings, watching. Your phone is in your hand. It is not helping.",
       "stakes": {
-        "default": "The bluff is dead. Talk fast or move faster.",
+        "default": "The bluff is dead and your phone is in your hand. Own it before it costs you the phone.",
         "coop": "The bluff is dead. Decide together or decide alone."
       },
       "choices": [
@@ -1112,7 +1112,7 @@
       "title": "Dead End",
       "text": "The burial canopy blocks the whole street. The bouncer looks at you like you are the next problem. Behind him, chairs are stacked and a speaker plays mourning music. The bridge is behind you now. The inner street is behind you too.",
       "stakes": {
-        "default": "No forward, no back. Talk your way through or find another way.",
+        "default": "Nobody here can help you, and Mum's dot has stopped in the wrong place. Nobody will notice either.",
         "coop": "No forward, no back. Work together or work alone."
       },
       "choices": [
@@ -1226,7 +1226,7 @@
       "title": "The Bridge",
       "text": "You are at the bridge. The boys are close enough to touch. The one in the centre does the talking. The others watch his face, not yours. He says, \"Night don fall. Wetin you bring?\" It is not a robbery. It is a tax.",
       "stakes": {
-        "default": "How you pay decides what you keep. The phone and the cash are both on the table.",
+        "default": "How you pay decides whether the phone and the cash make it to the rent transfer.",
         "coop": "How you pay decides what you keep. Decide together."
       },
       "choices": [
@@ -1383,7 +1383,7 @@
       "title": "Trouble",
       "text": "Something went wrong. The centre boy is not talking now. He is walking toward you. The others are off the railings. The music is still playing but nobody is listening. This is the moment before it becomes something else.",
       "stakes": {
-        "default": "Fix it now or run. Those are the only choices left.",
+        "default": "They are not asking for a toll anymore. Your phone and your cash are both on the table.",
         "coop": "Fix it now or run. Stay together or lose together."
       },
       "choices": [
@@ -1507,7 +1507,7 @@
       "title": "Safe House",
       "text": "The vigilante post is a wooden shed with a bench and a torch. Two men in vests sit outside. One is asleep. The other looks at you and says, \"Night don fall. You dey go house?\" The road past here is lit. Your house is five minutes away.",
       "stakes": {
-        "default": "Almost home. What you say here decides how you arrive.",
+        "default": "They can see you home, or keep you here all night while Mum's dot sits still.",
         "coop": "Almost home. The last stretch is together."
       },
       "choices": [
@@ -1639,7 +1639,7 @@
       "title": "The Long Way",
       "text": "The lane behind the mechanic yard is dark and smells of oil. You can hear the bridge from here but you cannot see it. A dog barks once and stops. Your shoes are loud on the gravel. Somebody's window is open. A baby is crying.",
       "stakes": {
-        "default": "The long way is the quiet way. Stay quiet and stay lucky.",
+        "default": "Quiet, which is either very good or very bad. Mum's dot is the only light that knows where you are.",
         "coop": "The long way is the quiet way. Stay together."
       },
       "choices": [
@@ -1753,7 +1753,7 @@
       "title": "Almost Home",
       "text": "Your street is two minutes away. The gate is visible. You can see the light in your window, or maybe it is the neighbour's. The dot on Mum's phone is almost still. She is watching. The rent is waiting.",
       "stakes": {
-        "default": "Almost there. Do not trip now.",
+        "default": "Two minutes from the gate. Mum's dot is nearly home, so do not trip now.",
         "coop": "Almost there. Together."
       },
       "choices": [
@@ -1851,24 +1851,11 @@
         }
       }
     },
-    "home_safe": {
-      "title": "Home",
-      "text": "The gate closes behind you. Mum's phone shows the dot stopped moving. The transfer comes through while you are still catching your breath. You made it. Tonight, you made it.",
-      "stakes": {
-        "default": "You are home. The rent is paid. The phone is alive. Whatever happened on the road stays on the road.",
-        "coop": "You are home. Together. Whatever happened on the road stays on the road."
-      },
-      "choices": [],
-      "ending": {
-        "default": "Mum sends the rent and a voice note: \"Next time, leave early.\" You eat cold rice and check your phone. The battery is at 4%. Enough.",
-        "coop": "Mum sends the rent and a voice note: \"Next time, leave early.\" You and {partner} sit on the step and share cold rice. Neither of you talks about the bridge."
-      }
-    },
     "mugged": {
       "title": "Taken",
       "text": "They take the phone. They take the money. They take the shoes if they want them. You are on the ground or you are standing, but you are empty either way. The bridge is behind you. Your house is still ahead.",
       "stakes": {
-        "default": "Empty pockets, dead phone, no dot for Mum. The night is not over.",
+        "default": "Empty pockets and a dark dot. Get yourself home before Mum starts calling the whole street.",
         "coop": "Empty pockets, dead phone. The night is not over."
       },
       "choices": [
@@ -1896,28 +1883,28 @@
       "next": {
         "decisive": {
           "charm": {
-            "to": "home_safe",
+            "to": "home_battered",
             "recap": {
               "default": "{winner} says mistake and the centre boy says, \"Every night, mistake. Waka.\" {loser} begs too long and he says, \"You don waste my time.\"",
               "coop": "You say mistake and the centre boy says, \"Every night, mistake. Waka.\""
             }
           },
           "hustle": {
-            "to": "home_safe",
+            "to": "home_battered",
             "recap": {
               "default": "{winner} runs barefoot and the gravel cuts but they do not stop. The gate is close. {loser} runs and falls. The gravel cuts deeper.",
               "coop": "You run barefoot and the gravel cuts but you do not stop. The gate is close."
             }
           },
           "gragra": {
-            "to": "home_safe",
+            "to": "home_battered",
             "recap": {
               "default": "{winner} shouts Ajala and the centre boy spits. \"Ajala don travel. But waka before I change my mind.\" {loser} shouts Ajala and he says, \"I go tell am say you dey cry.\"",
               "coop": "You shout Ajala and the centre boy spits. \"Ajala don travel. But waka before I change my mind.\""
             }
           },
           "wisdom": {
-            "to": "home_safe",
+            "to": "home_battered",
             "recap": {
               "default": "{winner} sits down. The centre boy says, \"You dey rest for my bridge?\" But he is bored. He waves them off. {loser} sits and he says, \"You go pay rent for here?\"",
               "coop": "You sit down. The centre boy says, \"You dey rest for my bridge?\" But he is bored. He waves you off."
@@ -1926,28 +1913,28 @@
         },
         "both_fail": {
           "charm": {
-            "to": "home_safe",
+            "to": "home_robbed",
             "recap": {
               "default": "{winner} begs and the centre boy says, \"You don beg enough. Waka.\"",
               "coop": "You beg and the centre boy says, \"You don beg enough. Waka.\""
             }
           },
           "hustle": {
-            "to": "home_safe",
+            "to": "home_robbed",
             "recap": {
               "default": "{winner} runs and they chase for ten metres then stop. Not worth it.",
               "coop": "You run and they chase for ten metres then stop. Not worth it."
             }
           },
           "gragra": {
-            "to": "home_safe",
+            "to": "home_robbed",
             "recap": {
               "default": "{winner} shouts Ajala and he says, \"Ajala no dey. But your mouth too much.\" He slaps them. Not hard. Enough.",
               "coop": "You shout Ajala and he says, \"Ajala no dey. But your mouth too much.\" He slaps you. Not hard. Enough."
             }
           },
           "wisdom": {
-            "to": "home_safe",
+            "to": "home_robbed",
             "recap": {
               "default": "{winner} sits too long. He says, \"You wan sleep here?\" They do not sleep there.",
               "coop": "You sit too long. He says, \"You wan sleep here?\" You do not sleep there."
@@ -1955,10 +1942,221 @@
           }
         },
         "tie": {
-          "to": "home_safe",
+          "to": "home_robbed",
           "recap": "You both stand there, empty. The centre boy says, \"Una no get anything again?\" He waves you off. Not worth the paperwork."
         }
       }
+    },
+    "home_safe": {
+      "title": "Home",
+      "text": "The gate closes behind you. Mum's tracker dot has stopped at the house, and your phone buzzes before you can catch your breath. The rent transfer is on its way. Tonight you made it, and now you get to decide how to tell it.",
+      "stakes": {
+        "default": "Get inside first and tell the story your way. Mum's transfer is one gate away.",
+        "coop": "Get inside together and decide how to tell it."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Call out to the gateman cheerfully so he opens up fast",
+          "dc": 10
+        },
+        {
+          "approach": "hustle",
+          "label": "Jog the last stretch and get to the gate first",
+          "dc": 9
+        },
+        {
+          "approach": "gragra",
+          "label": "Make the story bigger in your head and tell it loudly as you enter",
+          "dc": 11
+        },
+        {
+          "approach": "wisdom",
+          "label": "Walk in calm, lock everything, then plan the story",
+          "dc": 9
+        }
+      ],
+      "twists": [
+        {
+          "if": "cash_low",
+          "text": "{holder}: Your pocket is lighter than it should be. Mallam can tell from how you walk."
+        },
+        {
+          "if": "phone_taken",
+          "text": "{holder}: Your hand keeps patting the empty pocket, as if the phone will come back."
+        }
+      ],
+      "next": {
+        "decisive": null,
+        "both_fail": null,
+        "tie": null
+      },
+      "finish": 3,
+      "endings": {
+        "win": "You are through your gate first, with your phone, your money and your mouth all intact. Mum's tracker dot stops at home, the rent transfer lands, and you tell the story your way. {loser} is still on the road.",
+        "loss": "You reach a perfectly clean gate, phone and money intact, and Mum's rent transfer lands. But {winner} is already inside telling it with big hands. You buy the suya.",
+        "success": {
+          "default": "You both reach your gates with phones, money and mouths intact. Mum's tracker dot stops at home and the rent transfer lands. Nobody walks alone again.",
+          "solo": "You reach the gate with your phone, your money and your mouth intact. Mum's dot stops at home and the rent transfer lands. Next time, you will take a Bolt."
+        },
+        "fail": "You get home with everything intact, but so late that Mum has called six times. The transfer comes with a very long voice note."
+      }
+    },
+    "home_battered": {
+      "title": "Home, Barely",
+      "text": "You reach your gate shaken and a little lighter, but on your own feet. Mallam slides the bolt without a word. Mum's dot stops at the house, and she is already calling.",
+      "stakes": {
+        "default": "Get inside first, and decide how much of the story is true before Mum's transfer lands.",
+        "coop": "Get inside and decide how much of the story is true."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Greet Mallam calmly so he does not ask too much",
+          "dc": 10
+        },
+        {
+          "approach": "hustle",
+          "label": "Go straight to your door and lock it behind you",
+          "dc": 10
+        },
+        {
+          "approach": "gragra",
+          "label": "Tell it bigger than it was so the whole compound stays up with you",
+          "dc": 12
+        },
+        {
+          "approach": "wisdom",
+          "label": "Check yourself, lock up, and keep the story short until morning",
+          "dc": 9
+        }
+      ],
+      "twists": [
+        {
+          "if": "cash_low",
+          "text": "{holder}: Your pocket is lighter than it should be. Mallam can tell from how you walk."
+        }
+      ],
+      "next": {
+        "decisive": null,
+        "both_fail": null,
+        "tie": null
+      },
+      "finish": 2,
+      "endings": {
+        "win": "You push your gate open first, shaken and a little lighter in the pocket, but whole. Mum's dot stops at home and the transfer lands. {loser} is still out there.",
+        "loss": "You get in shaken but whole, and Mum's transfer lands. But {winner} was home first and is telling it with big hands. You buy the suya.",
+        "success": {
+          "default": "You both get to your gates tired and shaken, but fine. Mum's dot stops at home and the transfer lands. Nobody walks alone again.",
+          "solo": "You get to the gate tired and shaken, but fine. Mum's dot stops at home and the transfer lands. Next time, you will take a Bolt."
+        },
+        "fail": "You get home late and shaken, with half your calm. Mum's dot stopped at home an hour after she wanted it to, and the transfer comes with questions."
+      }
+    },
+    "home_robbed": {
+      "title": "Home, Empty",
+      "text": "You reach your gate with your shirt pulled out of place, no phone, no money and a ringing in your ears. Mallam looks at you a long time, then slides the bolt. \"Ah ah. Wetin happen?\" Mum's dot went dark an hour ago. You still need to get inside and reach her.",
+      "stakes": {
+        "default": "Your dot went dark and the money is gone. Get inside and get Mum on the line before the transfer slips.",
+        "coop": "You lost things tonight. Don't lose the story too."
+      },
+      "choices": [
+        {
+          "approach": "charm",
+          "label": "Borrow Mallam's phone and call home in a calm voice",
+          "dc": 10
+        },
+        {
+          "approach": "hustle",
+          "label": "Go straight to the neighbour's door and bang until somebody wakes up",
+          "dc": 10
+        },
+        {
+          "approach": "gragra",
+          "label": "Tell it bigger than it was so the whole compound stays up and worries with you",
+          "dc": 12
+        },
+        {
+          "approach": "wisdom",
+          "label": "Check yourself, block the SIM, lock the compound, report in the morning",
+          "dc": 9
+        }
+      ],
+      "twists": [
+        {
+          "if": "phone_taken",
+          "text": "{holder}: Your hand keeps patting the empty pocket, as if the phone will come back."
+        }
+      ],
+      "next": {
+        "decisive": null,
+        "both_fail": null,
+        "tie": null
+      },
+      "finish": 0,
+      "endings": {
+        "win": "You reach the gate first with empty pockets, no phone and a ringing in your ears. Mum's dot went dark an hour ago, so she is calling Mallam's line, and the rent transfer waits until morning. You won the race and lost the night. {loser} will tell it better.",
+        "loss": "You reach the gate with no phone and no cash, and {winner} is already inside. Mum's dot went dark an hour ago and the rent transfer waits until morning. The suya is on credit.",
+        "success": {
+          "default": "You both scrape home with half your things. Mum's dot went dark on the road, so the rent transfer waits until she hears your voices. It comes with a lecture.",
+          "solo": "You scrape home with half your things. Mum's dot went dark on the road, so the rent transfer waits until she hears your voice. It comes with a lecture."
+        },
+        "fail": "You get home late, with nothing in your pockets. Mum's dot went dark an hour ago, and the transfer waits until she hears every detail. The group chat has the story first."
+      }
     }
-  }
+  },
+  "endings": {
+    "win": "You push your gate open first, and Mum's tracker dot stops at home. The rent transfer lands. {loser} buys suya tomorrow and tells it badly.",
+    "loss": "{winner} is already inside telling the story with big hands before you clear the street. Mum's transfer waits on your dot reaching home. You buy the suya.",
+    "success": {
+      "default": "You both get to the gate together, tired but fine. Nobody walks alone again.",
+      "solo": "You get to the gate tired but fine. Next time, you will take a Bolt."
+    },
+    "fail": {
+      "default": "You get home late and shaken, with half your things. The group chat will have the story before you sleep.",
+      "solo": "You get home late and shaken, with half your things. The group chat will have the story before you sleep."
+    }
+  },
+  "epilogues": [
+    {
+      "if": "street_wise",
+      "text": "Since that night, you read every street before you walk it."
+    },
+    {
+      "if": "boys_know_you",
+      "text": "The boys now greet you by name whenever you pass. It is respect, or something close."
+    },
+    {
+      "if": "on_their_list",
+      "text": "The boys have your face in their memory now. Avoid that road for a while."
+    },
+    {
+      "if": "paid_small",
+      "text": "You paid small money to get home. Next time you will carry a ₦200 note separately."
+    },
+    {
+      "if": "cash_low",
+      "text": "You got home with an empty pocket and a very long story."
+    },
+    {
+      "if": "light_dead",
+      "text": "Your phone went off in the dark. You charged it fully for three days after."
+    },
+    {
+      "if": "dropped_name",
+      "text": "The big name you used got back to its owner. Enjoy that conversation."
+    },
+    {
+      "if": "vigilante_friend",
+      "text": "The vigilante men now wave at you from their plastic chairs every evening."
+    },
+    {
+      "if": "phone_taken",
+      "text": "You will be buying a new phone this month."
+    },
+    {
+      "if": "keke_ally",
+      "text": "The keke rider now saves your number. Last trip, any time."
+    }
+  ]
 }

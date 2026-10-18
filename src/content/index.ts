@@ -37,6 +37,8 @@ for (const s of scenarios) {
       if (!has('decisive', 'all_pass')) fail(key, 'needs a "decisive" route for co-op');
       if (!has('both_fail', 'all_fail')) fail(key, 'needs a "both_fail" route for co-op');
     }
+    const isEnd = Object.values(n).every((e) => edgeLeaves(e).every((l) => l.to === null));
+    if (isEnd && (s.modes.includes('rival') || s.modes.includes('team')) && scene.finish === undefined) fail(key, 'final scene needs "finish" (0-3) for race modes');
     for (const e of Object.values(n)) {
       for (const l of edgeLeaves(e)) {
         if (l.to && !s.scenes[l.to]) fail(key, `unknown next scene "${l.to}"`);

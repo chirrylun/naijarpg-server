@@ -17,6 +17,8 @@ export const BALANCE = {
   dailyGameStarCap: 6, // most stars a player can earn from games in one Lagos day
   coopPassAvg: 1.5,
   useStats: false,
+  storyMods: false, // story marks change the number you need to roll. Off for now; set true to bring them back
+  soloDcEase: 2, // playing alone: every number you need is this much lower, so a solo run is winnable
   edgeSeconds: 18,
   referralStars: 10,
   chat: { maxLen: 500, declineCooldownHours: 24 },

@@ -99,8 +99,12 @@ function holds(room: Room, who: 'self' | 'rival' | 'world', p: Player, mark: str
   if (who === 'self') return alive(room.held.get(p.userId), room.round, mark);
   return room.players.some((o) => o.team !== p.team && alive(room.held.get(o.userId), room.round, mark));
 }
-const choiceDc = (room: Room, p: Player, c: SceneChoice) =>
-  Math.max(5, Math.min(24, c.dc + (c.mods ?? []).reduce((s, m) => s + (holds(room, m.who, p, m.mark) ? m.dc : 0), 0)));
+/** The number a player must roll (d20 + modifier) to pull the move off. Shown on the move and on the dice. */
+const choiceDc = (room: Room, p: Player, c: SceneChoice) => {
+  const story = BALANCE.storyMods ? (c.mods ?? []).reduce((s, m) => s + (holds(room, m.who, p, m.mark) ? m.dc : 0), 0) : 0;
+  const ease = room.solo ? BALANCE.soloDcEase : 0;
+  return Math.max(5, Math.min(24, c.dc + story - ease));
+};
 const lockReason = (room: Room, p: Player, c: SceneChoice) =>
   c.lock && holds(room, c.lock.who, p, c.lock.mark) ? c.lock.reason : null;
 /** Moves a player may pick. If every move is locked we ignore the locks so nobody is stuck. */
@@ -220,8 +224,9 @@ export function publicState(room: Room, viewerId?: string) {
         choices: scene.choices.map((c) => ({
           approach: c.approach,
           label: pickVariant(c.label, m, f),
-          // the base difficulty stays hidden; only the shifts from marks are shown
-          mods: (c.mods ?? []).map((x) => ({
+          dc: viewer ? choiceDc(room, viewer, c) : c.dc, // the number you need to roll
+          // story marks that shift the number (switched off while BALANCE.storyMods is false)
+          mods: (BALANCE.storyMods ? (c.mods ?? []) : []).map((x) => ({
             mark: x.mark,
             who: x.who,
             delta: x.dc,
@@ -267,6 +272,8 @@ function privateRoll(room: Room, userId: string) {
     modifier: r.modifier,
     starBonus: r.starBonus,
     total: r.total,
+    dc: r.dc,
+    passed: r.tier === 'win' || r.tier === 'legendary',
     tier: r.tier,
     shielded: r.shielded,
     stars: p.stars,
@@ -616,6 +623,8 @@ async function settle(room: Room) {
         modifier: r.modifier,
         starBonus: r.starBonus,
         total: r.total,
+        dc: r.dc,
+        passed: r.tier === 'win' || r.tier === 'legendary',
         tier: r.tier,
         shielded: r.shielded,
         standing: !race ? 'crew' : leadTeam === null ? 'level' : r.team === leadTeam ? 'won' : 'lost',

@@ -910,8 +910,8 @@
           "charm": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} picks the helmet rider and he actually has a spare helmet. \"Oga, hold tight.\" The bike weaves through traffic like water. {loser} is still arguing with a rider who wants triple.",
-              "coop": "You pick the helmet rider and he actually has a spare helmet. \"Oga, hold tight.\" The bike weaves through traffic like water."
+              "default": "{winner} picks the helmet rider and he actually has a spare helmet. The bike weaves through traffic like water. {loser} is still arguing with a rider who wants triple.",
+              "coop": "You pick the helmet rider and he actually has a spare helmet. The bike weaves through traffic like water."
             },
             "set": [
               {
@@ -971,8 +971,8 @@
           "hustle": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} offers double but only has single. The rider laughs. \"Oga, you dey play.\" {loser} paid proper money and left.",
-              "coop": "You offer double but only have single. The rider laughs. \"Oga, you dey play.\""
+              "default": "{winner} tries to offer doubl but doesn't have enough. The rider laughs. \"Oga, you dey play.\" {loser} paid proper money and left.",
+              "coop": "You try to offer double but don't have enough. The rider laughs. \"Oga, you dey play.\""
             },
             "set": [
               {
@@ -984,8 +984,8 @@
           "gragra": {
             "to": "chairman",
             "recap": {
-              "default": "{winner} shouts and the riders ignore you. Too desperate. One of them mutters, \"This one dey fear.\" {loser} found a calm rider and left.",
-              "coop": "You shout and the riders ignore you. Too desperate. One of them mutters, \"This one dey fear.\""
+              "default": "{winner} shouts and the riders ignore you. One of them mutters, \"This one dey fear.\" {loser} found a calm rider and left.",
+              "coop": "You shout and the riders ignore you. One of them mutters, \"This one dey fear.\""
             },
             "set": [
               {
@@ -997,32 +997,32 @@
           "wisdom": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} checks the plate but it's faded, unreadable. The rider shrugs. \"Na old bike.\" {loser} didn't check and is already gone.",
-              "coop": "You check the plate but it's faded, unreadable. The rider shrugs. \"Na old bike.\""
+              "default": "{winner} checks the plate but it's faded and unreadable. The rider looks unbothered. \"Na old bike.\" {loser} didn't check and is already gone.",
+              "coop": "You check the plate but it's faded and unreadable. The rider looks unbothered. \"Na old bike.\""
             }
           }
         },
         "tie": {
           "to": "airport_road",
-          "recap": "You both hesitate. The riders get bored and start talking to each other. Finally one says, \"Make una enter two bikes. Same price.\" You split up and race."
+          "recap": "You both hesitate. The riders get bored and start talking to each other. Finally one says, \"Make una enter two bikes. Same price.\" You split up."
         }
       }
     },
     "chairman": {
       "title": "The Chairman",
       "text": {
-        "default": "The Chairman is a thick man in a white native, sitting on the bonnet of a Lexus that's seen better days. He doesn't stand when you approach. \"So na una dey disturb my boys?\" His voice is quiet, almost gentle. Two men in vests flank him. Behind them, the road is still blocked. {rival} is standing a few feet away, looking like they want to be anywhere else. Uncle Chuks just texted: \"Landed. Waiting. Where una?\"",
-        "coop": "The Chairman is a thick man in a white native, sitting on the bonnet of a Lexus that's seen better days. He doesn't stand when you approach. \"So na una dey disturb my boys?\" His voice is quiet, almost gentle. Two men in vests flank him. Behind them, the road is still blocked. {partner} is standing close, waiting to see what you do. Uncle Chuks just texted: \"Landed. Waiting. Where una?\"",
-        "solo": "The Chairman is a thick man in a white native, sitting on the bonnet of a Lexus that's seen better days. He doesn't stand when you approach. \"So na you dey disturb my boys?\" His voice is quiet, almost gentle. Two men in vests flank him. Behind them, the road is still blocked. Uncle Chuks just texted: \"Landed. Waiting. Where you?\""
+        "default": "The Chairman is a thick man in a white native. He doesn't stand when you approach. \"So na una dey disturb my boys?\" Two men in vests stand beside him. Behind them, the road is still blocked. Uncle Chuks just texted: \"Landed. Waiting. Where una?\"",
+        "coop": "The Chairman is a thick man in a white native. He doesn't stand when you approach. \"So na una dey disturb my boys?\" Two men in vests stand beside him. Behind them, the road is still blocked. {partner} is standing close, waiting to see what you do. Uncle Chuks just texted: \"Landed. Waiting. Where una?\"",
+        "solo": "The Chairman is a thick man in a white native. He doesn't stand when you approach. \"So na you dey disturb my boys?\" Two men in vests stand beside him. Behind them, the road is still blocked. Uncle Chuks just texted: \"Landed. Waiting. Where you?\""
       },
       "stakes": {
-        "default": "The Chairman controls this road. {rival} is watching to see if you fold or fight.",
+        "default": "The Chairman controls this road. {rival} is watching to see if you run or fight.",
         "coop": "The Chairman controls this road. Show respect or show strength, but don't show fear."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Greet him properly, hands together: \"Chairman, good evening. Small misunderstanding. We dey rush airport.\"",
+          "label": "Greet him properly: \"Chairman, good evening. Na small issue. We dey rush go airport.\"",
           "dc": 12
         },
         {
@@ -1051,7 +1051,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Apologise for the trouble, ask his name, and promise to pass his greeting to Uncle Chuks",
+          "label": "Apologise for the trouble, ask his name, and promise to give him something from Uncle Chuks",
           "dc": 10
         }
       ],
@@ -1060,8 +1060,8 @@
           "charm": {
             "to": "airport_road",
             "recap": {
-              "default": "{winner} greets him proper and the Chairman actually smiles. \"You get home training.\" He signals and the road opens. {loser} is still standing there, unsure what to do.",
-              "coop": "You greet him proper and the Chairman actually smiles. \"You get home training.\" He signals and the road opens."
+              "default": "{winner} greets him properly and the Chairman actually smiles. \"You get home training.\" He signals and the road opens. {loser} is still standing there, unsure what to do.",
+              "coop": "You greet him properly and the Chairman actually smiles. \"You get home training.\" He signals and the road opens."
             },
             "set": [
               {
@@ -1086,8 +1086,8 @@
           "gragra": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} bluffs and the Chairman's smile disappears. \"Government?\" He stands up. \"Make I see your ID.\" The men step closer. {loser} slips away in the confusion.",
-              "coop": "You bluff and the Chairman's smile disappears. \"Government?\" He stands up. \"Make I see your ID.\" The men step closer."
+              "default": "{winner} lies and the Chairman's smile disappears. \"Government?\" He stands up. \"Make I see your ID.\" The men step closer. {loser} runs away in the confusion.",
+              "coop": "You lie and the Chairman's smile disappears. \"Government?\" He stands up. \"Make I see your ID.\" The men step closer."
             },
             "set": [
               {
@@ -1114,8 +1114,8 @@
           "charm": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} greets but stumbles over the Yoruba. The Chairman's eyes narrow. \"You dey mock me?\" {loser} stays quiet and he lets them pass.",
-              "coop": "You greet but stumble over the Yoruba. The Chairman's eyes narrow. \"You dey mock me?\""
+              "default": "{winner} greets but stumbles over the Yoruba. The Chairman looks angry. \"You dey mock me?\" {loser} stays quiet and he lets them pass.",
+              "coop": "You greet but stumble over the Yoruba. The Chairman looks angry. \"You dey mock me?\""
             },
             "set": [
               {
@@ -1140,8 +1140,8 @@
           "gragra": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} bluffs and the Chairman laughs. Then he stops laughing. \"Carry this one go side.\" Two men grab {winner}'s arms. {loser} watches from the car as it happens.",
-              "coop": "You bluff and the Chairman laughs. Then he stops laughing. \"Carry this one go side.\" Two men grab your arms."
+              "default": "{winner} lies and the Chairman laughs. Then he stops laughing. \"Carry this one go side.\" Two men grab {winner}'s arms. {loser} watches from the car as it happens.",
+              "coop": "You lie and the Chairman laughs. Then he stops laughing. \"Carry this one go side.\" Two men grab your arms."
             },
             "set": [
               {
@@ -1153,8 +1153,8 @@
           "wisdom": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} apologises but mentions the wrong name. \"Who be that one?\" The Chairman's face hardens. {loser} keeps quiet and slips past.",
-              "coop": "You apologise but mention the wrong name. \"Who be that one?\" The Chairman's face hardens."
+              "default": "{winner} apologises but mentions the wrong name. \"Who be that one?\" The Chairman looks angry. {loser} keeps quiet and slips past.",
+              "coop": "You apologise but mention the wrong name. \"Who be that one?\" The Chairman looks angry."
             }
           }
         },
@@ -1167,9 +1167,9 @@
     "airport_road": {
       "title": "Airport Road Clear",
       "text": {
-        "default": "The road opens up. Mr. Femi accelerates and the airport sign appears ahead - 2km. Your phone buzzes. Uncle Chuks: \"Landed. Waiting.\" Then another text: \"{rival} say dem dey close.\" He's tracking both of you. The car ahead is slowing down. LASTMA checkpoint. Two officers in reflective vests are waving cars to the side. One of them is looking at your Bolt like he has questions.",
-        "coop": "The road opens up. Mr. Femi accelerates and the airport sign appears ahead - 2km. Your phone buzzes. Uncle Chuks: \"Landed. Waiting.\" Then another text: \"Make una hurry.\" He's tracking both of you. The car ahead is slowing down. LASTMA checkpoint. Two officers in reflective vests are waving cars to the side. One of them is looking at your Bolt like he has questions.",
-        "solo": "The road opens up. Mr. Femi accelerates and the airport sign appears ahead - 2km. Your phone buzzes. Uncle Chuks: \"Landed. Waiting.\" The car ahead is slowing down. LASTMA checkpoint. Two officers in reflective vests are waving cars to the side. One of them is looking at your Bolt like he has questions."
+        "default": "The road opens up. Mr. Femi accelerates and the airport sign appears ahead. Your phone buzzes. Uncle Chuks: \"Landed. Waiting.\" Then another text: \"{rival} say dem dey close.\" The car ahead is slowing down. LASTMA checkpoint. Two officers are waving cars to the side. One of them is looking at your Bolt.",
+        "coop": "The road opens up. Mr. Femi accelerates and the airport sign appears ahead. Your phone buzzes. Uncle Chuks: \"Landed. Waiting.\" Then another text: \"Make una hurry.\" The car ahead is slowing down. LASTMA checkpoint. Two officers are waving cars to the side. One of them is looking at your Bolt.",
+        "solo": "The road opens up. Mr. Femi accelerates and the airport sign appears ahead. Your phone buzzes. Uncle Chuks: \"Landed. Waiting.\" The car ahead is slowing down. LASTMA checkpoint. Two officers are waving cars to the side. One of them is looking at your Bolt."
       },
       "stakes": {
         "default": "Almost there. {rival} is close behind. One wrong move with LASTMA and you're both late.",
@@ -1195,7 +1195,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Tell him you're a government official on official business and he should wave you through",
+          "label": "Tell him you're a government official on official business and he should allow you through",
           "dc": 14,
           "mods": [
             {
@@ -1223,7 +1223,7 @@
           "charm": {
             "to": "arrivals",
             "recap": {
-              "default": "{winner} smiles and the officer actually smiles back. \"Oga, make una dey go. But slow down.\" He waves you through. {loser} is still digging for their licence.",
+              "default": "{winner} smiles and the officer actually smiles back. \"Oga, make una dey go. But slow down.\" He waves you through. {loser} is still looking for their licence.",
               "coop": "You smile and the officer actually smiles back. \"Oga, make una dey go. But slow down.\" He waves you through."
             },
             "set": [
@@ -1249,8 +1249,8 @@
           "gragra": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} bluffs and the officer's face changes. \"Government?\" He pulls out his phone. \"Make I verify.\" {loser} shows proper ID and gets through while you're stuck.",
-              "coop": "You bluff and the officer's face changes. \"Government?\" He pulls out his phone. \"Make I verify.\""
+              "default": "{winner} lies and the officer's face changes. \"Government?\" He pulls out his phone. \"Make I verify.\" {loser} shows proper ID and gets through while you're stuck.",
+              "coop": "You lie and the officer's face changes. \"Government?\" He pulls out his phone. \"Make I verify.\""
             },
             "set": [
               {
@@ -1262,8 +1262,8 @@
           "wisdom": {
             "to": "arrivals",
             "recap": {
-              "default": "{winner} asks Mr. Femi and he produces everything - licence, insurance, hackney permit. The officer checks, nods, waves you through. {loser} is missing their insurance and has to pay.",
-              "coop": "You ask Mr. Femi and he produces everything - licence, insurance, hackney permit. The officer checks, nods, waves you through."
+              "default": "{winner} asks Mr. Femi and he produces everything. The officer checks, nods, waves you through. {loser} doesn't have their insurance and has to pay.",
+              "coop": "You ask Mr. Femi and he produces everything. The officer checks, nods, waves you through."
             },
             "set": [
               {
@@ -1277,8 +1277,8 @@
           "charm": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} smiles but it's the wrong kind of smile. The officer frowns. \"Oga, park well.\" {loser} drove past while he's focused on you.",
-              "coop": "You smile but it's the wrong kind of smile. The officer frowns. \"Oga, park well.\""
+              "default": "{winner} smiles it doesn't work. The officer frowns. \"Oga, park well.\" {loser} drove past while he's focused on you.",
+              "coop": "You smile it doesn't work. The officer frowns. \"Oga, park well.\""
             }
           },
           "hustle": {
@@ -1297,8 +1297,8 @@
           "gragra": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} bluffs and the officer laughs. Then he stops laughing. \"Park well. Now.\" {loser} slips past while he's writing your ticket.",
-              "coop": "You bluff and the officer laughs. Then he stops laughing. \"Park well. Now.\""
+              "default": "{winner} lies and the officer laughs. Then he stops laughing. \"Park well. Now.\" {loser} slips past while he's writing your ticket.",
+              "coop": "You lie and the officer laughs. Then he stops laughing. \"Park well. Now.\""
             },
             "set": [
               {
@@ -1310,8 +1310,8 @@
           "wisdom": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} asks Mr. Femi but he's missing his hackney permit. \"Oga, I no renew am.\" The officer hears. \"Park well.\" {loser}'s driver has everything.",
-              "coop": "You ask Mr. Femi but he's missing his hackney permit. \"Oga, I no renew am.\" The officer hears. \"Park well.\""
+              "default": "{winner} asks Mr. Femi but he's missing his vehicle insurance. \"Oga, I no renew am.\" The officer hears. \"Park well.\" {loser}'s driver has everything.",
+              "coop": "You ask Mr. Femi but he's missing his vehicle insurance. \"Oga, I no renew am.\" The officer hears. \"Park well.\""
             },
             "set": [
               {
@@ -1330,18 +1330,18 @@
     "arrivals": {
       "title": "Arrivals",
       "text": {
-        "default": "The arrivals hall is chaos. Two flights just landed. People everywhere, trolleys blocking the walkway, a child crying in the corner. You scan the crowd. Then you see him - Uncle Chuks, in his London jacket, looking at his phone. He hasn't seen you yet. {rival} is two steps behind you, breathing hard.",
-        "coop": "The arrivals hall is chaos. Two flights just landed. People everywhere, trolleys blocking the walkway, a child crying in the corner. You scan the crowd. Then you see him - Uncle Chuks, in his London jacket, looking at his phone. He hasn't seen you yet. {partner} is right beside you, breathing hard.",
-        "solo": "The arrivals hall is chaos. Two flights just landed. People everywhere, trolleys blocking the walkway, a child crying in the corner. You scan the crowd. Then you see him - Uncle Chuks, in his London jacket, looking at his phone. He hasn't seen you yet."
+        "default": "The arrivals hall is chaos. Two flights just landed. People everywhere. You scan the crowd then you see him - Uncle Chuks, in his London jacket, looking at his phone. He hasn't seen you yet. {rival} is two steps behind you.",
+        "coop": "The arrivals hall is chaos. Two flights just landed. People everywhere. You scan the crowd then you see him - Uncle Chuks, in his London jacket, looking at his phone. He hasn't seen you yet. {partner} is right beside you.",
+        "solo": "The arrivals hall is chaos. Two flights just landed. People everywhere. You scan the crowd then you see him - Uncle Chuks, in his London jacket, looking at his phone. He hasn't seen you yet."
       },
       "stakes": {
-        "default": "Uncle Chuks is right there. {rival} is right behind you. Whoever reaches him first gets the opening.",
-        "coop": "Uncle Chuks is right there. Reach him together or not at all."
+        "default": "Uncle Chuks is right there. {rival} is right behind you. Whoever reaches him first gets the gift.",
+        "coop": "Uncle Chuks is right there."
       },
       "choices": [
         {
           "approach": "charm",
-          "label": "Shout his name, wave your hand high: \"Uncle Chuks! Over here!\"",
+          "label": "Shout his name, wave your hand high: \"Uncle Chuks!\"",
           "dc": 11
         },
         {
@@ -1365,8 +1365,8 @@
           "charm": {
             "to": "arrivals_wahala",
             "recap": {
-              "default": "{winner} shouts and Uncle Chuks looks up. His face breaks into a smile. \"My pikin!\" He opens his arms. {loser} is still pushing through the crowd.",
-              "coop": "You shout and Uncle Chuks looks up. His face breaks into a smile. \"My pikin!\" He opens his arms."
+              "default": "{winner} shouts and Uncle Chuks looks up and smiles. \"My pikin!\" He opens his arms. {loser} is still pushing through the crowd.",
+              "coop": "You shout and Uncle Chuks looks up and smiles. \"My pikin!\" He opens his arms."
             },
             "set": [
               {
@@ -1404,8 +1404,8 @@
           "wisdom": {
             "to": "arrivals_wahala",
             "recap": {
-              "default": "{winner} walks calm and composed. Uncle Chuks sees you and nods approvingly. \"You look like person wey get sense.\" {loser} arrives sweating and dishevelled.",
-              "coop": "You walk calm and composed. Uncle Chuks sees you and nods approvingly. \"You look like person wey get sense.\""
+              "default": "{winner} walks calm and composed. Uncle Chuks sees you and nods. \"You look like person wey get sense.\" {loser} arrives sweating.",
+              "coop": "You walk calm and composed. Uncle Chuks sees you and nods. \"You look like person wey get sense.\""
             },
             "set": [
               {
@@ -1419,15 +1419,15 @@
           "charm": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} shouts but it's the wrong name. \"Uncle Chike!\" Uncle Chuks doesn't look up. {loser} reaches him while you're still shouting.",
-              "coop": "You shout but it's the wrong name. \"Uncle Chike!\" Uncle Chuks doesn't look up."
+              "default": "{winner} shouts but he doesn't hear. {loser} reaches him while you're still shouting.",
+              "coop": "You shout but he doesn't hear."
             }
           },
           "hustle": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} sprints but trips on a trolley. Falls hard. Uncle Chuks sees. \"Who be that one?\" {loser} reaches him clean.",
-              "coop": "You sprint but trip on a trolley. Falls hard. Uncle Chuks sees. \"Who be that one?\""
+              "default": "{winner} runs but trips on a trolley. Falls hard. Uncle Chuks sees. \"Who be that one?\" {loser} reaches him clean.",
+              "coop": "You run but trip on a trolley. Falls hard. Uncle Chuks sees. \"Who be that one?\""
             }
           },
           "gragra": {
@@ -1446,8 +1446,8 @@
           "wisdom": {
             "to": "arrivals_late",
             "recap": {
-              "default": "{winner} walks too slow. Uncle Chuks turns and sees {loser} first. \"My pikin!\" {loser} gets the hug, you get the view.",
-              "coop": "You walk too slow. Uncle Chuks turns and sees {partner} first. \"My pikin!\""
+              "default": "{winner} walks too slow. Uncle Chuks turns and sees {loser} first. \"My pikin!\" {loser} gets a hug.",
+              "coop": "You walk too slow."
             }
           }
         },
@@ -1460,9 +1460,9 @@
     "arrivals_late": {
       "title": "Arrivals: Too Late",
       "text": {
-        "default": "You reach the arrivals hall but Uncle Chuks is already at the exit, trolley in hand. He sees you and his face falls. \"You miss am. I don wait tire.\" {rival} is already there, looking guilty but relieved. Uncle Chuks sighs. \"Make una help me carry bag. At least una fit do that one.\"",
-        "coop": "You reach the arrivals hall but Uncle Chuks is already at the exit, trolley in hand. He sees you and his face falls. \"You miss am. I don wait tire.\" {partner} is beside you, both of you looking guilty. Uncle Chuks sighs. \"Make una help me carry bag. At least una fit do that one.\"",
-        "solo": "You reach the arrivals hall but Uncle Chuks is already at the exit, trolley in hand. He sees you and his face falls. \"You miss am. I don wait tire.\" He sighs. \"Help me carry bag. At least you fit do that one.\""
+        "default": "You reach the arrivals hall but Uncle Chuks is already at the exit. He sees you and his face falls. \"You miss am. I don wait tire.\" {rival} is already there. Uncle Chuks sighs. \"Make una help me carry bag. At least una fit do that one.\"",
+        "coop": "You reach the arrivals hall but Uncle Chuks is already at the exit. He sees you and his face falls. \"You miss am. I don wait tire.\" Uncle Chuks sighs. \"Make una help me carry bag. At least una fit do that one.\"",
+        "solo": "You reach the arrivals hall but Uncle Chuks is already at the exit. He sees you and his face falls. \"You miss am. I don wait tire.\" He sighs. \"Help me carry bag. At least you fit do that one.\""
       },
       "stakes": {
         "default": "You missed him. Now you have to make up for it or {rival} gets everything.",
@@ -1471,7 +1471,7 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Laugh it off: \"Uncle, Lagos traffic no be your mate. But we here now.\"",
+          "label": "Laugh it off: \"Uncle, Lagos traffic no be your mate. But we dey here now.\"",
           "dc": 12
         },
         {
@@ -1481,7 +1481,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Blame the driver: \"Mr. Femi take wrong road. We try our best.\"",
+          "label": "Blame the driver: \"Na our driver mess up.\"",
           "dc": 13,
           "mods": [
             {
@@ -1493,7 +1493,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Say sorry and mean it, then carry his heavy bag without being asked",
+          "label": "Say sorry then carry his heavy bag without being asked",
           "dc": 11
         }
       ],
@@ -1504,21 +1504,21 @@
       },
       "finish": 1,
       "endings": {
-        "win": "You reach him late, but {loser} reached him later. Uncle Chuks sighs and picks the lesser disappointment: the opening is yours, with a lecture about time attached.",
-        "loss": "You reach him late and {winner} is already pushing the trolley. The opening is gone, and so is the drive home's good mood. You carry the small bag.",
+        "win": "You reach him late, but {loser} reached him later. He brings out the latest Iphone and a thick envelope with dollars.",
+        "loss": "You reach him late and {winner} is already pushing the trolley. You'll never know what the gift was.",
         "success": {
           "default": "You reach him late and sweating, and he sighs, hugs you both and says nothing about the two hours.",
           "solo": "You reach him late and sweating, and he sighs, hugs you and says nothing about the two hours."
         },
-        "fail": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you every Christmas."
+        "fail": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. You will never know what the gift was."
       }
     },
     "arrivals_wahala": {
       "title": "Arrivals: Trouble Followed You",
       "text": {
-        "default": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\" You have seconds to explain. {rival} is standing right there, listening.",
-        "coop": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\" You have seconds to explain. {partner} is standing right there, waiting to see what you say.",
-        "solo": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\" You have seconds to explain."
+        "default": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\"",
+        "coop": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\" {partner} is standing right there, waiting to see what you say.",
+        "solo": "You made it in time, but trouble followed you. Someone from the road is at the arrivals gate watching you, and Uncle Chuks has noticed. \"Who is that one? Why is he looking at you like that?\""
       },
       "stakes": {
         "default": "He has seen the trouble. Explain before he picks {rival} instead.",
@@ -1542,7 +1542,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Give him the short honest version: \"Small road trouble. All good. Let's go.\"",
+          "label": "Give him the short honest version: \"Na small wahala for road. Let's be going.\"",
           "dc": 12
         }
       ],
@@ -1553,26 +1553,26 @@
       },
       "finish": 2,
       "endings": {
-        "win": "You reach Uncle Chuks first, but trouble followed you and he noticed. You explain fast enough that he still hands you the opening, with a warning. {loser} carries the small bag and the gossip.",
-        "loss": "You reach him, but trouble followed you and {winner} is already telling him the clean version. The opening goes to them. You carry the small bag.",
+        "win": "You reach Uncle Chuks first, but trouble followed you and he noticed. You were able to explain quickly and he gives you the latest Iphone with a thick envelope full of dollars. {loser} carries the small bag and gets nothing.",
+        "loss": "You reach him, but trouble followed you and {winner} is already talking to him. You will never know what the gift was.",
         "success": {
           "default": "You reach him together, trouble trailing a little behind. He asks questions all the way to the car, and the drive home is long.",
           "solo": "You reach him with trouble trailing behind you. He asks questions all the way to the car, and the drive home is long."
         },
-        "fail": "Trouble followed you to arrivals and Uncle Chuks saw all of it. He will bring it up at Christmas."
+        "fail": "Trouble followed you to arrivals and Uncle Chuks saw all of it. You will never know what the gift was."
       }
     }
   },
   "endings": {
-    "win": "You reach Uncle Chuks first, and he gives you the opening. {loser} carries the small bag. At Christmas, the family will hear your name.",
-    "loss": "{winner} reaches Uncle Chuks first, and the opening goes to them. You carry the small bag. The drive home is silent.",
+    "win": "You reach Uncle Chuks first, and he gives you the latest Iphone and a thick envelope full of dollars. {loser} carries the small bag.",
+    "loss": "{winner} reaches Uncle Chuks first, and gets the latest Iphone with a thick envelope full of dollars. You carry his bags.",
     "success": {
       "default": "You reach him together, tired and sweating, and he hugs you both. He says he's never seen two people so happy to see an airport.",
       "solo": "You reach him tired and sweating, and he hugs you tight. He says he's never seen someone so happy to see an airport."
     },
     "fail": {
-      "default": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you every Christmas.",
-      "solo": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. He will remind you every Christmas."
+      "default": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. You will never know what the gift was.",
+      "solo": "By the time you reach arrivals, Uncle Chuks has already taken a taxi. You will never know what the gift was."
     }
   },
   "epilogues": [
