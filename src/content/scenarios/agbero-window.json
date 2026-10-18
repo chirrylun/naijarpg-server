@@ -159,14 +159,58 @@
           }
         },
         "both_fail": {
-          "to": "banging",
-          "recap": "Neither of you knows what to do, and the knocking turns into banging. Mr. Femi hisses.",
-          "set": [
-            {
-              "to": "all",
-              "mark": "driver_annoyed"
-            }
-          ]
+          "charm": {
+            "to": "banging",
+            "recap": {
+              "default": "{winner} winds down and gushes “Chairman!” a little too loud. Kayode's smile goes flat. He bangs the roof, twice, and two more boys drift over.",
+              "coop": "You wind down and gush “Chairman!” a little too loud. Kayode's smile goes flat. He bangs the roof, twice, and two more boys drift over."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "second_boy",
+            "recap": {
+              "default": "{winner} slips him ₦500. He pockets it without looking and says, “Na for me. Now my boy too.” A second boy is already at the other window.",
+              "coop": "You slip him ₦500. He pockets it without looking and says, “Na for me. Now my boy too.” A second boy is already at the other window."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "viral",
+            "recap": {
+              "default": "{winner} waves him off with “I'm a civil servant.” “Which ministry?” Kayode asks, loudly. A phone is already up across the road.",
+              "coop": "You wave him off with “I'm a civil servant.” “Which ministry?” Kayode asks, loudly. A phone is already up across the road."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_camera"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "banging",
+            "recap": {
+              "default": "{winner} whispers to Mr. Femi, but the window is cracked, and Kayode hears every word. The knocking turns into banging.",
+              "coop": "You whisper to Mr. Femi, but the window is cracked, and Kayode hears every word. The knocking turns into banging."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          }
         },
         "tie": {
           "to": "femi_gist",
@@ -282,14 +326,58 @@
           }
         },
         "both_fail": {
-          "to": "okada",
-          "recap": "You both argue so long that Mr. Femi loses patience. 'Oga, I no fit again. Come down here.'",
-          "set": [
-            {
-              "to": "all",
-              "mark": "driver_annoyed"
-            }
-          ]
+          "charm": {
+            "to": "estate_gate",
+            "recap": {
+              "default": "{winner} laughs along and promises to “settle him proper.” Kayode smells a lie. He points the way, but sends no boy ahead, so the gate people get the car cold.",
+              "coop": "You laugh along and promise to “settle him proper.” Kayode smells a lie. He points the way, but sends no boy ahead, so the gate people get the car cold."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "agbero_grudge"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "service_lane",
+            "recap": {
+              "default": "{winner} hands over ₦2,000. Kayode points at a lane without even looking. It's the service lane, and a LASTMA officer is sitting on a bike at the end of it.",
+              "coop": "You hand over ₦2,000. Kayode points at a lane without even looking. It's the service lane, and a LASTMA officer is sitting on a bike at the end of it."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "chairman",
+            "recap": {
+              "default": "{winner} says the airport uncle is a big man. Kayode's eyes sharpen. “Wait.” He calls somebody, and a black SUV starts moving through the traffic toward you.",
+              "coop": "You say the airport uncle is a big man. Kayode's eyes sharpen. “Wait.” He calls somebody, and a black SUV starts moving through the traffic toward you."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "agbero_grudge"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} asks gate, number of boys, exact amount, until Mr. Femi loses patience. “Oga, I no fit again. Come down.”",
+              "coop": "You ask gate, number of boys, exact amount, until Mr. Femi loses patience. “Oga, I no fit again. Come down.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          }
         },
         "tie": {
           "to": "estate_gate",
@@ -403,14 +491,58 @@
           }
         },
         "both_fail": {
-          "to": "okada",
-          "recap": "The boys start knocking on every window at the same time. Mr. Femi: 'Enough. Come down. I no get time for this one.'",
-          "set": [
-            {
-              "to": "all",
-              "mark": "driver_annoyed"
-            }
-          ]
+          "charm": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} tells the second boy “no vex, I've paid.” He says, “Na Kayode he pay, not me,” and starts knocking on every window. Mr. Femi: “Enough. Come down.”",
+              "coop": "You tell the second boy “no vex, I've paid.” He says, “Na Kayode he pay, not me,” and starts knocking on every window. Mr. Femi: “Enough. Come down.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "service_lane",
+            "recap": {
+              "default": "{winner} gives him ₦1,000 and a third boy appears. With no cash left, Mr. Femi swerves into a service lane just to get away.",
+              "coop": "You give him ₦1,000 and a third boy appears. With no cash left, Mr. Femi swerves into a service lane just to get away."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "viral",
+            "recap": {
+              "default": "{winner} shouts “KAYODE!” like he's a friend. He is not. The boys turn, phones come out, and now everybody is watching.",
+              "coop": "You shout “KAYODE!” like he's a friend. He is not. The boys turn, phones come out, and now everybody is watching."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_camera"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} tells Mr. Femi to inch forward. A boy steps in front of the bonnet. Mr. Femi brakes, hisses, and opens the door: “Come down.”",
+              "coop": "You tell Mr. Femi to inch forward. A boy steps in front of the bonnet. Mr. Femi brakes, hisses, and opens the door: “Come down.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          }
         },
         "tie": {
           "to": "service_lane",
@@ -520,18 +652,52 @@
           }
         },
         "both_fail": {
-          "to": "okada",
-          "recap": "The crowd gets bigger, the phones get closer, and Mr. Femi has had enough. 'Oga, abeg come down from my car.'",
-          "set": [
-            {
-              "to": "all",
-              "mark": "driver_annoyed"
+          "charm": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} laughs it off. The crowd does not, and the phones get closer. Mr. Femi: “Oga, abeg come down from my car.”",
+              "coop": "You laugh it off. The crowd does not, and the phones get closer. Mr. Femi: “Oga, abeg come down from my car.”"
             },
-            {
-              "to": "all",
-              "mark": "on_camera"
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "chairman",
+            "recap": {
+              "default": "{winner} pays Kayode ₦1,000 to “explain.” He nods, then makes a call. Ten minutes later you are being waved toward the one man in charge here.",
+              "coop": "You pay Kayode ₦1,000 to “explain.” He nods, then makes a call. Ten minutes later you are being waved toward the one man in charge here."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} gives a fake ministry and a fake name. Somebody in the crowd googles it, reads it aloud, and everybody laughs. Mr. Femi opens the door.",
+              "coop": "You give a fake ministry and a fake name. Somebody in the crowd googles it, reads it aloud, and everybody laughs. Mr. Femi opens the door."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_camera"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "service_lane",
+            "recap": {
+              "default": "{winner} speaks calmly, and nobody listens. Mr. Femi panics and swerves into the service lane, where a LASTMA officer is waiting.",
+              "coop": "You speak calmly, and nobody listens. Mr. Femi panics and swerves into the service lane, where a LASTMA officer is waiting."
             }
-          ]
+          }
         },
         "tie": {
           "to": "uncle_call",
@@ -653,14 +819,52 @@
           }
         },
         "both_fail": {
-          "to": "okada",
-          "recap": "You both disagree so much that Mr. Femi stops at the next bus stop. 'Oga, I don tire. Come down.'",
-          "set": [
-            {
-              "to": "all",
-              "mark": "driver_annoyed"
+          "charm": {
+            "to": "estate_gate",
+            "recap": {
+              "default": "{winner} tells him to take the back road and promises a tip. Mr. Femi hears the “promise” and drives, quietly annoyed, to the gate with no friendly word ready.",
+              "coop": "You tell him to take the back road and promise a tip. Mr. Femi hears the “promise” and drives, quietly annoyed, to the gate with no friendly word ready."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "service_lane",
+            "recap": {
+              "default": "{winner} offers gate money and extra. He takes the extra first, swings left, and ends up on the service lane. “Small mistake o.”",
+              "coop": "You offer gate money and extra. He takes the extra first, swings left, and ends up on the service lane. “Small mistake o.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} says “say you're a doctor.” Mr. Femi: “Doctor of which hospital?” He stops the car. “Come down.”",
+              "coop": "You say “say you're a doctor.” Mr. Femi: “Doctor of which hospital?” He stops the car. “Come down.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "uncle_call",
+            "recap": {
+              "default": "{winner} asks about other roads until Mr. Femi runs out of answers. Meanwhile Uncle Chuks has landed early and is calling. And calling.",
+              "coop": "You ask about other roads until Mr. Femi runs out of answers. Meanwhile Uncle Chuks has landed early and is calling. And calling."
             }
-          ]
+          }
         },
         "tie": {
           "to": "estate_gate",
@@ -773,14 +977,52 @@
           }
         },
         "both_fail": {
-          "to": "okada",
-          "recap": "Nothing works. Mr. Femi stops the car and opens the door himself. 'I wish una well.'",
-          "set": [
-            {
-              "to": "all",
-              "mark": "driver_annoyed"
+          "charm": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} winds down to apologise, and a hand grabs the door. “No be apology we want.” Mr. Femi stops the car. “Come down.”",
+              "coop": "You wind down to apologise, and a hand grabs the door. “No be apology we want.” Mr. Femi stops the car. “Come down.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "okada",
+            "recap": {
+              "default": "{winner} hands over every note. The boys take it, laugh, and keep banging. Mr. Femi says nothing, which is worse.",
+              "coop": "You hand over every note. The boys take it, laugh, and keep banging. Mr. Femi says nothing, which is worse."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "viral",
+            "recap": {
+              "default": "{winner} shouts “Do you know who you're disturbing?” A boy answers, “No, tell us.” Phones come out. Somebody starts recording.",
+              "coop": "You shout “Do you know who you're disturbing?” A boy answers, “No, tell us.” Phones come out. Somebody starts recording."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_camera"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "service_lane",
+            "recap": {
+              "default": "{winner} tells Mr. Femi to take the shoulder. He does, and drives straight into the service lane where LASTMA is waiting.",
+              "coop": "You tell Mr. Femi to take the shoulder. He does, and drives straight into the service lane where LASTMA is waiting."
             }
-          ]
+          }
         },
         "tie": {
           "to": "okada",
@@ -896,8 +1138,52 @@
           }
         },
         "both_fail": {
-          "to": "arrivals_wahala",
-          "recap": "The security men do not like the way you are arguing. They open the gate, but one of them follows the car on foot, shouting into his phone."
+          "charm": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} greets in Yoruba, but the guard asks, “Aunty in Block C? Which Aunty?” The gate opens only after twenty minutes of explaining.",
+              "coop": "You greet in Yoruba, but the guard asks, “Aunty in Block C? Which Aunty?” The gate opens only after twenty minutes of explaining."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} hands over ₦1,000. “Gate fee is ₦2,000 o.” The extra comes out and the gate opens, slowly.",
+              "coop": "You hand over ₦1,000. “Gate fee is ₦2,000 o.” The extra comes out and the gate opens, slowly."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} says the chairman is Mr. Femi's cousin. The guard calls the actual chairman. He is nobody's cousin. One man follows the car on foot, shouting into his phone.",
+              "coop": "You say the chairman is Mr. Femi's cousin. The guard calls the actual chairman. He is nobody's cousin. One man follows the car on foot, shouting into his phone."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "agbero_grudge"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} writes a real name in the register and waits while they confirm it. The gate opens, an hour late.",
+              "coop": "You write a real name in the register and wait while they confirm it. The gate opens, an hour late."
+            }
+          }
         },
         "tie": {
           "to": "arrivals_late",
@@ -1001,8 +1287,52 @@
           }
         },
         "both_fail": {
-          "to": "arrivals_wahala",
-          "recap": "The officer takes the car keys and walks to the side of the road. You have to beg, argue and wait. Eventually he gives them back, but something is clearly not finished."
+          "charm": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} begs respectfully. The officer listens, writes anyway, lets the car go. You'll pay the fine later.",
+              "coop": "You beg respectfully. The officer listens, writes anyway, lets the car go. You'll pay the fine later."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} slides ₦2,000 under the booklet. He takes it, then writes the ticket anyway. “For your water, and for the offence.”",
+              "coop": "You slide ₦2,000 under the booklet. He takes it, then writes the ticket anyway. “For your water, and for the offence.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} says doctor. The officer asks which hospital. He takes the keys and walks off. It takes begging, arguing and a long wait to get them back.",
+              "coop": "You say doctor. The officer asks which hospital. He takes the keys and walks off. It takes begging, arguing and a long wait to get them back."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_camera"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} admits the mistake and asks for the fastest legal way out. He gives it, and it is not fast.",
+              "coop": "You admit the mistake and ask for the fastest legal way out. He gives it, and it is not fast."
+            }
+          }
         },
         "tie": {
           "to": "arrivals_late",
@@ -1120,14 +1450,52 @@
           }
         },
         "both_fail": {
-          "to": "arrivals_wahala",
-          "recap": "The Chairman does not like what he sees. His boys 'escort' the car out of the traffic, and one of them keeps your number plate on his phone.",
-          "set": [
-            {
-              "to": "all",
-              "mark": "agbero_grudge"
+          "charm": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} greets him with both hands. He stays quiet a moment too long, then lets you pass, with a boy sitting in the back seat “for the road.”",
+              "coop": "You greet him with both hands. He stays quiet a moment too long, then lets you pass, with a boy sitting in the back seat “for the road.”"
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "agbero_grudge"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} hands him ₦5,000 “for the boys' drinks.” He takes it, then says, “And mine?” It takes everything left to be released.",
+              "coop": "You hand him ₦5,000 “for the boys' drinks.” He takes it, then says, “And mine?” It takes everything left to be released."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} drops the Commissioner's name. The Chairman smiles. “He is my brother.” His boys escort the car out, and one keeps the plate number on his phone.",
+              "coop": "You drop the Commissioner's name. The Chairman smiles. “He is my brother.” His boys escort the car out, and one keeps the plate number on his phone."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "agbero_grudge"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} stays quiet and let Mr. Femi talk. He talks too much. By the time the Chairman waves you through, it's very late.",
+              "coop": "You stay quiet and let Mr. Femi talk. He talks too much. By the time the Chairman waves you through, it's very late."
             }
-          ]
+          }
         },
         "tie": {
           "to": "arrivals_late",
@@ -1224,8 +1592,52 @@
           }
         },
         "both_fail": {
-          "to": "arrivals_wahala",
-          "recap": "Nobody finds a good rider. You both end up with a rider who gets lost, and then a police checkpoint stops the bike."
+          "charm": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} bargains, but the rider hears “tip” and doubles his speed and his price. It is rough, expensive, and a little late.",
+              "coop": "You bargain, but the rider hears “tip” and doubles his speed and his price. It is rough, expensive, and a little late."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "hustle": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} pays ₦3,000 flat. The rider takes a side street, loses signal and has to ask directions, then a police checkpoint stops the bike.",
+              "coop": "You pay ₦3,000 flat. The rider takes a side street, loses signal and has to ask directions, then a police checkpoint stops the bike."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "short_cash"
+              }
+            ]
+          },
+          "gragra": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} says “big man's brother.” The rider laughs, asks the big man's name, and doesn't believe the answer. A checkpoint stops the bike.",
+              "coop": "You say “big man's brother.” The rider laughs, asks the big man's name, and doesn't believe the answer. A checkpoint stops the bike."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "on_camera"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} asks the rider about quiet streets. He says he knows them all, and gets lost in two.",
+              "coop": "You ask the rider about quiet streets. He says he knows them all, and gets lost in two."
+            }
+          }
         },
         "tie": {
           "to": "arrivals_late",
@@ -1309,8 +1721,40 @@
           }
         },
         "both_fail": {
-          "to": "arrivals_wahala",
-          "recap": "The call drops three times. Uncle Chuks sends two voice notes. Neither is polite."
+          "charm": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} sweet-talks Uncle Chuks, but the line is bad, and he only hears “go-slow.” Two voice notes arrive. Neither is polite.",
+              "coop": "You sweet-talk Uncle Chuks, but the line is bad, and he only hears “go-slow.” Two voice notes arrive. Neither is polite."
+            }
+          },
+          "hustle": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} offers to send a Bolt. Uncle Chuks takes the offer and the Bolt arrives to find him already moving. He is not happy.",
+              "coop": "You offer to send a Bolt. Uncle Chuks takes the offer and the Bolt arrives to find him already moving. He is not happy."
+            }
+          },
+          "gragra": {
+            "to": "arrivals_wahala",
+            "recap": {
+              "default": "{winner} says “I'm at the gate already.” Uncle Chuks calls someone at the gate, who says no. The lie is out before you arrive.",
+              "coop": "You say “I'm at the gate already.” Uncle Chuks calls someone at the gate, who says no. The lie is out before you arrive."
+            },
+            "set": [
+              {
+                "to": "all",
+                "mark": "driver_annoyed"
+              }
+            ]
+          },
+          "wisdom": {
+            "to": "arrivals_late",
+            "recap": {
+              "default": "{winner} tells him the truth. He sighs, orders coffee, and says he'll wait. But he'll remember how late you were.",
+              "coop": "You tell him the truth. He sighs, orders coffee, and says he'll wait. But he'll remember how late you were."
+            }
+          }
         },
         "tie": {
           "to": "arrivals_late",

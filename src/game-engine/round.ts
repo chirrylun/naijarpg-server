@@ -52,7 +52,8 @@ export function resolveRound(mode: Mode, rolls: RoundRoll[], tiebreakTeam: numbe
 
   if (mode === 'coop') {
     const kind: Kind = failers.length === 0 ? 'all_pass' : passers.length === 0 ? 'all_fail' : 'mixed';
-    return { ...base, kind, winnerTeam: null, winnerIds: passers, loserIds: failers, lead: leadOf(passers) };
+    // when nobody passed, the best attempt still leads, so a failed move can branch the story by the move that failed
+    return { ...base, kind, winnerTeam: null, winnerIds: passers, loserIds: failers, lead: leadOf(passers.length ? passers : failers) };
   }
 
   const finish = (kind: Kind, winnerTeam: number | null): RoundOutcome => {
