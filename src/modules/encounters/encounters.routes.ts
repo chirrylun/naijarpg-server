@@ -4,7 +4,7 @@ import { supabase } from '../../db/supabase'
 import { WEB_URL } from '../../config/env';
 import { AppError } from '../../lib/errors';
 import { requireUser } from '../../middleware/auth';
-import { createRoom, joinRoom, rooms, roomByCode } from './rooms';
+import { assertCanAfford, createRoom, entryCostFor, joinRoom, rooms, roomByCode } from './rooms';
 
 const inviteBody = z.object({
   mode: z.enum(['rival', 'coop', 'team']),
@@ -17,6 +17,7 @@ export async function encounterRoutes(app: FastifyInstance) {
   app.post('/invite', { onRequest: requireUser }, async (req) => {
     const b = inviteBody.parse(req.body);
     if (b.mode === 'rival' && b.format === '2v2') throw new AppError(400, 'use_team_mode_for_2v2');
+    await assertCanAfford(req.userId, entryCostFor(b.mode, false)); // check before a room is made, so no empty rooms are left behind
     const room = await createRoom({ hostId: req.userId, ...b, invite: true });
     await joinRoom(room, req.userId);
     return { code: room.code, roomId: room.id, url: `${WEB_URL}/c/${room.code}` };

@@ -5,6 +5,7 @@ import { supabase } from '../../db/supabase';
 import { env, WEB_URL } from '../../config/env';
 import { BALANCE } from '../../config/balance';
 import { AppError } from '../../lib/errors';
+import { lagosDate } from '../../lib/time';
 import { bachsPost, verifyBachsSignature, BachsError } from '../../lib/bachs';
 import { requireUser } from '../../middleware/auth';
 import { fulfillPurchase } from './stars.service';
@@ -13,11 +14,29 @@ export async function starRoutes(app: FastifyInstance) {
   app.get('/packs', async () => BALANCE.packs);
 
   app.get('/', { onRequest: requireUser }, async (req) => {
-    const [{ data: p }, { data: ledger }] = await Promise.all([
+    const [{ data: p }, { data: ledger }, { count: paid }] = await Promise.all([
       supabase.from('profiles').select('stars').eq('id', req.userId).single(),
       supabase.from('star_ledger').select('delta, reason, created_at').eq('user_id', req.userId).order('id', { ascending: false }).limit(30),
+      supabase.from('star_purchases').select('reference', { count: 'exact', head: true }).eq('user_id', req.userId).eq('status', 'paid'),
     ]);
-    return { stars: p?.stars ?? 0, ledger };
+    // firstPurchaseBonus: the extra stars on the player's first pack (0 once they've bought before)
+    return { stars: p?.stars ?? 0, ledger, firstPurchaseBonus: paid ? 0 : BALANCE.firstPurchaseBonus };
+  });
+
+  // The "comeback star": one free star a day, only for a player who is completely out, so nobody is locked out of the game.
+  app.post('/comeback', { onRequest: requireUser, config: { rateLimit: { max: 5, timeWindow: '1 minute' } } }, async (req) => {
+    const today = lagosDate();
+    const { data: p } = await supabase.from('profiles').select('stars').eq('id', req.userId).single();
+    if ((p?.stars ?? 0) > 0) throw new AppError(409, 'not_empty');
+    const { data: taken } = await supabase
+      .from('star_ledger').select('id').eq('user_id', req.userId).eq('reason', 'comeback').eq('ref_id', today).maybeSingle();
+    if (taken) throw new AppError(409, 'already_claimed');
+    // idempotent per (user, day): a double tap can't pay twice
+    const { data: stars, error } = await supabase.rpc('apply_stars', {
+      p_user: req.userId, p_delta: BALANCE.comebackStars, p_reason: 'comeback', p_ref: today,
+    });
+    if (error) throw error;
+    return { stars: Number(stars), gained: BALANCE.comebackStars };
   });
 
   app.post('/checkout', { onRequest: requireUser, config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (req) => {
