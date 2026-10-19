@@ -1123,8 +1123,8 @@
           "gragra": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} shouts DPO. The answer: \"We don report ourself to DPO last week. He say make we continue.\"",
-              "coop": "You shout DPO. The answer: \"We don report ourself to DPO last week. He say make we continue.\""
+              "default": "{winner} shouts DPO. The answer: \"We don report ourself to DPO last week. He say make we continue.\" They laugh.",
+              "coop": "You shout DPO. The answer: \"We don report ourself to DPO last week. He say make we continue.\" They laugh"
             },
             "set": [
               {
@@ -1136,8 +1136,8 @@
           "wisdom": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} reaches for money that is not there. The pocket is empty. The gesture is enough. They saw the reach.",
-              "coop": "You reach for money that is not there. The pocket is empty. The gesture is enough. They saw the reach."
+              "default": "{winner} reaches for money that is not there. The pocket is empty.",
+              "coop": "You reach for money that is not there. The pocket is empty."
             },
             "set": [
               {
@@ -1149,13 +1149,13 @@
         },
         "tie": {
           "to": "bridge_heated",
-          "recap": "You both freeze, waiting for the other to move. They do not wait. Footsteps from three directions. The bridge is behind you now, not ahead."
+          "recap": "You both freeze, waiting for the other to move. They do not wait. Footsteps come from three directions."
         }
       }
     },
     "street_blocked": {
       "title": "Dead End",
-      "text": "The road is blocked. Burial canopy, locked gate, bouncer, dogs - whatever stopped you, stopped you hard. You are not crossing here. You are not going forward. Behind you, the way back is still open. For now. The dark has edges here, walls, limits. You can feel them closing.",
+      "text": "The road is blocked. You are not going forward. Behind you, the way back is still open. For now. You can hear them coming.",
       "stakes": {
         "default": "Blocked forward, exposed behind. Find another way, go back, or make the block work for you.",
         "coop": "Blocked together. Split up, or find one path that fits two."
@@ -1163,7 +1163,7 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Talk to the bouncer/security. \"Abeg, I get emergency for house.\"",
+          "label": "Talk to the bouncer. \"Abeg, I get emergency for house.\"",
           "dc": 12
         },
         {
@@ -1173,7 +1173,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Shout \"Make una open this gate! I no get time for this!\"",
+          "label": "Shout \"Make una open this gate!\"",
           "dc": 14
         },
         {
@@ -1187,15 +1187,15 @@
           "charm": {
             "to": "back_lane",
             "recap": {
-              "default": "{winner} talks soft, talks family, and the bouncer lifts the rope. \"Pass. Fast.\" {loser} talks too long, and the rope drops back.",
-              "coop": "You talk soft, talk family, and the bouncer lifts the rope. \"Pass. Fast.\""
+              "default": "{winner} talks soft and the bouncer lifts the rope. \"Pass. Fast.\" {loser} talks too long, and the bouncer ignores.",
+              "coop": "You talk soft, and the bouncer lifts the rope. \"Pass. Fast.\""
             }
           },
           "hustle": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} climbs, drops, lands running. The other side is empty street, open road, the last stretch home. {loser} climbs, drops, lands wrong, and the limp slows everything.",
-              "coop": "You climb, drop, land running. The other side is empty street, open road, the last stretch home."
+              "default": "{winner} climbs, drops, lands running. The other side is empty street, open road, the last road home. {loser} climbs, drops, lands wrong, and injures their ankle.",
+              "coop": "You climb, drop, land running. The other side is empty street, open road, the last road home."
             }
           },
           "gragra": {
@@ -1214,8 +1214,8 @@
           "wisdom": {
             "to": "corn_aunty",
             "recap": {
-              "default": "{winner} backtracks, finds the turn, and the inner street opens up with light and noise again. {loser} backtracks, misses the turn, and walks in a circle.",
-              "coop": "You backtrack, find the turn, and the inner street opens up with light and noise again."
+              "default": "{winner} goes back, finds the turn, and the inner street opens up with light and noise again. {loser} goes back, misses the turn, and walks in a circle.",
+              "coop": "You go back, find the turn, and the inner street opens up with light and noise again."
             },
             "set": [
               {
@@ -1229,8 +1229,8 @@
           "charm": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} talks emergency. The bouncer says, \"Everybody get emergency.\" The rope stays down.",
-              "coop": "You talk emergency. The bouncer says, \"Everybody get emergency.\" The rope stays down."
+              "default": "{winner} says there is an emergency. The bouncer says, \"Everybody get emergency.\" The rope stays down.",
+              "coop": "You say there is an emergency. The bouncer says, \"Everybody get emergency.\" The rope stays down."
             }
           },
           "hustle": {
@@ -1262,8 +1262,8 @@
           "wisdom": {
             "to": "road_snag",
             "recap": {
-              "default": "{winner} backtracks into the dark, takes the wrong fork, and the road ends at the riverbank. No bridge. No way forward. Only back, through what followed you.",
-              "coop": "You backtrack into the dark, take the wrong fork, and the road ends at the riverbank. No bridge. No way forward. Only back, through what followed you."
+              "default": "{winner} goes back into the dark, takes the wrong turn, and the road ends at the riverbank. No bridge. No way forward. Only back to where you are coming from.",
+              "coop": "You go back into the dark, take the wrong turn, and the road ends at the riverbank. No bridge. No way forward. Only back to where you are coming from."
             },
             "set": [
               {
@@ -1281,7 +1281,7 @@
     },
     "bridge_toll": {
       "title": "The Bridge",
-      "text": "The bridge is metal and dark. Four boys sit on the railings, or stand near them, or lean against the pillars. They have seen you coming. They have always seen you coming. The water below is black and loud. The road beyond the bridge is your street, your house, your sister's exam fee safe in the envelope. But first, this crossing. First, these boys who own the night on this bridge, every night, and know everybody who passes.",
+      "text": "The bridge is metal and dark. Four boys sit on the railings, or stand near them, or lean against the pillars. They have seen you coming. The road beyond the bridge is your street, but first, you have to cross this bridge.",
       "stakes": {
         "default": "They want something. Money, respect, entertainment. What you give them decides what happens after.",
         "coop": "They want something. Give it together, or one of you gives more than the other."
@@ -1289,7 +1289,7 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Greet them proper: \"Evening, brothers. How body?\"",
+          "label": "Greet them properly: \"Evening, brothers. How body?\"",
           "dc": 11,
           "mods": [
             {
@@ -1306,7 +1306,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Say \"I don pay una chairman already. Make una check.\"",
+          "label": "Say \"I don pay una chairman already.\"",
           "dc": 14,
           "mods": [
             {
@@ -1318,7 +1318,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Offer ₦1,500 and ask them to watch your back to the corner",
+          "label": "Offer ₦1,500 and ask them to watch your back.",
           "dc": 11,
           "lock": {
             "mark": "cash_low",
@@ -1332,8 +1332,8 @@
           "charm": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} greets proper, asks after their people, and the bridge opens like a door. \"Pass, brother.\" {loser} greets nervous, and the door stays half-shut.",
-              "coop": "You greet proper, ask after their people, and the bridge opens like a door. \"Pass, brother.\""
+              "default": "{winner} greets properly, asks after their people, and they allow you pass. \"Pass, brother.\" {loser} greets nervously, and they don't allow.",
+              "coop": "You greet properly, ask after their people, and they allow you pass. \"Pass, brother.\""
             },
             "set": [
               {
@@ -1345,14 +1345,14 @@
           "hustle": {
             "to": "vigilante_post",
             "recap": {
-              "default": "{winner} walks through, fast but not running, eyes front, and the boys let the momentum pass. {loser} walks too fast, shows fear, and fear is what they catch.",
-              "coop": "You walk through, fast but not running, eyes front, and the boys let the momentum pass."
+              "default": "{winner} walks through, fast but not running, eyes front, and the boys let you pass. {loser} walks too fast, shows fear, and fear is what they catch.",
+              "coop": "You walk through, fast but not running, eyes front, and the boys let you pass."
             }
           },
           "gragra": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} claims they paid. One of them checks his phone, nods slow, and the path clears. {loser} claims the same, gets asked which chairman, and the answer does not come.",
+              "default": "{winner} claims they paid. One of them checks his phone, nods slow, and the path clears. {loser} claims the same, gets asked which chairman, but there is no answer.",
               "coop": "You claim you paid. One of them checks his phone, nods slow, and the path clears."
             },
             "set": [
@@ -1365,8 +1365,8 @@
           "wisdom": {
             "to": "vigilante_post",
             "recap": {
-              "default": "{winner} offers money for escort. The tallest one takes it, walks with you to the corner, and leaves without a word. {loser} offers too little, and the escort stops halfway.",
-              "coop": "You offer money for escort. The tallest one takes it, walks with you to the corner, and leaves without a word."
+              "default": "{winner} offers money for escort. The tallest one takes it, and promises to watch your back. {loser} offers too little.",
+              "coop": "You offer money for escort. The tallest one takes it, and promises to watch your back."
             },
             "set": [
               {
@@ -1384,8 +1384,8 @@
           "charm": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} greets proper. The answer: \"We no be your brothers.\" The railings are cold when they press you against them.",
-              "coop": "You greet proper. The answer: \"We no be your brothers.\" The railings are cold when they press you against them."
+              "default": "{winner} greets properly. The answer: \"We no be your brothers.\" The railings are cold when they press you against them.",
+              "coop": "You greet properly. The answer: \"We no be your brothers.\" The railings are cold when they press you against them."
             },
             "set": [
               {
@@ -1397,8 +1397,8 @@
           "hustle": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} walks through, and a foot extends. The fall is hard. The envelope shows when the pocket tears. They see it.",
-              "coop": "You walk through, and a foot extends. The fall is hard. The envelope shows when the pocket tears. They see it."
+              "default": "{winner} walks through, and they set leg. You fall hard. The envelope falls out of your pocket. They see it.",
+              "coop": "You walk through, and they set leg. You fall hard. The envelope falls out of your pocket. They see it."
             },
             "set": [
               {
@@ -1410,8 +1410,8 @@
           "gragra": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} claims payment. \"Which chairman?\" The question hangs. The answer does not come. The phone they take is the only payment made.",
-              "coop": "You claim payment. \"Which chairman?\" The question hangs. The answer does not come. The phone they take is the only payment made."
+              "default": "{winner} claims payment. \"Which chairman?\" The question hangs. The answer does not come. They immediately begin searching you and take your phone.",
+              "coop": "You claim payment. \"Which chairman?\" The question hangs. The answer does not come. They immediately begin searching you and take your phone."
             },
             "set": [
               {
@@ -1423,8 +1423,8 @@
           "wisdom": {
             "to": "bridge_heated",
             "recap": {
-              "default": "{winner} offers money. \"That one na for yesterday. Today get new price.\" The price is the envelope.",
-              "coop": "You offer money. \"That one na for yesterday. Today get new price.\" The price is the envelope."
+              "default": "{winner} offers money. \"That one na for yesterday. Today get new price.\" They immediately search you and see the envelope.",
+              "coop": "You offer money. \"That one na for yesterday. Today get new price.\" They immediately search you and see the envelope."
             },
             "set": [
               {
@@ -1436,13 +1436,13 @@
         },
         "tie": {
           "to": "bridge_heated",
-          "recap": "You both reach the bridge at the same time, hesitate, and the hesitation is the only invitation they need."
+          "recap": "You both reach the bridge at the same time but hesitate, and they start walking towards you."
         }
       }
     },
     "bridge_heated": {
       "title": "Trouble",
-      "text": "The bridge is no longer a crossing. It is a room with no walls, and you are inside it with people who do not like you. The boys have stepped down from the railings, or stepped up from the dark, or simply stopped pretending they were not watching. The envelope is in your pocket. Your phone is in your hand, or not in your hand, or in their hand - it does not matter now. What matters is what you say next, and how fast.",
+      "text": "The boys have stepped down from the railings. The envelope is in your pocket. Your phone is in your hand. What matters is what you say next, and how fast.",
       "stakes": {
         "default": "This is the moment before the moment. Talk your way out, pay your way out, or prepare to lose something you cannot replace.",
         "coop": "This is the moment before the moment. Stand together, or fall separately."
@@ -1493,14 +1493,14 @@
           "charm": {
             "to": "vigilante_post",
             "recap": {
-              "default": "{winner} talks soft, talks brotherhood, and the tallest one spits and says, \"Go. Before I change my mind.\" {loser} talks too long, and the mind changes.",
-              "coop": "You talk soft, talk brotherhood, and the tallest one spits and says, \"Go. Before I change my mind.\""
+              "default": "{winner} talks softly, and the tallest one spits and says, \"Go. Before I change my mind.\" {loser} talks too long, and the mind changes.",
+              "coop": "You talk softly, and the tallest one spits and says, \"Go. Before I change my mind.\""
             }
           },
           "hustle": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} hands over phone and money. The tallest one counts it, pockets it, and steps aside. \"You be smart person.\" {loser} hesitates on the amount, and the stepping aside reverses.",
+              "default": "{winner} hands over phone and money. The tallest one counts it, pockets it, and steps aside. \"You be smart person.\" {loser} hesitates on the amount, and they immediately snatch everything.",
               "coop": "You hand over phone and money. The tallest one counts it, pockets it, and steps aside. \"You be smart person.\""
             },
             "set": [
@@ -1517,7 +1517,7 @@
           "gragra": {
             "to": "vigilante_post",
             "recap": {
-              "default": "{winner} drops Oga T's name. Somebody actually calls. Somebody actually answers. The phone is handed back. \"Oga T say make we leave you.\" {loser} drops the same name and gets asked which Oga T, because there are three.",
+              "default": "{winner} drops Oga T's name. Somebody actually calls. Somebody actually answers. The phone is handed back. \"Oga T say make we leave you.\" {loser} isn't so lucky.",
               "coop": "You drop Oga T's name. Somebody actually calls. Somebody actually answers. The phone is handed back. \"Oga T say make we leave you.\""
             },
             "set": [
@@ -1530,8 +1530,8 @@
           "wisdom": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} drops the envelope, runs, and the shouting behind is about the money, not about you. You are past the bridge before they look up. {loser} drops the envelope, looks back, and the looking costs the lead.",
-              "coop": "You drop the envelope, run, and the shouting behind is about the money, not about you. You are past the bridge before they look up."
+              "default": "{winner} drops the envelope, runs, and you can hear them fighting over the money. You are past the bridge before they look up.",
+              "coop": "You drop the envelope, run, and you can hear them fighting over the money. You are past the bridge before they look up."
             },
             "set": [
               {
@@ -1545,8 +1545,8 @@
           "charm": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} talks brotherhood. The answer is a slap that rings on the metal railing. \"We no be your brothers.\" The envelope leaves with them. You leave with your life.",
-              "coop": "You talk brotherhood. The answer is a slap that rings on the metal railing. \"We no be your brothers.\" The envelope leaves with them. You leave with your life."
+              "default": "{winner} tries to talk. The answer is a heavy slap. \"We no be your brothers.\" The envelope leaves with them. You leave with your life.",
+              "coop": "You try to talk. The answer is a heavy slap. \"We no be your brothers.\" The envelope leaves with them. You leave with your life."
             },
             "set": [
               {
@@ -1558,8 +1558,8 @@
           "hustle": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} reaches for money that is not there. The pocket is empty. The gesture of reaching is enough. They take the phone, the shoes, and the dignity. The envelope stays. Small mercy.",
-              "coop": "You reach for money that is not there. The pocket is empty. The gesture of reaching is enough. They take the phone, the shoes, and the dignity. The envelope stays. Small mercy."
+              "default": "{winner} reaches for money that is not there. The pocket is empty. They take the phone. At least the emvelope is still there. Small mercy.",
+              "coop": "You reach for money that is not there. The pocket is empty. The gesture of reaching is enough. They take the phone. At least the emvelope is still there. Small mercy."
             },
             "set": [
               {
@@ -1571,8 +1571,8 @@
           "gragra": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} shouts Oga T. The answer: \"Oga T don die.\" The laughter after is worse than the blow. The envelope goes. The phone goes. You go, eventually, when they are done laughing.",
-              "coop": "You shout Oga T. The answer: \"Oga T don die.\" The laughter after is worse than the blow. The envelope goes. The phone goes. You go, eventually, when they are done laughing."
+              "default": "{winner} shouts Oga T. The answer: \"Oga T don die.\" The laughter after is worse than the blow. They take the envelope and phone. You go away quickly when they are done laughing.",
+              "coop": "You shout Oga T. The answer: \"Oga T don die.\" The laughter after is worse than the blow. They take the envelope and phone. You go away quickly when they are done laughing."
             },
             "set": [
               {
@@ -1588,8 +1588,8 @@
           "wisdom": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} drops the envelope, runs, and trips on the rail gap. The envelope skids toward the water. They dive for the money, not for you. You crawl away, empty, alive, and too slow.",
-              "coop": "You drop the envelope, run, and trip on the rail gap. The envelope skids toward the water. They dive for the money, not for you. You crawl away, empty, alive, and too slow."
+              "default": "{winner} drops the envelope, runs, and trips on the rail gap. The envelope falls toward the water. They dive for the money, not for you. You crawl away, empty, but at least alive.",
+              "coop": "You drop the envelope, run, and trip on the rail gap. The envelope falls toward the water. They dive for the money, not for you. You crawl away, empty, but at least alive."
             },
             "set": [
               {
@@ -1601,13 +1601,13 @@
         },
         "tie": {
           "to": "home_late",
-          "recap": "You both freeze, waiting for the other to move. They do not wait. The envelope goes. The phone goes. You go eventually, when the bridge is empty again."
+          "recap": "You both freeze, waiting for the other to move. They do not wait. They take the phone and envelope."
         }
       }
     },
     "vigilante_post": {
       "title": "Almost Home",
-      "text": "The vigilante post is a folding chair under a bulb that flickers. Two men in mismatched uniforms sit there, or stand, or lean against the wall. They have seen you before, or they have not. The road from here to your house is three minutes if you run, five if you walk. The bridge is behind you. The boys are behind you. Whatever happened there, you are past it. Almost.",
+      "text": "The vigilante post is a folding chair under a bulb that flickers. Two men in mismatched uniforms sit there, or stand, or lean against the wall. They have seen you before. The road from here to your house is three minutes if you run, five if you walk.",
       "stakes": {
         "default": "The vigilante men can walk you home, or not. They can remember your face, or not. The last stretch is yours to lose.",
         "coop": "The last stretch. Together, or one at a time, with or without escort."
@@ -1615,7 +1615,7 @@
       "choices": [
         {
           "approach": "charm",
-          "label": "Thank them proper, ask if they can watch you to your gate",
+          "label": "Thank them properly, ask if they can watch you to your gate",
           "dc": 11
         },
         {
@@ -1630,7 +1630,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Take the back path behind the church, no streetlights but no boys either",
+          "label": "Take the back path behind the church, there are no streetlights but no agberos either",
           "dc": 11
         }
       ],
@@ -1639,8 +1639,8 @@
           "charm": {
             "to": "home_safe",
             "recap": {
-              "default": "{winner} thanks proper, asks soft, and one of them stands, stretches, and walks to your gate. \"Go inside. Lock am.\" {loser} thanks too loud, and the chair stays folded.",
-              "coop": "You thank proper, ask soft, and one of them stands, stretches, and walks to your gate. \"Go inside. Lock am.\""
+              "default": "{winner} thanks them properly and asks soft, and one of them stands, stretches, and walks to your gate. \"Go inside. Lock am.\"",
+              "coop": "You thank them properly and ask soft, and one of them stands, stretches, and walks to your gate. \"Go inside. Lock am.\""
             },
             "set": [
               {
@@ -1652,22 +1652,22 @@
           "hustle": {
             "to": "home_safe",
             "recap": {
-              "default": "{winner} walks fast, turns the corner, sees the gate, and the key is in the hand before the door. {loser} walks fast, turns wrong, and the extra minute feels like ten.",
+              "default": "{winner} walks fast, turns the corner, sees the gate, and quickly opens the gate. {loser} walks fast, turns a wrong turn and takes more time.",
               "coop": "You walk fast, turn the corner, see the gate, and the key is in your hand before the door."
             }
           },
           "gragra": {
             "to": "home_safe",
             "recap": {
-              "default": "{winner} drops the threat soft, almost joking, and the vigilante man nods slow. \"We go dey here.\" {loser} drops it hard, and the nod is different.",
-              "coop": "You drop the threat soft, almost joking, and the vigilante man nods slow. \"We go dey here.\""
+              "default": "{winner} drops the threat, and the vigilante man nods slow. \"We go dey here.\"",
+              "coop": "You drop the threat, and the vigilante man nods slow. \"We go dey here.\""
             }
           },
           "wisdom": {
             "to": "home_safe",
             "recap": {
-              "default": "{winner} takes the back path, past the church, past the graveyard edge, and the gate is there, waiting, same as every night. {loser} takes the path, misses the turn, and the graveyard is bigger than remembered.",
-              "coop": "You take the back path, past the church, past the graveyard edge, and the gate is there, waiting, same as every night."
+              "default": "{winner} takes the back path, past the church, past the graveyard edge, and sees the gate, waiting. {loser} takes the path but misses the turn.",
+              "coop": "You take the back path, past the church, past the graveyard edge, and see the gate, waiting."
             },
             "set": [
               {
@@ -1681,29 +1681,29 @@
           "charm": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} asks for escort. \"We no dey do escort.\" The chair stays folded. The road stays open. You walk it alone.",
-              "coop": "You ask for escort. \"We no dey do escort.\" The chair stays folded. The road stays open. You walk it alone."
+              "default": "{winner} asks for escort. \"We no dey do escort.\" The chair stays folded. You walk the road alone.",
+              "coop": "You ask for escort. \"We no dey do escort.\" The chair stays folded. You walk the road alone."
             }
           },
           "hustle": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} walks fast, too fast, and the gate is locked. Mum is asleep. The knocking wakes the street. The envelope is safe. The secret is not.",
-              "coop": "You walk fast, too fast, and the gate is locked. Mum is asleep. The knocking wakes the street. The envelope is safe. The secret is not."
+              "default": "{winner} walks fast, too fast, and the gate is locked. Mum is asleep. The knocking wakes the street. The envelope is safe but your secret is not.",
+              "coop": "You walk fast, too fast, and the gate is locked. Mum is asleep. The knocking wakes the street. The envelope is safe but your secret is not."
             }
           },
           "gragra": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} threatens the vigilante. They do not answer. They do not need to. The look is enough. You walk the last stretch without protection you never had.",
-              "coop": "You threaten the vigilante. They do not answer. They do not need to. The look is enough. You walk the last stretch without protection you never had."
+              "default": "{winner} threatens the vigilante. They do not answer. They do not need to. The look is enough. You walk the last stretch without any protection.",
+              "coop": "You threaten the vigilante. They do not answer. They do not need to. The look is enough. You walk the last stretch without any protection."
             }
           },
           "wisdom": {
             "to": "home_late",
             "recap": {
-              "default": "{winner} takes the back path and the church door is open, light inside, singing. You stop, listen, and the time passes without you. The gate is still there when you remember it.",
-              "coop": "You take the back path and the church door is open, light inside, singing. You stop, listen, and the time passes without you. The gate is still there when you remember it."
+              "default": "{winner} takes the back path. The gate is finally ahead.",
+              "coop": "You take the back path. The gate is finally ahead."
             }
           }
         },
@@ -1715,7 +1715,7 @@
     },
     "back_lane": {
       "title": "The Long Way",
-      "text": "The back lane is narrow, unlit, and smells of engine oil from the mechanic yard. You cannot see the bridge from here. You cannot see much of anything. But the keke man was right - nobody is here. The walls on both sides are high, corrugated iron and concrete, and the only window is boarded up. Your footsteps echo. Or they are somebody else's footsteps, and the echo is yours.",
+      "text": "The back lane is narrow, unlit, and smells of engine oil from the mechanic yard. You cannot see the bridge from here. You cannot see much of anything. But the keke man was right - nobody is here. You only hear your footsteps.",
       "stakes": {
         "default": "The long way is the safe way, until it is not. No boys, no vigilante, no help. Just you and the dark and the envelope.",
         "coop": "The long way together. Stay close, or the dark swallows one of you first."
@@ -1728,7 +1728,7 @@
         },
         {
           "approach": "hustle",
-          "label": "Run the length of it, burst out the other side before anybody reacts",
+          "label": "Run and don't stop for anything",
           "dc": 12
         },
         {
@@ -1738,7 +1738,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Walk slow, hug the wall, listen for breathing that is not yours",
+          "label": "Walk slow, hug the wall, listen for any sound that isn't yours.",
           "dc": 11
         }
       ],
@@ -1747,29 +1747,29 @@
           "charm": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} whistles loud, off-key, and the sound fills the lane like light. Nobody answers. Nobody is there. The other end opens to the main road, past the bridge, home. {loser} whistles too soft, and the silence swallows it.",
+              "default": "{winner} whistles loud, off-key, and the sound fills the lane like light. Nobody answers. Nobody is there. The other end opens to the main road, past the bridge, home.",
               "coop": "You whistle loud, off-key, and the sound fills the lane like light. Nobody answers. Nobody is there. The other end opens to the main road, past the bridge, home."
             }
           },
           "hustle": {
             "to": "vigilante_post",
             "recap": {
-              "default": "{winner} runs, bursts out the other side, and the vigilante post is right there, the bulb flickering, safety in sight. {loser} runs, stumbles on the oil slick, and the burst becomes a crawl.",
+              "default": "{winner} runs, bursts out the other side, and the vigilante post is right there, the bulb flickering, safety in sight. {loser} runs, stumbles on the oil slick, and falls.",
               "coop": "You run, burst out the other side, and the vigilante post is right there, the bulb flickering, safety in sight."
             }
           },
           "gragra": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} shouts ahead, and the echo answers alone. The lane is empty. It was always empty. The fear was the only occupant. {loser} shouts and the voice that answers is not an echo.",
-              "coop": "You shout ahead, and the echo answers alone. The lane is empty. It was always empty. The fear was the only occupant."
+              "default": "{winner} shouts ahead, and the echo answers alone. The lane is empty. It was always empty.",
+              "coop": "You shout ahead, and the echo answers alone. The lane is empty. It was always empty."
             }
           },
           "wisdom": {
             "to": "road_clear",
             "recap": {
-              "default": "{winner} walks slow, listens, hears only their own heart, and reaches the end with the envelope dry and the hands steady. {loser} walks too fast, misses the turn, and the lane doubles back toward the bridge.",
-              "coop": "You walk slow, listen, hear only your own heart, and reach the end with the envelope dry and your hands steady."
+              "default": "{winner} walks slowly, listens, hears only their own heart, and reaches the end with the envelope dry and the hands steady. {loser} walks too fast, misses the turn, and the lane doubles back toward the bridge.",
+              "coop": "You walk slowlt, listen, hear only your own heart, and reach the end with the envelope dry and your hands steady."
             },
             "set": [
               {
@@ -1816,8 +1816,8 @@
           "wisdom": {
             "to": "street_blocked",
             "recap": {
-              "default": "{winner} walks slow, listens, and hears breathing that matches their own step for step. The wall behind is solid. The breathing is ahead.",
-              "coop": "You walk slow, listen, and hear breathing that matches your own step for step. The wall behind is solid. The breathing is ahead."
+              "default": "{winner} walks slow, listening.",
+              "coop": "You walk slow, listening."
             }
           }
         },
@@ -1829,7 +1829,7 @@
     },
     "home_safe": {
       "title": "Inside",
-      "text": "The gate closes behind you. The lock turns. The envelope is on the kitchen table, and your sister's name is written on it in Mum's careful hand. She does not ask where you were. She does not need to. She takes the envelope, counts it without looking, and says, \"Go and sleep. I will take her in the morning.\" The exam fee is safe. The phone is in your hand, or charging, or gone - but the envelope is safe. That is what matters. That is what you carried home.",
+      "text": "The gate closes behind you. The lock turns. You put the envelope on the kitchen table. She does not ask where you were. She takes the envelope, counts it without looking, and says, \"Go and sleep. We'll deal with it tomorrow.\" The exam fee is safe. That is what matters.",
       "stakes": {
         "default": "You made it. The sister writes WAEC. The secret stays yours. The night ends.",
         "coop": "You made it together. Whatever happened on the road, the kitchen table is the same."
@@ -1847,7 +1847,7 @@
         },
         {
           "approach": "gragra",
-          "label": "Tell her you were at a friend's place and it ran late",
+          "label": "Tell her you were at a friend's place and got late",
           "dc": 11
         },
         {
@@ -1863,18 +1863,18 @@
       },
       "finish": 3,
       "endings": {
-        "win": "You reach the gate first and the envelope goes on the kitchen table, every naira of it. Mum counts it without looking and says, \"Go and sleep. I will take her in the morning.\" {loser} is still on the road.",
-        "loss": "You reach home safe with the envelope, but {winner} is already inside telling it with big hands. Your sister writes WAEC either way.",
+        "win": "You reach the gate first and put the envelope on the kitchen table, every naira of it. Mum counts it without looking and says, \"Go and sleep.\" {loser} is still on the road.",
+        "loss": "You reach home safe with the envelope, but {winner} is already inside. At least your little sister will write her WAEC.",
         "success": {
-          "default": "You both reach your gates with the envelope safe. Your sister writes WAEC, and nobody asks where you were.",
-          "solo": "You reach the gate with the envelope safe. Your sister writes WAEC, and Mum does not ask where you were."
+          "default": "You both reach your gates with the envelope safe and nobody asks where you were.",
+          "solo": "You reach the gate with the envelope safe and Mum does not ask where you were."
         },
-        "fail": "You get home with the envelope, but so late that Mum has called six times. The morning is long, but your sister still writes."
+        "fail": "You get home with the envelope, but so late that Mum has called six times."
       }
     },
     "home_late": {
       "title": "Too Late",
-      "text": "The gate is locked. The house is dark. You knock soft, then loud, then the neighbour's dog barks and Mum's light comes on. She opens the window, not the gate, and looks at you. Looks at your empty pockets, or your torn shirt, or your face, and says nothing. The envelope is gone, or the phone is gone, or both, and the morning will bring the deadline she does not know about yet. You sit on the step until she comes down. The night is over. The trouble is not.",
+      "text": "The gate is locked. The house is dark. You knock soft, then loud, then the neighbour's dog barks and Mum's light comes on. She opens the window, not the gate, looks at you and says nothing. You sit on the step until she comes down. The night is over. The trouble is not.",
       "stakes": {
         "default": "You survived the road but lost what you carried. The sister does not write WAEC. The morning brings questions you cannot answer.",
         "coop": "You survived together, or one of you did, but what you carried is gone. The morning brings questions."
@@ -1897,7 +1897,7 @@
         },
         {
           "approach": "wisdom",
-          "label": "Sit on the step and wait for her to come down, then tell it straight",
+          "label": "Sit on the step and wait for her to come down, then tell her what happened",
           "dc": 10
         }
       ],
@@ -1908,19 +1908,19 @@
       },
       "finish": 0,
       "endings": {
-        "win": "You reach the gate first, with nothing left to carry, and tell Mum straight. {loser} is still on the road. The morning will bring the WAEC question, but you do not face it alone.",
-        "loss": "{winner} gets home first and tells it better. You sit on the step with nothing to carry in, and Mum comes down slow.",
+        "win": "You reach the gate first, with nothing left to carry, and tell Mum straight. {loser} is still on the road. You failed your sister.",
+        "loss": "{winner} gets home first. You sit on the step with nothing to carry in.",
         "success": {
           "default": "You both get home with nothing left to carry. Mum comes down the stairs, and the morning will bring questions neither of you can answer yet.",
           "solo": "You get home with nothing left to carry. Mum comes down the stairs, and the morning will bring questions you cannot answer yet."
         },
-        "fail": "The gate stays locked longer than the night. By the time Mum comes down, the WAEC deadline is the only thing anybody can say."
+        "fail": "The gate stays locked."
       }
     }
   },
   "endings": {
-    "win": "You reach home first and the envelope is safe. Your sister writes WAEC, and {loser} gets there after, with a worse story.",
-    "loss": "{winner} gets home first and tells it better. Your sister's WAEC fee is still on your mind all night.",
+    "win": "You reach home first and the envelope is safe. Your sister writes WAEC, and {loser} gets there after.",
+    "loss": "{winner} gets home first. Your sister's WAEC fee is still on your mind all night.",
     "success": {
       "default": "You both get home. Your sister writes WAEC, and Mum never asks where you were.",
       "solo": "You get home. Your sister writes WAEC, and Mum never asks where you were."
@@ -1937,7 +1937,7 @@
     },
     {
       "if": "boys_know_you",
-      "text": "The boys on the bridge now greet you by name whenever you pass. It is respect, or something close."
+      "text": "The boys on the bridge now greet you by name whenever you pass. They respect you."
     },
     {
       "if": "on_their_list",
@@ -1945,7 +1945,7 @@
     },
     {
       "if": "vigilante_friend",
-      "text": "The vigilante men save a chair for you now. You do not know if that is a good sign."
+      "text": "The vigilante men save a chair for you now. They like you"
     },
     {
       "if": "cash_low",
