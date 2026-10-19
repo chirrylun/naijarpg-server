@@ -109,6 +109,8 @@ const choiceDc = (room: Room, p: Player, c: SceneChoice) => {
   const ease = room.solo ? BALANCE.soloDcEase : 0;
   return Math.max(5, Math.min(24, c.dc + story - ease));
 };
+/** Solo and co-op (Link Up) show the number you need to roll. Face Off and teams are won by the higher roll, so no target is shown. */
+const showNeed = (room: Pick<Room, 'mode'>) => room.mode === 'coop';
 const lockReason = (room: Room, p: Player, c: SceneChoice) =>
   c.lock && holds(room, c.lock.who, p, c.lock.mark) ? c.lock.reason : null;
 /** Moves a player may pick. If every move is locked we ignore the locks so nobody is stuck. */
@@ -230,7 +232,8 @@ export function publicState(room: Room, viewerId?: string) {
         choices: scene.choices.map((c) => ({
           approach: c.approach,
           label: pickVariant(c.label, m, f),
-          dc: viewer ? choiceDc(room, viewer, c) : c.dc, // the number you need to roll
+          // the number you need to roll. Only solo and co-op show it; Face Off is decided by the higher roll
+          dc: !showNeed(room) ? null : viewer ? choiceDc(room, viewer, c) : c.dc,
           // story marks that shift the number (switched off while BALANCE.storyMods is false)
           mods: (BALANCE.storyMods ? (c.mods ?? []) : []).map((x) => ({
             mark: x.mark,
@@ -278,7 +281,7 @@ function privateRoll(room: Room, userId: string) {
     modifier: r.modifier,
     starBonus: r.starBonus,
     total: r.total,
-    dc: r.dc,
+    dc: showNeed(room) ? r.dc : null, // "you need N" is a solo / co-op idea only
     passed: r.tier === 'win' || r.tier === 'legendary',
     tier: r.tier,
     shielded: r.shielded,
@@ -735,7 +738,7 @@ async function settle(room: Room) {
         modifier: r.modifier,
         starBonus: r.starBonus,
         total: r.total,
-        dc: r.dc,
+        dc: showNeed(room) ? r.dc : null,
         passed: r.tier === 'win' || r.tier === 'legendary',
         tier: r.tier,
         shielded: r.shielded,

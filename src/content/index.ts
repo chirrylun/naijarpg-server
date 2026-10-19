@@ -54,6 +54,21 @@ for (const s of scenarios) {
   s.epilogues?.forEach((x) => mark(x.if, 'epilogues'));
   s.bonus?.lostBy.forEach((m) => mark(m, 'bonus'));
 
+  // a story must keep moving forward: no route may lead back to a scene already on the path
+  const seen: Record<string, 'open' | 'done'> = {};
+  const visit = (key: string, trail: string[]) => {
+    seen[key] = 'open';
+    for (const e of Object.values(s.scenes[key].next as Record<string, Edge | undefined>)) {
+      for (const l of edgeLeaves(e)) {
+        if (!l.to) continue;
+        if (seen[l.to] === 'open') fail(key, `loops back to "${l.to}" (${[...trail.slice(trail.indexOf(l.to)), l.to].join(' -> ')})`);
+        if (!seen[l.to]) visit(l.to, [...trail, l.to]);
+      }
+    }
+    seen[key] = 'done';
+  };
+  visit(s.start, [s.start]);
+
   // one-player games run on the co-op route: refuse to start if a line would mention a partner who isn't there
   const solo = soloProblems(s);
   if (solo.length) throw new Error(`Scenario ${s.id} is not safe for solo play:\n  ${solo.join('\n  ')}`);
