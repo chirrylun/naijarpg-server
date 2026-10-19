@@ -1,3 +1,4 @@
+import { d20 } from './dice';
 import type { Approach, Kind, Mode, Tier } from './types';
 
 export type RoundRoll = { userId: string; team: number; approach: Approach; tier: Tier; margin: number; total: number; dc: number };
@@ -27,6 +28,57 @@ export function duelTie(rolls: RoundRoll[]): string[] {
   const tops = teams.map((t) => Math.max(...rolls.filter((r) => r.team === t).map((r) => r.total)));
   if (tops[0] !== tops[1]) return [];
   return rolls.filter((r) => r.total === tops[teams.indexOf(r.team)]).map((r) => r.userId);
+}
+
+/**
+ * Face-off rounds: the HIGHER total wins. There is no number to beat, only the other player.
+ * If the top rolls are level, the tied players roll one plain die each, again and again, until one side is ahead.
+ * `tieRounds` lists every one of those extra rolls, so the screen can show them.
+ */
+export function decideDuel(
+  rolls: { userId: string; team: number; total: number }[],
+  rng: () => number = d20,
+): { winnerTeam: number; tieRounds: { userId: string; die: number }[][] } {
+  const teams = [...new Set(rolls.map((r) => r.team))].sort();
+  const top = (xs: { team: number; v: number }[], t: number) => Math.max(...xs.filter((x) => x.team === t).map((x) => x.v));
+  const totals = rolls.map((r) => ({ id: r.userId, team: r.team, v: r.total }));
+  const [a, b] = [top(totals, teams[0]), top(totals, teams[1])];
+  if (a !== b) return { winnerTeam: a > b ? teams[0] : teams[1], tieRounds: [] };
+
+  const tieRounds: { userId: string; die: number }[][] = [];
+  const teamOf = new Map(rolls.map((r) => [r.userId, r.team]));
+  // only the players who are level at the top of their side roll again
+  let tied = totals.filter((x) => x.v === a).map((x) => x.id);
+  for (let i = 0; i < 25; i++) {
+    const throws = tied.map((userId) => ({ userId, die: rng() }));
+    tieRounds.push(throws);
+    const ts = throws.map((t) => ({ id: t.userId, team: teamOf.get(t.userId)!, v: t.die }));
+    const [x, y] = [top(ts, teams[0]), top(ts, teams[1])];
+    if (x !== y) return { winnerTeam: x > y ? teams[0] : teams[1], tieRounds };
+    tied = ts.filter((t) => t.v === x).map((t) => t.id); // still level: just those roll again
+  }
+  return { winnerTeam: Math.random() < 0.5 ? teams[0] : teams[1], tieRounds }; // safety net, practically unreachable
+}
+
+/**
+ * What a face-off round means for ONE side's road. The side that rolled higher pulls it off on its road,
+ * the other side doesn't, so the story still branches on the move that was played.
+ */
+export function duelRoadOutcome(rolls: RoundRoll[], won: boolean): RoundOutcome {
+  const ids = rolls.map((r) => r.userId);
+  const same = rolls.length > 1 && rolls.every((r) => r.approach === rolls[0].approach);
+  const top = bestBy(rolls, (r) => r.total);
+  return {
+    kind: won ? 'all_pass' : 'all_fail',
+    winnerTeam: null,
+    same,
+    sameApproach: same ? rolls[0].approach : null,
+    passers: won ? ids : [],
+    failers: won ? [] : ids,
+    winnerIds: won ? ids : [],
+    loserIds: won ? [] : ids,
+    lead: top ? { userId: top.userId, approach: top.approach } : null,
+  };
 }
 
 /**

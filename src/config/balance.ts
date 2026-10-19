@@ -2,7 +2,7 @@ export const BALANCE = {
   roundSeconds: 40,
   resultDelayMs: 6500,
   tieRerollMs: 2600, // extra reveal time for each tie-break re-roll
-  maxRounds: 6, // every path through the current stories is exactly 4 scenes
+  maxRounds: 6, // a game ends at a real ending, or here. Routes are steered so a game can always reach an ending in time
   maxModifier: 3,
   maxTotalModifier: 4,
   minTotalModifier: -3,

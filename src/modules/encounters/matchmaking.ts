@@ -33,7 +33,7 @@ export async function joinQueue(userId: string, mode: Mode, format: Format, dail
     return { matched: false };
   }
 
-  const room = await createRoom({ hostId: group[0], mode, format, daily });
+  const room = await createRoom({ hostId: group[0], mode, format, daily, players: group });
   for (const id of group) await joinRoom(room, id);
   return { matched: true, roomId: room.id };
 }
