@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { edgeLeaves, scenarioSchema, type Edge, type Scenario } from '../game-engine/scenario';
+import { edgeLeaves, findLoops, scenarioSchema, type Edge, type Scenario } from '../game-engine/scenario';
 import { soloProblems } from '../game-engine/soloCheck';
 import type { Format, Mode } from '../game-engine/types';
 
@@ -53,6 +53,11 @@ for (const s of scenarios) {
   }
   s.epilogues?.forEach((x) => mark(x.if, 'epilogues'));
   s.bonus?.lostBy.forEach((m) => mark(m, 'bonus'));
+
+  // Routes that lead back to a scene already passed are allowed in the file, but the game never replays a scene.
+  // Tell the author, because every game that hits one is quietly sent somewhere else.
+  const loops = findLoops(s);
+  if (loops.length) console.warn(`[scenario] ${s.id} has ${loops.length} loop(s) back to earlier scenes. The game skips scenes already played, so those routes are ignored. First few:\n  ${loops.slice(0, 3).join('\n  ')}`);
 
   // one-player games run on the co-op route: refuse to start if a line would mention a partner who isn't there
   const solo = soloProblems(s);
