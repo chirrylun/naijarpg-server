@@ -1,6 +1,6 @@
 import { supabase } from '../../db/supabase';
 import { getIo } from '../../realtime/context';
-import { BALANCE } from '../../config/balance';
+import { BALANCE, entryKindOf } from '../../config/balance';
 import { AppError } from '../../lib/errors';
 import { makeCode } from '../../lib/codes';
 import { lagosDate, weekKey } from '../../lib/time';
@@ -81,6 +81,10 @@ const COOP_POINTS: Partial<Record<Kind, number>> = { all_pass: 3, mixed: 2, all_
 const EDGES: StarPlay[] = ['reroll', 'nudge']; // the bonuses currently offered
 const MIN_EDGE = Math.min(...EDGES.map((id) => BALANCE.starCost[id]));
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+/** Stars each player pays when this game starts, and the total a winner gets back. */
+const kindOf = (room: Pick<Room, 'mode' | 'solo'>) => entryKindOf(room.mode, room.solo);
+const entryCostOf = (room: Pick<Room, 'mode' | 'solo'>) => BALANCE.entryCost[kindOf(room)];
+const payoutOf = (room: Pick<Room, 'mode' | 'solo'>) => BALANCE.payout[kindOf(room)];
 type SceneChoice = Scene['choices'][number];
 const alive = (m: Map<string, number> | undefined, round: number, mark: string) => (m?.get(mark) ?? 0) >= round;
 const activeIds = (room: Room, m: Map<string, number> | undefined) =>
@@ -207,9 +211,11 @@ export function publicState(room: Room, viewerId?: string) {
     recap: room.status === 'active' ? recap : null,
     scenario: { id: room.scenario.id, title: room.scenario.title, tagline: room.scenario.tagline },
     world: activeIds(room, room.world).map((id) => markInfo(room, id)),
+    entry: entryCostOf(room), // stars each player pays to start
+    // stars is the TOTAL paid out to a winner (the entry comes back inside it)
     win: room.solo
-      ? { points: BALANCE.soloSuccess, stars: BALANCE.soloWinStars }
-      : { points: room.mode === 'coop' ? BALANCE.points.coopSuccess : BALANCE.points.win, stars: BALANCE.winStars },
+      ? { points: BALANCE.soloSuccess, stars: payoutOf(room) }
+      : { points: room.mode === 'coop' ? BALANCE.points.coopSuccess : BALANCE.points.win, stars: payoutOf(room) },
     wins: room.mode === 'coop' ? null : { 0: room.teamWins[0] ?? 0, 1: room.teamWins[1] ?? 0 },
     bonus: room.scenario.bonus
       ? { label: room.scenario.bonus.label, stars: BALANCE.bonus.stars, points: BALANCE.bonus.points }
@@ -310,6 +316,8 @@ export async function joinRoom(room: Room, userId: string) {
       .single();
     if (error) throw error;
     if (room.players.length >= room.capacity) throw new AppError(409, 'room_full');
+    // nobody is charged while waiting, but you need the entry stars to take a seat
+    if (prof.stars < entryCostOf(room)) throw new AppError(402, 'not_enough_stars');
     const perTeam = room.capacity / 2;
     // fill team 0 first, so a friend who joins your invite is on YOUR team in 2v2
     const team = room.mode === 'coop' ? 0 : room.players.filter((p) => p.team === 0).length < perTeam ? 0 : 1;
@@ -330,8 +338,89 @@ export async function joinRoom(room: Room, userId: string) {
     await supabase.from('encounter_players').insert({ encounter_id: room.id, user_id: userId, team });
   }
   io.in(`user:${userId}`).socketsJoin(`room:${room.id}`);
-  if (room.players.length === room.capacity && room.status === 'waiting') startRoom(room);
+  if (room.players.length === room.capacity && room.status === 'waiting') await startRoom(room);
   else emitState(room);
+}
+
+/** Throws 402 if the player can't pay `cost` stars right now. */
+export async function assertCanAfford(userId: string, cost: number) {
+  const { data, error } = await supabase.from('profiles').select('stars').eq('id', userId).single();
+  if (error) throw error;
+  if (data.stars < cost) throw new AppError(402, 'not_enough_stars');
+}
+
+/** Which of these players can't pay `cost` stars right now. */
+export async function playersShort(userIds: string[], cost: number): Promise<string[]> {
+  const { data, error } = await supabase.from('profiles').select('id, stars').in('id', userIds);
+  if (error) throw error;
+  const have = new Map((data ?? []).map((r) => [r.id, r.stars]));
+  return userIds.filter((id) => (have.get(id) ?? 0) < cost);
+}
+
+export const entryCostFor = (mode: string, solo: boolean) => BALANCE.entryCost[entryKindOf(mode, solo)];
+
+/**
+ * Cancels a game that never got going: gives the entry back to `refund`, tells everyone in the room,
+ * and frees the seats. Safe to call more than once for the same room.
+ */
+async function abortRoom(room: Room, reason: 'not_enough_stars' | 'nobody_moved' | 'server_error', refund: Player[] = []) {
+  if (room.timer) clearTimeout(room.timer);
+  if (room.status === 'finished') return;
+  room.status = 'finished';
+  const cost = entryCostOf(room);
+  let refundsOk = true;
+  for (const p of refund) {
+    try {
+      // idempotent per (user, game), so a retry or the orphan sweep can never pay twice
+      await supabase.rpc('apply_stars', { p_user: p.userId, p_delta: cost, p_reason: 'entry_refund', p_ref: room.id }).throwOnError();
+    } catch (err) {
+      refundsOk = false;
+      console.error('entry refund failed', room.id, p.userId, err);
+    }
+  }
+  const io = getIo();
+  io.to(`room:${room.id}`).emit('room:aborted', { roomId: room.id, reason, refunded: refund.length > 0 });
+  for (const p of room.players) {
+    roomOfUser.delete(p.userId);
+    io.to(`user:${p.userId}`).emit('stars:refresh');
+  }
+  io.in(`room:${room.id}`).socketsLeave(`room:${room.id}`);
+  rooms.delete(room.id);
+  if (room.code) roomByCode.delete(room.code);
+  // if a refund failed the game stays 'active' on purpose, so the orphan sweep retries it
+  if (refundsOk) await supabase.from('encounters').update({ status: 'abandoned' }).eq('id', room.id);
+}
+
+/**
+ * Games that were running when the server restarted are gone from memory, but their entry stars were taken.
+ * Give those back. Only touches games that have been "active" for a while and aren't live on this server.
+ */
+export async function sweepOrphanedGames() {
+  try {
+    const cutoff = new Date(Date.now() - 20 * 60_000).toISOString();
+    const { data: games } = await supabase.from('encounters').select('id').eq('status', 'active').lt('created_at', cutoff);
+    for (const g of games ?? []) {
+      if (rooms.has(g.id)) continue;
+      const { data: rows } = await supabase
+        .from('star_ledger')
+        .select('user_id, delta, reason')
+        .eq('ref_id', g.id)
+        .in('reason', ['game_entry', 'solo_entry', 'game_refund', 'game_win', 'entry_refund']);
+      const settled = new Set((rows ?? []).filter((r) => ['game_refund', 'game_win', 'entry_refund'].includes(r.reason)).map((r) => r.user_id));
+      let ok = true;
+      for (const r of (rows ?? []).filter((x) => x.reason === 'game_entry' || x.reason === 'solo_entry')) {
+        if (settled.has(r.user_id)) continue;
+        const { error } = await supabase.rpc('apply_stars', { p_user: r.user_id, p_delta: -r.delta, p_reason: 'entry_refund', p_ref: g.id });
+        if (error) {
+          ok = false;
+          console.error('orphan refund failed', g.id, r.user_id, error.message);
+        } else getIo().to(`user:${r.user_id}`).emit('stars:refresh');
+      }
+      if (ok) await supabase.from('encounters').update({ status: 'abandoned' }).eq('id', g.id);
+    }
+  } catch (err) {
+    console.error('orphan sweep failed', err);
+  }
 }
 
 export async function leaveRoom(userId: string) {
@@ -353,8 +442,25 @@ export async function leaveRoom(userId: string) {
   }
 }
 
-function startRoom(room: Room) {
-  room.status = 'active';
+/** The seats are full: take everyone's entry stars, then play. If anyone can't pay, nobody pays. */
+async function startRoom(room: Room) {
+  room.status = 'active'; // locks the seats while the stars are taken
+  const cost = entryCostOf(room);
+  const reason = room.solo ? 'solo_entry' : 'game_entry';
+  const charged: Player[] = [];
+  for (const p of room.players) {
+    // idempotent per (user, game): the same game can never charge a player twice
+    const { data, error } = await supabase.rpc('apply_stars', { p_user: p.userId, p_delta: -cost, p_reason: reason, p_ref: room.id });
+    if (error) {
+      const short = error.message.includes('insufficient_stars');
+      if (!short) console.error('entry charge failed', room.id, p.userId, error.message);
+      await abortRoom(room, short ? 'not_enough_stars' : 'server_error', charged);
+      return;
+    }
+    p.stars = Number(data);
+    charged.push(p);
+    getIo().to(`user:${p.userId}`).emit('stars:update', { stars: p.stars });
+  }
   supabase.from('encounters').update({ status: 'active' }).eq('id', room.id).then(() => {});
   beginRound(room);
 }
@@ -394,6 +500,12 @@ export function submitAction(userId: string, approach: Approach) {
 function startRolls(room: Room) {
   if (room.phase !== 'choose' || room.status !== 'active' || room.resolving) return;
   if (room.timer) clearTimeout(room.timer);
+
+  // Somebody never moved in round 1 (left, lost signal): the game never really began, so everyone gets their entry back
+  if (room.round === 1 && room.players.some((p) => !p.action)) {
+    void abortRoom(room, 'nobody_moved', room.players);
+    return;
+  }
 
   for (const p of room.players) {
     const scene = sceneOf(room, p);
@@ -658,14 +770,17 @@ async function settle(room: Room) {
   }, BALANCE.resultDelayMs);
 }
 
-/** How many more stars a player may earn from games today (wins and bonuses share one daily cap). */
+/**
+ * How many more PROFIT stars a player may earn today. Game profit and the streak bonus share one daily cap.
+ * The entry coming back ('game_refund') is not profit, so it never counts against the cap.
+ */
 async function starsLeftToday(userId: string): Promise<number> {
   const dayStart = new Date(`${lagosDate()}T00:00:00+01:00`).toISOString(); // Lagos is UTC+1 all year
   const { data } = await supabase
     .from('star_ledger')
     .select('delta')
     .eq('user_id', userId)
-    .in('reason', ['game_win', 'game_bonus'])
+    .in('reason', ['game_win', 'game_bonus', 'streak'])
     .gte('created_at', dayStart);
   const used = (data ?? []).reduce((sum, row) => sum + row.delta, 0);
   return Math.max(0, BALANCE.dailyGameStarCap - used);
@@ -717,21 +832,26 @@ async function finish(room: Room) {
     return { p, result, won, bonusKept, points: points + (bonusKept ? BALANCE.bonus.points : 0) };
   });
 
-  // work out stars (with the daily cap) before the result is shown, so the screen tells the truth
+  // Work out stars before the result is shown, so the screen tells the truth.
+  // A winner first gets the entry back (always), then the profit on top (limited by the daily cap).
+  const entry = entryCostOf(room);
+  const profitPrize = Math.max(0, payoutOf(room) - entry);
   const results = await Promise.all(
     base.map(async ({ p, result, won, bonusKept, points }) => {
       const left = await starsLeftToday(p.userId);
-      const prize = room.solo ? BALANCE.soloWinStars : BALANCE.winStars;
-      const winStars = Math.min(won ? prize : 0, left);
+      const refundStars = won ? entry : 0;
+      const winStars = Math.min(won ? profitPrize : 0, left);
       const bonusStars = Math.min(bonusKept ? BALANCE.bonus.stars : 0, left - winStars);
-      const wanted = (won ? prize : 0) + (bonusKept ? BALANCE.bonus.stars : 0);
+      const wanted = (won ? profitPrize : 0) + (bonusKept ? BALANCE.bonus.stars : 0);
       return {
         userId: p.userId,
         username: p.username,
         team: p.team,
         result,
         points,
-        stars: winStars + bonusStars,
+        entry, // what this player paid to start
+        stars: refundStars + winStars + bonusStars, // the total paid out (entry back + profit)
+        refundStars,
         winStars,
         bonusStars,
         capped: winStars + bonusStars < wanted,
@@ -807,6 +927,7 @@ async function finish(room: Room) {
           p_won: r.result === 'win' || r.result === 'success',
         });
         // apply_stars is idempotent per (user, reason, game), so a retry can never pay twice
+        if (r.refundStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.refundStars, p_reason: 'game_refund', p_ref: room.id });
         if (r.winStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.winStars, p_reason: 'game_win', p_ref: room.id });
         if (r.bonusStars > 0) await supabase.rpc('apply_stars', { p_user: r.userId, p_delta: r.bonusStars, p_reason: 'game_bonus', p_ref: room.id });
         await afterEncounter(r.userId, { solo: room.solo }); // also tells the client to refresh its stars
@@ -826,9 +947,17 @@ export async function requestRematch(userId: string, roomId: string) {
   const room = rooms.get(roomId);
   if (!room || room.status !== 'finished' || !room.players.some((p) => p.userId === userId)) throw new AppError(404, 'no_rematch');
   const io = getIo();
+  await assertCanAfford(userId, entryCostOf(room)); // a rematch is a new game: it costs a new entry
   room.rematch.add(userId);
   io.to(`room:${room.id}`).emit('rematch:status', { ready: [...room.rematch] });
   if (room.rematch.size < room.capacity) return;
+  // everyone said yes: make sure everyone can still pay before the new room is made, so nobody is left waiting in a dead room
+  const short = await playersShort(room.players.map((p) => p.userId), entryCostOf(room));
+  if (short.length) {
+    room.rematch.clear();
+    io.to(`room:${room.id}`).emit('room:aborted', { roomId: room.id, reason: 'not_enough_stars', refunded: false });
+    return;
+  }
   const next = await createRoom({ hostId: room.hostId, mode: room.mode, format: room.format, solo: room.solo });
   io.to(`room:${room.id}`).emit('rematch:start', { roomId: next.id });
   for (const p of room.players) {
@@ -840,6 +969,7 @@ export async function requestRematch(userId: string, roomId: string) {
 /** Start a one-player game right away: no queue, no waiting. */
 export async function startSolo(userId: string) {
   if (roomOfUser.has(userId)) throw new AppError(409, 'already_in_encounter');
+  await assertCanAfford(userId, BALANCE.entryCost.solo);
   const room = await createRoom({ hostId: userId, mode: 'coop', format: '1v1', solo: true });
   await joinRoom(room, userId);
   return { roomId: room.id };
