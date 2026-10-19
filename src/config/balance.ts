@@ -1,5 +1,5 @@
 export const BALANCE = {
-  roundSeconds: 40,
+  roundSeconds: 50,
   resultDelayMs: 6500,
   tieRerollMs: 2600, // extra reveal time for each tie-break re-roll
   maxRounds: 6, // a game ends at a real ending, or here. Routes are steered so a game can always reach an ending in time
@@ -32,7 +32,7 @@ export const BALANCE = {
   useStats: false,
   storyMods: false, // story marks change the number you need to roll. Off for now; set true to bring them back
   soloDcEase: 2, // playing alone: every number you need is this much lower, so a solo run is winnable
-  edgeSeconds: 18,
+  edgeSeconds: 14,
   chat: { maxLen: 500, declineCooldownHours: 24 },
   // placeholder prices, adjust freely
   packs: [
