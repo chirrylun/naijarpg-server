@@ -5,12 +5,12 @@ import { AppError } from '../../lib/errors';
 import { makeCode } from '../../lib/codes';
 import { lagosDate, weekKey } from '../../lib/time';
 import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver';
-import { duelTie, resolveRound } from '../../game-engine/round';
+import { decideDuel, duelRoadOutcome, resolveRound } from '../../game-engine/round';
 import { d20 } from '../../game-engine/dice';
 import { fillTokens, resultLine, APPROACH_LABEL, joinNames } from '../../game-engine/narrative';
-import { pickEdge, pickVariant, type Scenario, type Scene } from '../../game-engine/scenario';
+import { pickEdge, pickVariant, stepsToEnd, type Scenario, type Scene } from '../../game-engine/scenario';
 import type { Approach, Format, Kind, Mode, StarPlay, Tier } from '../../game-engine/types';
-import { pickScenario, dailyScenario, supports } from '../../content';
+import { allScenarios, pickScenario, dailyScenario, supports } from '../../content';
 import { afterEncounter } from '../progress/progress.service';
 
 type Phase = 'choose' | 'edge' | 'reveal';
@@ -62,6 +62,7 @@ export type Room = {
   track: Record<number, { key: string; recap: string | null }>; // race modes: each side walks its own road
   arrived: Record<number, { score: number; sceneKey: string; round: number }>; // race modes: sides that reached the end
   round: number;
+  visited: Map<number, Set<string>>; // scenes each road has already played (road 0 for co-op and solo), so no scene is ever replayed
     held: Map<string, Map<string, number>>; // userId -> mark -> last round it is active
   world: Map<string, number>; // shared marks
   history: Map<string, Set<string>>; // every mark earned this game -> who earned it
@@ -81,6 +82,8 @@ const COOP_POINTS: Partial<Record<Kind, number>> = { all_pass: 3, mixed: 2, all_
 const EDGES: StarPlay[] = ['reroll', 'nudge']; // the bonuses currently offered
 const MIN_EDGE = Math.min(...EDGES.map((id) => BALANCE.starCost[id]));
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+/** Face-off games (Face Off / Team): the higher roll wins. There is no number to beat, so none is ever shown. */
+const isDuel = (room: Pick<Room, 'mode'>) => room.mode !== 'coop';
 /** Stars each player pays when this game starts, and the total a winner gets back. */
 const kindOf = (room: Pick<Room, 'mode' | 'solo'>) => entryKindOf(room.mode, room.solo);
 const entryCostOf = (room: Pick<Room, 'mode' | 'solo'>) => BALANCE.entryCost[kindOf(room)];
@@ -134,8 +137,44 @@ export const rooms = new Map<string, Room>();
 export const roomByCode = new Map<string, string>();
 export const roomOfUser = new Map<string, string>();
 
-export async function createRoom(o: { hostId: string; mode: Mode; format: Format; daily?: boolean; invite?: boolean; solo?: boolean }) {
-  let scenario = o.daily ? dailyScenario() : pickScenario(o.mode, o.format);
+/**
+ * Picks the scenario that these players have gone longest without playing (one they have never played comes first),
+ * so a new game or a rematch is not the story they just finished. `avoid` is ruled out whenever there is another choice.
+ */
+async function pickFreshScenario(mode: Mode, format: Format, playerIds: string[], avoid?: string): Promise<Scenario> {
+  let pool = allScenarios().filter((s) => supports(s, mode, format));
+  if (avoid && pool.length > 1) pool = pool.filter((s) => s.id !== avoid);
+  if (pool.length <= 1) return pool[0] ?? pickScenario(mode, format);
+  try {
+    const { data } = await supabase
+      .from('encounters')
+      .select('scenario_id, encounter_players!inner(user_id)')
+      .in('encounter_players.user_id', playerIds)
+      .in('status', ['active', 'finished'])
+      .order('created_at', { ascending: false })
+      .limit(12);
+    const recent = [...new Set((data ?? []).map((r: { scenario_id: string }) => r.scenario_id))]; // newest first
+    const age = (s: Scenario) => (recent.indexOf(s.id) === -1 ? Infinity : recent.indexOf(s.id));
+    const oldest = Math.max(...pool.map(age));
+    const best = pool.filter((s) => age(s) === oldest);
+    return best[Math.floor(Math.random() * best.length)];
+  } catch (err) {
+    console.error('scenario rotation failed, picking at random', err);
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+}
+
+export async function createRoom(o: {
+  hostId: string;
+  mode: Mode;
+  format: Format;
+  daily?: boolean;
+  invite?: boolean;
+  solo?: boolean;
+  players?: string[]; // everyone who will play, so the scenario can be one they haven't just played
+  avoid?: string; // a scenario id to skip (the one a rematch is coming from)
+}) {
+  let scenario = o.daily ? dailyScenario() : await pickFreshScenario(o.mode, o.format, o.players?.length ? o.players : [o.hostId], o.avoid);
   if (!supports(scenario, o.mode, o.format)) scenario = pickScenario(o.mode, o.format);
   const code = o.invite ? makeCode() : null;
   const { data, error } = await supabase
@@ -173,6 +212,10 @@ export async function createRoom(o: { hostId: string; mode: Mode; format: Format
     track: { 0: { key: scenario.start, recap: null }, 1: { key: scenario.start, recap: null } },
     arrived: {},
     round: 1,
+    visited: new Map([
+      [0, new Set([scenario.start])],
+      [1, new Set([scenario.start])],
+    ]),
     teamWins: {},
     coopPoints: 0,
     recap: null,
@@ -230,9 +273,10 @@ export function publicState(room: Room, viewerId?: string) {
         choices: scene.choices.map((c) => ({
           approach: c.approach,
           label: pickVariant(c.label, m, f),
-          dc: viewer ? choiceDc(room, viewer, c) : c.dc, // the number you need to roll
-          // story marks that shift the number (switched off while BALANCE.storyMods is false)
-          mods: (BALANCE.storyMods ? (c.mods ?? []) : []).map((x) => ({
+          // the number you need to roll. Only co-op and solo have one: in a face-off the higher roll wins
+          dc: isDuel(room) ? null : viewer ? choiceDc(room, viewer, c) : c.dc,
+          // story marks that shift the number (switched off while BALANCE.storyMods is false, and never used in a face-off)
+          mods: (BALANCE.storyMods && !isDuel(room) ? (c.mods ?? []) : []).map((x) => ({
             mark: x.mark,
             who: x.who,
             delta: x.dc,
@@ -278,8 +322,8 @@ function privateRoll(room: Room, userId: string) {
     modifier: r.modifier,
     starBonus: r.starBonus,
     total: r.total,
-    dc: r.dc,
-    passed: r.tier === 'win' || r.tier === 'legendary',
+    dc: isDuel(room) ? null : r.dc,
+    passed: isDuel(room) ? null : r.tier === 'win' || r.tier === 'legendary',
     tier: r.tier,
     shielded: r.shielded,
     stars: p.stars,
@@ -609,6 +653,13 @@ async function settle(room: Room) {
   const gained: { userId: string | null; mark: string; label: string; tip: string }[] = [];
   const bonusLostNow = new Set<string>();
 
+  // Face-off: the HIGHER roll wins the round, there is no number to beat. Level rolls are settled by re-rolls,
+  // which are sent along so the screen can show them. Co-op and solo still roll against the difficulty.
+  const duel = race ? decideDuel(rows) : null;
+  const leadTeam: number | null = duel ? duel.winnerTeam : null;
+  const tieRounds = duel?.tieRounds ?? [];
+  const revealMs = BALANCE.resultDelayMs + tieRounds.length * BALANCE.tieRerollMs;
+
   type Group = {
     g: number; // 0 for co-op, the team number in race modes
     ids: string[];
@@ -617,18 +668,25 @@ async function settle(room: Room) {
     route: ReturnType<typeof pickEdge>;
     headline: string;
     flavor: string;
-    best: number; // best margin this round (who is ahead on the road)
     arrives: boolean;
   };
   const groups: Group[] = (race ? [0, 1] : [0]).map((g) => {
     const crew = race ? room.players.filter((p) => p.team === g) : room.players;
     const scene = sceneOf(room, crew[0]);
     const rr = rows.filter((r) => crew.some((p) => p.userId === r.userId));
-    const outcome = resolveRound(
-      'coop',
-      rr.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin, total: r.total, dc: r.dc })),
-    );
-    const route = pickEdge(scene, outcome.kind, outcome.same, outcome.lead?.approach ?? null);
+    const rolls = rr.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin, total: r.total, dc: r.dc }));
+    // a face-off road is "pulled off" by the side that rolled higher; co-op and solo pass or fail against the difficulty
+    const outcome = race ? duelRoadOutcome(rolls, g === leadTeam) : resolveRound('coop', rolls);
+    // A road never replays a scene it has already played. Routes are tried strictest first: a scene that can still reach
+    // an ending in time without replaying anything, then any scene that isn't a dead end, then any scene not yet played.
+    const played = room.visited.get(g)!;
+    const left = BALANCE.maxRounds - room.round; // rounds still to play after this one
+    const rules = [
+      (to: string) => !played.has(to) && stepsToEnd(room.scenario, to, played) <= left,
+      (to: string) => !played.has(to) && stepsToEnd(room.scenario, to, played) !== Infinity,
+      (to: string) => !played.has(to),
+    ];
+    const route = pickEdge(scene, outcome.kind, outcome.same, outcome.lead?.approach ?? null, rules);
     const move = outcome.lead ? APPROACH_LABEL[outcome.lead.approach] : undefined;
     const headline = resultLine({
       mode: 'coop',
@@ -653,15 +711,11 @@ async function settle(room: Room) {
       : '';
     const to = route.to;
     const arrives = to === null || !room.scenario.scenes[to];
-    return { g, ids: crew.map((p) => p.userId), scene, outcome, route, headline, flavor, best: Math.max(...rr.map((r) => r.margin)), arrives };
+    return { g, ids: crew.map((p) => p.userId), scene, outcome, route, headline, flavor, arrives };
   });
 
-  // who is ahead on the road this round (race modes): the cleaner roll takes the lead point
-  let leadTeam: number | null = null;
-  if (race && groups[0].best !== groups[1].best) {
-    leadTeam = groups[0].best > groups[1].best ? 0 : 1;
-    room.teamWins[leadTeam] = (room.teamWins[leadTeam] ?? 0) + 1;
-  }
+  // the side that rolled higher takes the lead point
+  if (leadTeam !== null) room.teamWins[leadTeam] = (room.teamWins[leadTeam] ?? 0) + 1;
 
   for (const grp of groups) {
     const { outcome, route } = grp;
@@ -735,11 +789,11 @@ async function settle(room: Room) {
         modifier: r.modifier,
         starBonus: r.starBonus,
         total: r.total,
-        dc: r.dc,
-        passed: r.tier === 'win' || r.tier === 'legendary',
+        dc: race ? null : r.dc, // a face-off has no number to beat
+        passed: race ? null : r.tier === 'win' || r.tier === 'legendary',
         tier: r.tier,
         shielded: r.shielded,
-        standing: !race ? 'crew' : leadTeam === null ? 'level' : r.team === leadTeam ? 'won' : 'lost',
+        standing: !race ? 'crew' : r.team === leadTeam ? 'won' : 'lost',
       })),
       kind: grp.outcome.kind,
       same: grp.outcome.same,
@@ -750,8 +804,8 @@ async function settle(room: Room) {
       bonusLost: [...bonusLostNow],
       bonusLostMessage: bonusLostNow.size && bonusDef ? bonusDef.lostMessage : null,
       ends,
-      tieRounds: [],
-      revealMs: BALANCE.resultDelayMs,
+      tieRounds,
+      revealMs,
     });
   room.players.forEach((p) => send(p.userId, groups[race ? p.team : 0]));
 
@@ -759,6 +813,7 @@ async function settle(room: Room) {
     if (ends) return void finish(room);
     for (const grp of groups) {
       const to = grp.route.to as string;
+      room.visited.get(grp.g)!.add(to);
       if (race) room.track[grp.g] = { key: to, recap: recapFor(grp) };
       else {
         room.sceneKey = to;
@@ -767,7 +822,7 @@ async function settle(room: Room) {
     }
     room.round += 1;
     beginRound(room);
-  }, BALANCE.resultDelayMs);
+  }, revealMs);
 }
 
 /**
@@ -958,7 +1013,14 @@ export async function requestRematch(userId: string, roomId: string) {
     io.to(`room:${room.id}`).emit('room:aborted', { roomId: room.id, reason: 'not_enough_stars', refunded: false });
     return;
   }
-  const next = await createRoom({ hostId: room.hostId, mode: room.mode, format: room.format, solo: room.solo });
+  const next = await createRoom({
+    hostId: room.hostId,
+    mode: room.mode,
+    format: room.format,
+    solo: room.solo,
+    players: room.players.map((p) => p.userId),
+    avoid: room.scenario.id, // a rematch is a new story, not the one they just finished
+  });
   io.to(`room:${room.id}`).emit('rematch:start', { roomId: next.id });
   for (const p of room.players) {
     io.in(`user:${p.userId}`).socketsLeave(`room:${room.id}`);

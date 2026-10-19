@@ -170,14 +170,119 @@ const ALSO: Partial<Record<Kind, Kind[]>> = {
   all_fail: ['both_fail'],
 };
 
-export function pickEdge(sc: Scene, kind: Kind, same: boolean, lead: Approach | null): ResolvedEdge {
+/**
+ * The other leaves a route could take when its first choice is not allowed: the default, then the other moves.
+ * Only used when a route is blocked, so routes that are fine behave exactly as they are written.
+ */
+function altLeaves(e: Edge | undefined, lead: Approach | null): ResolvedEdge[] {
+  if (e === undefined || e === null || typeof e === 'string' || 'to' in e) return [];
+  const m = e as Partial<Record<Approach | 'default', string | null | Leaf>>;
+  const keys = ['default', ...APPROACHES.filter((a) => a !== lead)] as const;
+  return keys.flatMap((k) => (m[k] === undefined ? [] : [toLeaf(m[k] as string | null | Leaf)]));
+}
+
+/**
+ * Where the story goes next.
+ *
+ * `allow` lets the caller rule scenes out (one the player has already played, or one that can't reach an ending in
+ * time). Give a list to try stricter rules first: the first rule that leaves any way forward is used. A blocked route
+ * falls back to another route for the same result first, then to any other route from this scene.
+ * With no `allow`, or when nothing is blocked, the route written in the scenario file is used.
+ */
+export function pickEdge(
+  sc: Scene,
+  kind: Kind,
+  same: boolean,
+  lead: Approach | null,
+  allow?: ((to: string) => boolean) | ((to: string) => boolean)[],
+): ResolvedEdge {
   const n = sc.next;
   // a "same move" route only fires when somebody actually succeeded
   const useSame = same && kind !== 'both_fail' && kind !== 'all_fail';
   const order: (keyof typeof n)[] = [...(useSame ? (['same'] as const) : []), kind, ...(ALSO[kind] ?? []), 'default'];
-  for (const k of order) {
-    const r = resolveEdge(n[k], lead);
+
+  const choose = (rule?: (to: string) => boolean): ResolvedEdge | undefined => {
+    const ok = (r: ResolvedEdge) => r.to === null || !rule || rule(r.to);
+    for (const k of order) {
+      const r = resolveEdge(n[k], lead);
+      if (!r) continue;
+      if (ok(r)) return r;
+      const alt = altLeaves(n[k], lead).find(ok);
+      if (alt) return alt;
+    }
+    if (!rule) return undefined;
+    // every route for this result is blocked: take any other way forward that is allowed
+    for (const e of Object.values(n)) {
+      const r = resolveEdge(e, lead);
+      if (r && r.to !== null && ok(r)) return r;
+      const alt = altLeaves(e, lead).find((x) => x.to !== null && ok(x));
+      if (alt) return alt;
+    }
+    return undefined;
+  };
+
+  for (const rule of Array.isArray(allow) ? allow : [allow]) {
+    const r = choose(rule);
     if (r) return r;
   }
   return { to: null };
+}
+
+const outCache = new WeakMap<Scenario, Record<string, (string | null)[]>>();
+const targetsOf = (s: Scenario) => {
+  let hit = outCache.get(s);
+  if (!hit) {
+    hit = Object.fromEntries(
+      Object.entries(s.scenes).map(([k, sc]) => [k, Object.values(sc.next as Record<string, Edge | undefined>).flatMap(edgeLeaves).map((l) => l.to)]),
+    );
+    outCache.set(s, hit);
+  }
+  return hit;
+};
+
+/**
+ * The fewest scenes (this one included) that must still be played, starting at `from`, before the story can end,
+ * without stepping on a scene in `avoid` (the ones already played). Infinity when every way on leads back to one of those.
+ * A scene that can end the story straight away counts as 1.
+ */
+export function stepsToEnd(s: Scenario, from: string, avoid: ReadonlySet<string> = new Set()): number {
+  const outs = targetsOf(s);
+  const seen = new Set<string>([from, ...avoid]);
+  let frontier = [from];
+  for (let steps = 1; frontier.length; steps++) {
+    const next: string[] = [];
+    for (const k of frontier) {
+      const to = outs[k] ?? [];
+      if (!to.length || to.some((t) => t === null || !(t in outs))) return steps;
+      for (const t of to) {
+        if (t && !seen.has(t)) {
+          seen.add(t);
+          next.push(t);
+        }
+      }
+    }
+    frontier = next;
+  }
+  return Infinity;
+}
+
+/** Routes that lead back to a scene already passed on the way (each one is a loop a player could walk round). */
+export function findLoops(s: Scenario): string[] {
+  const out = Object.fromEntries(
+    Object.entries(s.scenes).map(([k, sc]) => [k, [...new Set(Object.values(sc.next as Record<string, Edge | undefined>).flatMap(edgeLeaves).map((l) => l.to))]]),
+  );
+  const loops = new Set<string>();
+  const state: Record<string, 1 | 2> = {}; // 1 = on the current path, 2 = fully explored
+  const walk = (k: string, path: string[]) => {
+    state[k] = 1;
+    const here = [...path, k];
+    for (const to of out[k] ?? []) {
+      if (!to || !out[to]) continue;
+      if (state[to] === 1) loops.add([...here.slice(here.indexOf(to)), to].join(' -> '));
+      else if (!state[to]) walk(to, here);
+    }
+    state[k] = 2;
+  };
+  walk(s.start, []);
+  return [...loops];
 }
