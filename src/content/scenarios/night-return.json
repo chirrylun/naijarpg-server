@@ -422,7 +422,7 @@
             ]
           },
           "gragra": {
-            "to": "call_works",
+            "to": "vigilante_post",
             "recap": {
               "default": "{winner} shouts the promise across the dark. One of them laughs. Another says, \"We go wait.\"",
               "coop": "You shout the promise across the dark. One of them laughs. Another says, \"We go wait.\""
@@ -435,7 +435,7 @@
             ]
           },
           "wisdom": {
-            "to": "back_lane",
+            "to": "vigilante_post",
             "recap": {
               "default": "{winner} slips down the bridge, boots in the gutter water, and comes up past the bridge where nobody is watching. {loser} follows the gutter, misses the footing, and lands with a loud noise.",
               "coop": "You slip down the bridge, boots in the gutter water, and come up past the bridge where nobody is watching."
@@ -470,7 +470,7 @@
             ]
           },
           "gragra": {
-            "to": "call_exposed",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} shouts the promise. A voice answers: \"Which something? Come here!\" Three of them drop down from the railings.",
               "coop": "You shout the promise. A voice answers: \"Which something? Come here!\" Three of them drop down from the railings."
@@ -483,7 +483,7 @@
             ]
           },
           "wisdom": {
-            "to": "street_blocked",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} slips down the bridge and lands in black water past the knees. The splash draws attention and someone points a torch from above. \"Who dey there?\"",
               "coop": "You slip down the bridge and land in black water past the knees. The splash draws attention and someone points a torch from above. \"Who dey there?\""
@@ -595,7 +595,7 @@
             ]
           },
           "hustle": {
-            "to": "road_snag",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} walks fast, too fast, and the envelope slips in the pocket. They grab it, stop to check, and the boys see the money.",
               "coop": "You walk fast, too fast, and the envelope slips in the pocket. You grab it, stop to check, and the boys see the money."
@@ -621,7 +621,7 @@
             ]
           },
           "wisdom": {
-            "to": "street_blocked",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} cuts through the abattoir yard and finds the gate locked. The dogs behind it are awake and start barking. Backing out takes time you do not have.",
               "coop": "You cut through the abattoir yard and find the gate locked. The dogs behind it are awake and start barking. Backing out takes time you do not have."
@@ -1043,7 +1043,7 @@
       "next": {
         "decisive": {
           "charm": {
-            "to": "corn_aunty",
+            "to": "back_lane",
             "recap": {
               "default": "{winner} laughs it off, calls it play, and the tension breaks. They let you pass, bored now. {loser} laughs too late, too hard, and the boredom turns back.",
               "coop": "You laugh it off, call it play, and the tension breaks. They let you pass, bored now."
@@ -1056,7 +1056,7 @@
             ]
           },
           "hustle": {
-            "to": "corn_aunty",
+            "to": "back_lane",
             "recap": {
               "default": "{winner} runs for the inner street, turns twice, and the footsteps behind fade away. {loser} runs straight, not turning, and the footsteps follow straight.",
               "coop": "You run for the inner street, turn twice, and the footsteps behind fade away."
@@ -1212,7 +1212,7 @@
             ]
           },
           "wisdom": {
-            "to": "corn_aunty",
+            "to": "back_lane",
             "recap": {
               "default": "{winner} goes back, finds the turn, and the inner street opens up with light and noise again. {loser} goes back, misses the turn, and walks in a circle.",
               "coop": "You go back, find the turn, and the inner street opens up with light and noise again."
@@ -1260,7 +1260,7 @@
             ]
           },
           "wisdom": {
-            "to": "road_snag",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} goes back into the dark, takes the wrong turn, and the road ends at the riverbank. No bridge. No way forward. Only back to where you are coming from.",
               "coop": "You go back into the dark, take the wrong turn, and the road ends at the riverbank. No bridge. No way forward. Only back to where you are coming from."
@@ -1330,7 +1330,7 @@
       "next": {
         "decisive": {
           "charm": {
-            "to": "road_clear",
+            "to": "vigilante_post",
             "recap": {
               "default": "{winner} greets properly, asks after their people, and they allow you pass. \"Pass, brother.\" {loser} greets nervously, and they don't allow.",
               "coop": "You greet properly, ask after their people, and they allow you pass. \"Pass, brother.\""
@@ -1350,7 +1350,7 @@
             }
           },
           "gragra": {
-            "to": "road_clear",
+            "to": "vigilante_post",
             "recap": {
               "default": "{winner} claims they paid. One of them checks his phone, nods slow, and the path clears. {loser} claims the same, gets asked which chairman, but there is no answer.",
               "coop": "You claim you paid. One of them checks his phone, nods slow, and the path clears."
@@ -1498,7 +1498,7 @@
             }
           },
           "hustle": {
-            "to": "road_clear",
+            "to": "vigilante_post",
             "recap": {
               "default": "{winner} hands over phone and money. The tallest one counts it, pockets it, and steps aside. \"You be smart person.\" {loser} hesitates on the amount, and they immediately snatch everything.",
               "coop": "You hand over phone and money. The tallest one counts it, pockets it, and steps aside. \"You be smart person.\""
@@ -1528,7 +1528,7 @@
             ]
           },
           "wisdom": {
-            "to": "road_clear",
+            "to": "vigilante_post",
             "recap": {
               "default": "{winner} drops the envelope, runs, and you can hear them fighting over the money. You are past the bridge before they look up.",
               "coop": "You drop the envelope, run, and you can hear them fighting over the money. You are past the bridge before they look up."
@@ -1781,7 +1781,7 @@
         },
         "both_fail": {
           "charm": {
-            "to": "street_blocked",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} whistles. The answer is a stone thrown from nowhere, clanging off the corrugated iron. \"Who dey sing for my father's house?\"",
               "coop": "You whistle. The answer is a stone thrown from nowhere, clanging off the corrugated iron. \"Who dey sing for my father's house?\""
@@ -1814,7 +1814,7 @@
             ]
           },
           "wisdom": {
-            "to": "street_blocked",
+            "to": "bridge_heated",
             "recap": {
               "default": "{winner} walks slow, listening.",
               "coop": "You walk slow, listening."

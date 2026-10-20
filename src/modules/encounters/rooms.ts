@@ -8,7 +8,7 @@ import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver'
 import { decideDuel, duelRoadOutcome, resolveRound } from '../../game-engine/round';
 import { d20 } from '../../game-engine/dice';
 import { fillTokens, resultLine, APPROACH_LABEL, joinNames } from '../../game-engine/narrative';
-import { pickEdge, pickVariant, routeRules, type Scenario, type Scene } from '../../game-engine/scenario';
+import { pickEdge, pickVariant, type Scenario, type Scene } from '../../game-engine/scenario';
 import type { Approach, Format, Kind, Mode, StarPlay, Tier } from '../../game-engine/types';
 import { allScenarios, pickScenario, dailyScenario, supports } from '../../content';
 import { afterEncounter } from '../progress/progress.service';
@@ -247,7 +247,7 @@ export function publicState(room: Room, viewerId?: string) {
     phase: room.phase,
     capacity: room.capacity,
     round: room.round,
-    maxRounds: Math.max(BALANCE.maxRounds, room.round),
+    maxRounds: BALANCE.maxRounds,
     roundSeconds: BALANCE.roundSeconds,
     edgeSeconds: BALANCE.edgeSeconds,
     remainingMs: room.deadline ? Math.max(0, room.deadline - Date.now()) : null,
@@ -677,9 +677,8 @@ async function settle(room: Room) {
     const rolls = rr.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin, total: r.total, dc: r.dc }));
     // a face-off road is "pulled off" by the side that rolled higher; co-op and solo pass or fail against the difficulty
     const outcome = race ? duelRoadOutcome(rolls, g === leadTeam) : resolveRound('coop', rolls);
-    // A road never replays a scene it has already played, and is steered to an ending it can reach in time (see routeRules)
-    const rules = routeRules(room.scenario, room.visited.get(g)!, Math.max(BALANCE.maxRounds - room.round, 1));
-    const route = pickEdge(scene, outcome.kind, outcome.same, outcome.lead?.approach ?? null, rules);
+    // The story goes exactly where the scenario file says for this move and result (every story is loop-free, so nothing replays or is skipped)
+    const route = pickEdge(scene, outcome.kind, outcome.same, outcome.lead?.approach ?? null);
     const move = outcome.lead ? APPROACH_LABEL[outcome.lead.approach] : undefined;
     const headline = resultLine({
       mode: 'coop',
@@ -765,8 +764,8 @@ async function settle(room: Room) {
   for (const grp of groups) (room.log[grp.g] ??= []).push(recapFor(grp));
 
   const anyArrived = groups.some((x) => x.arrives);
-  // A story is never cut off mid-scene: past the round limit it runs on (up to 2 extra scenes) until a road reaches its ending
-  const ends = anyArrived || room.round >= BALANCE.maxRounds + 2;
+  // A story ends when a road reaches its ending; the round limit is only a safety net and sits above the longest story
+  const ends = anyArrived || room.round >= BALANCE.maxRounds;
 
   const send = (userId: string, grp: Group) =>
     io.to(`user:${userId}`).emit('round:result', {
