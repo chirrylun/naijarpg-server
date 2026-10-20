@@ -170,24 +170,26 @@ const ALSO: Partial<Record<Kind, Kind[]>> = {
   all_fail: ['both_fail'],
 };
 
-/**
- * The other leaves a route could take when its first choice is not allowed: the default, then the other moves.
- * Only used when a route is blocked, so routes that are fine behave exactly as they are written.
- */
-function altLeaves(e: Edge | undefined, lead: Approach | null): ResolvedEdge[] {
-  if (e === undefined || e === null || typeof e === 'string' || 'to' in e) return [];
+/** Every scene (or null = the story ends) that a route could lead to: the move that decided it first, then the default, then the other moves. */
+function destinationsOf(e: Edge | undefined, lead: Approach | null): (string | null)[] {
+  if (e === undefined) return [];
+  if (e === null || typeof e === 'string') return [e];
+  if ('to' in e) return [(e as Leaf).to];
   const m = e as Partial<Record<Approach | 'default', string | null | Leaf>>;
-  const keys = ['default', ...APPROACHES.filter((a) => a !== lead)] as const;
-  return keys.flatMap((k) => (m[k] === undefined ? [] : [toLeaf(m[k] as string | null | Leaf)]));
+  const keys = [...(lead ? [lead] : []), 'default', ...APPROACHES.filter((a) => a !== lead)] as const;
+  return keys.flatMap((k) => (m[k] === undefined ? [] : [toLeaf(m[k] as string | null | Leaf).to]));
 }
 
 /**
  * Where the story goes next.
  *
- * `allow` lets the caller rule scenes out (one the player has already played, or one that can't reach an ending in
- * time). Give a list to try stricter rules first: the first rule that leaves any way forward is used. A blocked route
- * falls back to another route for the same result first, then to any other route from this scene.
- * With no `allow`, or when nothing is blocked, the route written in the scenario file is used.
+ * What the player reads (the story line) and the marks they earn ALWAYS come from the route for the move they played and
+ * how it went. Only the destination can change, and only when `allow` rules the written destination out (a scene
+ * already played, or one that can't reach an ending before the last round). Then, in this order:
+ *   1. another destination for the same result (the other moves' routes, the default),
+ *   2. any other destination from this scene (only when every one for this result is ruled out).
+ * `allow` can be a list of rules, strictest first: the first rule that leaves a destination is used.
+ * With no `allow`, or when nothing is ruled out, the route written in the scenario file is used exactly.
  */
 export function pickEdge(
   sc: Scene,
@@ -201,31 +203,26 @@ export function pickEdge(
   const useSame = same && kind !== 'both_fail' && kind !== 'all_fail';
   const order: (keyof typeof n)[] = [...(useSame ? (['same'] as const) : []), kind, ...(ALSO[kind] ?? []), 'default'];
 
-  const choose = (rule?: (to: string) => boolean): ResolvedEdge | undefined => {
-    const ok = (r: ResolvedEdge) => r.to === null || !rule || rule(r.to);
-    for (const k of order) {
-      const r = resolveEdge(n[k], lead);
-      if (!r) continue;
-      if (ok(r)) return r;
-      const alt = altLeaves(n[k], lead).find(ok);
-      if (alt) return alt;
-    }
-    if (!rule) return undefined;
-    // every route for this result is blocked: take any other way forward that is allowed
-    for (const e of Object.values(n)) {
-      const r = resolveEdge(e, lead);
-      if (r && r.to !== null && ok(r)) return r;
-      const alt = altLeaves(e, lead).find((x) => x.to !== null && ok(x));
-      if (alt) return alt;
-    }
-    return undefined;
-  };
-
-  for (const rule of Array.isArray(allow) ? allow : [allow]) {
-    const r = choose(rule);
-    if (r) return r;
+  let written: ResolvedEdge | undefined;
+  for (const k of order) {
+    written = resolveEdge(n[k], lead);
+    if (written) break;
   }
-  return { to: null };
+  if (!written) return { to: null };
+  if (written.to === null || !allow) return written;
+
+  const sameResult = order.flatMap((k) => destinationsOf(n[k], lead));
+  const anywhere = Object.values(n).flatMap((e) => destinationsOf(e, lead));
+  const rules = Array.isArray(allow) ? allow : [allow];
+  const ok = (to: string | null, rule: (to: string) => boolean) => to === null || rule(to);
+
+  for (const pool of [[written.to, ...sameResult], anywhere]) {
+    for (const rule of rules) {
+      const to = pool.find((d) => ok(d, rule));
+      if (to !== undefined) return to === written.to ? written : { ...written, to };
+    }
+  }
+  return { ...written, to: null };
 }
 
 const outCache = new WeakMap<Scenario, Record<string, (string | null)[]>>();
@@ -264,6 +261,18 @@ export function stepsToEnd(s: Scenario, from: string, avoid: ReadonlySet<string>
     frontier = next;
   }
   return Infinity;
+}
+
+/**
+ * The rules a road's next scene must meet, strictest first: not played before AND able to reach an ending in the
+ * rounds left; then not played before and not a dead end; then just not played before.
+ */
+export function routeRules(s: Scenario, played: ReadonlySet<string>, roundsLeft: number) {
+  return [
+    (to: string) => !played.has(to) && stepsToEnd(s, to, played) <= roundsLeft,
+    (to: string) => !played.has(to) && stepsToEnd(s, to, played) !== Infinity,
+    (to: string) => !played.has(to),
+  ];
 }
 
 /** Routes that lead back to a scene already passed on the way (each one is a loop a player could walk round). */
