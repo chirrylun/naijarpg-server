@@ -8,7 +8,7 @@ import { applyEdge, rollBase, type RollState } from '../../game-engine/resolver'
 import { decideDuel, duelRoadOutcome, resolveRound } from '../../game-engine/round';
 import { d20 } from '../../game-engine/dice';
 import { fillTokens, resultLine, APPROACH_LABEL, joinNames } from '../../game-engine/narrative';
-import { pickEdge, pickVariant, stepsToEnd, type Scenario, type Scene } from '../../game-engine/scenario';
+import { pickEdge, pickVariant, routeRules, type Scenario, type Scene } from '../../game-engine/scenario';
 import type { Approach, Format, Kind, Mode, StarPlay, Tier } from '../../game-engine/types';
 import { allScenarios, pickScenario, dailyScenario, supports } from '../../content';
 import { afterEncounter } from '../progress/progress.service';
@@ -247,7 +247,7 @@ export function publicState(room: Room, viewerId?: string) {
     phase: room.phase,
     capacity: room.capacity,
     round: room.round,
-    maxRounds: BALANCE.maxRounds,
+    maxRounds: Math.max(BALANCE.maxRounds, room.round),
     roundSeconds: BALANCE.roundSeconds,
     edgeSeconds: BALANCE.edgeSeconds,
     remainingMs: room.deadline ? Math.max(0, room.deadline - Date.now()) : null,
@@ -677,15 +677,8 @@ async function settle(room: Room) {
     const rolls = rr.map((r) => ({ userId: r.userId, team: r.team, approach: r.approach, tier: r.tier, margin: r.margin, total: r.total, dc: r.dc }));
     // a face-off road is "pulled off" by the side that rolled higher; co-op and solo pass or fail against the difficulty
     const outcome = race ? duelRoadOutcome(rolls, g === leadTeam) : resolveRound('coop', rolls);
-    // A road never replays a scene it has already played. Routes are tried strictest first: a scene that can still reach
-    // an ending in time without replaying anything, then any scene that isn't a dead end, then any scene not yet played.
-    const played = room.visited.get(g)!;
-    const left = BALANCE.maxRounds - room.round; // rounds still to play after this one
-    const rules = [
-      (to: string) => !played.has(to) && stepsToEnd(room.scenario, to, played) <= left,
-      (to: string) => !played.has(to) && stepsToEnd(room.scenario, to, played) !== Infinity,
-      (to: string) => !played.has(to),
-    ];
+    // A road never replays a scene it has already played, and is steered to an ending it can reach in time (see routeRules)
+    const rules = routeRules(room.scenario, room.visited.get(g)!, Math.max(BALANCE.maxRounds - room.round, 1));
     const route = pickEdge(scene, outcome.kind, outcome.same, outcome.lead?.approach ?? null, rules);
     const move = outcome.lead ? APPROACH_LABEL[outcome.lead.approach] : undefined;
     const headline = resultLine({
@@ -772,7 +765,8 @@ async function settle(room: Room) {
   for (const grp of groups) (room.log[grp.g] ??= []).push(recapFor(grp));
 
   const anyArrived = groups.some((x) => x.arrives);
-  const ends = anyArrived || room.round >= BALANCE.maxRounds || (!race && groups[0].arrives);
+  // A story is never cut off mid-scene: past the round limit it runs on (up to 2 extra scenes) until a road reaches its ending
+  const ends = anyArrived || room.round >= BALANCE.maxRounds + 2;
 
   const send = (userId: string, grp: Group) =>
     io.to(`user:${userId}`).emit('round:result', {
