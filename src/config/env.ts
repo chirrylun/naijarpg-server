@@ -6,6 +6,8 @@ const schema = z.object({
   SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(20),
   PAYSTACK_SECRET_KEY: z.string().default(''),
+  // comma-separated user ids allowed to open /stats (see the 403 response on /api/stats/admin for yours)
+  ADMIN_USER_IDS: z.string().default(''),
   BACHS_API_KEY: z.string().min(1),
 BACHS_WEBHOOK_SECRET: z.string().min(1),
 });

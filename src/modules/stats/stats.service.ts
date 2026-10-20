@@ -1,5 +1,7 @@
 import { supabase } from '../../db/supabase';
 import { liveCount } from '../../realtime/presence';
+import { rooms } from '../encounters/rooms';
+import { queueSizes } from '../encounters/matchmaking';
 
 export type TopPlayer = {
   rank: number;
@@ -67,4 +69,37 @@ export async function getTopPlayers(limit = 3): Promise<TopPlayer[]> {
 export async function getLandingStats() {
   const [totalVisits, topPlayers] = await Promise.all([getTotalVisits(), getTopPlayers(3)]);
   return { liveUsers: liveCount(), totalVisits, topPlayers };
+}
+
+// ---------- admin /stats page ----------
+
+/** What is happening on the server right now (memory only, nothing is stored) */
+function liveNow() {
+  const byMode: Record<string, number> = {};
+  let active = 0;
+  let waiting = 0;
+  let inRooms = 0;
+  for (const r of rooms.values()) {
+    inRooms += r.players.length;
+    if (r.status === 'active') {
+      active += 1;
+      byMode[r.mode] = (byMode[r.mode] ?? 0) + 1;
+    } else if (r.status === 'waiting') waiting += 1;
+  }
+  return { online: liveCount(), playersInGames: inRooms, activeGames: active, waitingRooms: waiting, activeByMode: byMode, queues: queueSizes() };
+}
+
+// The numbers take a moment to work out, so keep each range for 20 seconds
+const adminCache = new Map<number, { at: number; data: unknown }>();
+
+export async function getAdminStats(days: number) {
+  const hit = adminCache.get(days);
+  let data = hit && Date.now() - hit.at < 20_000 ? hit.data : null;
+  if (!data) {
+    const { data: fresh, error } = await supabase.rpc('admin_stats', { p_days: days });
+    if (error) throw error;
+    data = fresh;
+    adminCache.set(days, { at: Date.now(), data });
+  }
+  return { ...(data as object), live: liveNow() };
 }
